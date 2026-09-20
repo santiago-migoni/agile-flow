@@ -8,6 +8,7 @@ from pathlib import Path
 
 EXCLUDED_NAMES = {".DS_Store", "agile-lledo.pdf", "state.json", "state.backup.json"}
 EXCLUDED_PARTS = {".git", ".agile-flow", "__pycache__", "dist"}
+PROJECT_ONLY_FILES = {"functional-specification.md", "docs/implementation-audit.md", "docs/audit-remediation.md"}
 
 
 def main() -> None:
@@ -21,6 +22,8 @@ def main() -> None:
         for path in root.rglob("*"):
             relative = path.relative_to(root)
             if not path.is_file() or path.resolve() == output:
+                continue
+            if relative.as_posix() in PROJECT_ONLY_FILES:
                 continue
             if path.name in EXCLUDED_NAMES or any(part in EXCLUDED_PARTS for part in relative.parts):
                 continue

@@ -19,29 +19,14 @@ The skills call `scripts/agile_flow.py` with JSON requests. The CLI is an intern
 
 ## Local installation
 
-Do not copy product records into the plugin. Codex installs local plugins from a marketplace. The following commands create a personal local copy and marketplace entry; run them yourself only when you want to install it:
+Codex installs local plugins through a marketplace. Choose a directory for a local marketplace, then prepare a copy of this package there. The helper merges the agile-flow entry into an existing catalog and refuses to replace an existing plugin copy or conflicting entry:
 
 ```bash
-mkdir -p "$HOME/plugins" "$HOME/.agents/plugins"
-python3 /Users/santiago_migoni/Documents/Projects/agile-flow/scripts/package_plugin.py --output /private/tmp/agile-flow.zip
-unzip -q /private/tmp/agile-flow.zip -d "$HOME/plugins/agile-flow"
-cat > "$HOME/.agents/plugins/marketplace.json" <<'EOF'
-{
-  "name": "personal",
-  "interface": {"displayName": "Personal"},
-  "plugins": [
-    {
-      "name": "agile-flow",
-      "source": {"source": "local", "path": "./plugins/agile-flow"},
-      "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
-      "category": "Productivity"
-    }
-  ]
-}
-EOF
+python3 scripts/prepare_local_install.py /path/to/local-marketplace
+codex plugin marketplace add /path/to/local-marketplace
 ```
 
-Restart Codex Desktop, open the Plugin Directory, select **Personal**, and install **agile-flow**. If `~/.agents/plugins/marketplace.json` already exists, merge the `agile-flow` entry instead of replacing its existing contents. Installation is intentionally not performed by this repository.
+Restart Codex Desktop, open the Plugin Directory, select the local marketplace, and install **agile-flow**. Keep `.agile-flow/` in each product separate from the plugin installation. These instructions are not executed by this repository.
 
 ## Validation
 

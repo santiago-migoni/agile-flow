@@ -13,7 +13,7 @@ class TransitionTest(RecordsHarness, unittest.TestCase):
 
     def test_reusing_operation_id_with_different_content_conflicts(self) -> None:
         self.initialize()
-        self.mutate({"operation": "record-decision", "operation_id": "same-id", "purpose": "First", "decision": {"author": "agent", "reason": "First", "scope": "First"}})
+        self.mutate({"operation": "record-decision", "operation_id": "same-id", "purpose": "First", "decision": {"kind": "technical", "source": "local observation", "author": "agent", "reason": "First", "scope": "First"}})
         current = self.inspect()
         _, body = self.call("mutate", {"operation": "record-decision", "operation_id": "same-id", "purpose": "Different", "expected_revision": current["revision"], "expected_fingerprint": current["fingerprint"], "decision": {"author": "agent", "reason": "Different", "scope": "Different"}})
         self.assertEqual(body["status"], "conflict")
@@ -32,3 +32,14 @@ class TransitionTest(RecordsHarness, unittest.TestCase):
         inc = self.inspect()["increments"][0]; self.assertTrue(inc["suspended"]); self.assertEqual(inc["states"]["development"], "in_progress")
         self.mutate({"operation": "close", "operation_id": "close", "purpose": "Administrative close", "increment_id": "INC-0001"})
         inc = self.inspect()["increments"][0]; self.assertEqual(inc["administrative_state"], "closed"); self.assertEqual(inc["states"]["verification"], "not_run")
+
+    def test_project_pause_and_cancellation_stop_new_development(self) -> None:
+        self.prepared()
+        self.mutate({"operation": "pause", "operation_id": "pause-project", "purpose": "Pause", "target": "project"})
+        blocked = self.mutate({"operation": "start", "operation_id": "blocked-start", "purpose": "Attempt start", "increment_id": "INC-0001"})
+        self.assertEqual(blocked["status"], "failed")
+        self.mutate({"operation": "reopen", "operation_id": "reopen-project", "purpose": "Resume project", "target": "project"})
+        self.mutate({"operation": "close", "action": "cancel", "operation_id": "cancel-increment", "purpose": "Cancel work", "increment_id": "INC-0001"})
+        self.assertEqual(self.inspect()["increments"][0]["states"]["development"], "canceled")
+        self.mutate({"operation": "reopen", "operation_id": "reopen-increment", "purpose": "Restart canceled work", "increment_id": "INC-0001"})
+        self.assertEqual(self.inspect()["increments"][0]["states"]["development"], "ready")

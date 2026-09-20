@@ -45,7 +45,7 @@ class RecordsHarness:
         return body
 
     def authorization(self) -> str:
-        body = self.mutate({"operation": "record-decision", "operation_id": "op-auth", "purpose": "Record authorization.", "decision": {"author": "user", "reason": "Authorized the increment.", "scope": "INC-0001", "source": "message", "quote": "Build it."}})
+        body = self.mutate({"operation": "record-decision", "operation_id": "op-auth", "purpose": "Record authorization.", "decision": {"kind": "authorization", "author": "user", "reason": "Authorized the increment.", "scope": {"item_ids": ["ITEM-0001", "ITEM-0002"]}, "source": "message", "quote": "Build it."}})
         self.assertEqual(body["status"], "applied")
         return "DEC-0001"
 
@@ -87,7 +87,7 @@ class RecordsHarness:
         self.prepared()
         self.mutate({"operation": "start", "operation_id": "op-start", "purpose": "Start", "increment_id": "INC-0001"})
         self.mutate({"operation": "mark-implemented", "operation_id": "op-implemented", "purpose": "Implemented", "increment_id": "INC-0001", "baseline": {"files": {"app.py": "abc"}}})
-        self.mutate({"operation": "record-evidence", "operation_id": "op-unit", "purpose": "Unit check", "evidence": {"increment_id": "INC-0001", "check": "unit", "result": "passed", "scope": "Greeting endpoint", "fingerprints": {"app.py": "abc"}}})
+        self.mutate({"operation": "record-evidence", "operation_id": "op-unit", "purpose": "Unit check", "evidence": {"increment_id": "INC-0001", "check": "unit", "result": "passed", "scope": "Greeting endpoint"}})
         self.assertEqual(self.inspect()["increments"][0]["states"]["verification"], "partial")
         self.mutate({"operation": "record-review", "operation_id": "op-review", "purpose": "Review", "review": {"increment_id": "INC-0001", "decision": "accepted", "user_quote": "I accept the greeting."}})
         self.assertEqual(self.inspect()["increments"][0]["states"]["acceptance"], "accepted")
@@ -101,7 +101,7 @@ class RecordsHarness:
         body = self.mutate({"operation": "record-decision", "operation_id": "op-blocked", "purpose": "x", "decision": {"author": "agent", "reason": "x", "scope": "x"}})
         self.assertEqual(body["status"], "failed")
         code, rendered = self.call("render", extra=["--force"]); self.assertEqual((code, rendered["status"]), (0, "applied"))
-        self.assertTrue(view.with_name("summary.md.manual-backup").exists())
+        self.assertEqual(len(list(view.parent.glob("summary.md.manual-*.backup"))), 1)
 
     def check_manual_state_edit_and_explicit_recovery(self) -> None:
         self.initialize(); state = self.root / ".agile-flow" / "state.json"

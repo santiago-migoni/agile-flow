@@ -5,7 +5,7 @@ description: Capture, refine, deduplicate, or reprioritize agile-flow product ne
 
 # Maintain the backlog
 
-Read `../../references/session-protocol.md`, `authorization.md`, and `adaptive-method.md` before writing records.
+Read `../../references/session-protocol.md`, `../../references/authorization.md`, and `../../references/adaptive-method.md` before writing records.
 
 Inspect the managed project and compare the request with existing backlog purposes. Record a new item only when it is not an unambiguous match; update a match with the reason and preserve provenance. If matching is ambiguous, disclose it and ask only if it changes the result.
 

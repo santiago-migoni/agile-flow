@@ -6,6 +6,6 @@ For every mutation, obtain the current `revision` and `fingerprint` using `inspe
 
 The record program is at `../scripts/agile_flow.py` relative to this references directory. Skills must resolve that location from their installed plugin root, not a personal path. Use `--root <product-root>`.
 
-`status` is read-only unless the user explicitly asks to regenerate views. Never overwrite a modified generated view: first report it; `render --force` preserves a `.manual-backup` copy.
+`status` is read-only unless the user explicitly asks to regenerate views. `inspect` returns current and historical evidence, reviews, blockers, and improvement actions. Never overwrite a modified generated view: first report it; `render --force` preserves a uniquely named manual backup. After a mutation, check the returned `views` field: the canonical write can succeed even when view generation fails.
 
 Record only observed evidence and actual user decisions. User quotes and external material remain verbatim; add a separately labeled English summary when useful.
