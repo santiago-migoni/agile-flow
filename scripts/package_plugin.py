@@ -8,7 +8,7 @@ from pathlib import Path
 
 EXCLUDED_NAMES = {".DS_Store", "agile-lledo.pdf", "state.json", "state.backup.json"}
 EXCLUDED_PARTS = {".git", ".agile-flow", "__pycache__", "dist"}
-PROJECT_ONLY_FILES = {"functional-specification.md", "docs/implementation-audit.md", "docs/audit-remediation.md"}
+PROJECT_ONLY_FILES = {"functional-specification.md", "docs/implementation-audit.md", "docs/audit-remediation.md", "docs/implementation-reaudit.md", "docs/reaudit-remediation.md"}
 
 
 def main() -> None:

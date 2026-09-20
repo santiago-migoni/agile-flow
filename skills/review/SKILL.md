@@ -11,4 +11,6 @@ Identify the increment, current or historical delivery revision, and criterion p
 
 Keep requested corrections tied to existing criteria. Capture a new need in the backlog and explain its scope impact. When a concrete fact supports an improvement, record its adjustment, target cycle, authorization boundary, and how its effect will be observed.
 
+If the user withdraws or replaces an earlier change request on the same delivery, name the earlier review and exact parts in `supersedes`. Never infer supersession from a later acceptance of another part. Preserve both reviews and their original quotes.
+
 Report the review decision, current independent states, follow-up work, and next step.

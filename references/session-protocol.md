@@ -8,4 +8,6 @@ The record program is at `../scripts/agile_flow.py` relative to this references 
 
 `status` is read-only unless the user explicitly asks to regenerate views. `inspect` returns current and historical evidence, reviews, blockers, and improvement actions. Never overwrite a modified generated view: first report it; `render --force` preserves a uniquely named manual backup. After a mutation, check the returned `views` field: the canonical write can succeed even when view generation fails.
 
+Generated views display the effective current verification and acceptance computed from the same canonical state and file fingerprints as `inspect`. Recorded historical states remain labeled as historical when they differ. After an external file change, do not treat a previous passed check or acceptance as current validity.
+
 Record only observed evidence and actual user decisions. User quotes and external material remain verbatim; add a separately labeled English summary when useful.

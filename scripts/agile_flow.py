@@ -334,26 +334,38 @@ def applicable_authorization(state: dict[str, Any], identifier: str, item_ids: l
     return decision
 
 
-def recompute_acceptance(state: dict[str, Any], inc: dict[str, Any]) -> None:
+def review_effects(state: dict[str, Any], inc: dict[str, Any]) -> tuple[set[str], dict[str, set[str]], bool, bool]:
     reviews = [review for review in state["reviews"] if review["increment_id"] == inc["id"] and review["delivery_revision"] == inc["delivery_revision"]]
-    if not reviews:
-        inc["states"]["acceptance"] = "pending" if inc["states"]["development"] == "implemented" else "not_requested"
-        inc["accepted_parts"] = []
-        return
-    parts = set(inc["criteria"])
     accepted: set[str] = set()
-    changes = False
+    outstanding: dict[str, set[str]] = {}
+    explicitly_accepted = False
     for review in reviews:
+        for resolution in review.get("supersedes", []):
+            outstanding.get(resolution["review_id"], set()).difference_update(resolution["parts"])
         if review["decision"] == "accepted":
             accepted.update(review["parts"])
+            explicitly_accepted = True
         elif review["decision"] == "partial":
             accepted.update(review["accepted_parts"])
-            changes = changes or bool(review.get("requested_changes"))
+            if review.get("requested_changes"):
+                outstanding[review["id"]] = set(review.get("parts") or inc["criteria"]) - set(review["accepted_parts"])
         elif review["decision"] == "changes_requested":
-            changes = True
+            outstanding[review["id"]] = set(review.get("parts") or inc["criteria"])
+    return accepted, outstanding, explicitly_accepted, bool(reviews)
+
+
+def recompute_acceptance(state: dict[str, Any], inc: dict[str, Any]) -> None:
+    accepted, outstanding, explicitly_accepted, has_reviews = review_effects(state, inc)
     inc["accepted_parts"] = sorted(accepted)
-    has_explicit_accepted_review = any(review["decision"] == "accepted" for review in reviews)
-    inc["states"]["acceptance"] = "accepted" if parts and accepted == parts and not changes and has_explicit_accepted_review else ("changes_requested" if changes else "pending")
+    if any(outstanding.values()):
+        value = "changes_requested"
+    elif set(inc["criteria"]) == accepted and explicitly_accepted:
+        value = "accepted"
+    elif has_reviews or inc["states"]["development"] == "implemented":
+        value = "pending"
+    else:
+        value = "not_requested"
+    inc["states"]["acceptance"] = value
 
 
 def recompute_verification(state: dict[str, Any], inc: dict[str, Any]) -> None:
@@ -472,7 +484,7 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         recompute_verification(state, inc)
     elif op == "record-review":
         data = request.get("review", {}); inc = find(state["increments"], data.get("increment_id", ""), "increment")
-        if data.get("decision") not in {"accepted", "changes_requested", "deferred", "partial"}: raise RecordError("Review needs a valid explicit decision.")
+        if data.get("decision") not in {"accepted", "changes_requested", "deferred", "partial", "withdrawn"}: raise RecordError("Review needs a valid explicit decision.")
         if not data.get("user_quote") and not data.get("message_reference"): raise RecordError("Review needs a verbatim user quote or message reference.")
         revision = data.get("delivery_revision", inc["delivery_revision"])
         if not isinstance(revision, int) or revision < 1 or revision > inc["delivery_revision"]:
@@ -485,6 +497,23 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
             raise RecordError("Partial review needs identified accepted_parts.")
         if data["decision"] == "accepted" and not parts:
             raise RecordError("Accepted review needs identified parts.")
+        resolutions = data.get("supersedes", [])
+        if not isinstance(resolutions, list):
+            raise RecordError("Review supersession must be a list of scoped references.")
+        if data["decision"] == "withdrawn" and not resolutions:
+            raise RecordError("Withdrawal needs an explicit review and parts to supersede.")
+        if resolutions and revision != inc["delivery_revision"]:
+            raise RecordError("Only current-delivery review changes can be superseded.")
+        _, outstanding, _, _ = review_effects(state, inc)
+        for resolution in resolutions:
+            if not isinstance(resolution, dict) or not isinstance(resolution.get("parts"), list) or not resolution["parts"]:
+                raise RecordError("Review supersession needs a review_id and non-empty parts.")
+            referenced = find(state["reviews"], resolution.get("review_id", ""), "superseded review")
+            if referenced["increment_id"] != inc["id"] or referenced["delivery_revision"] != revision:
+                raise RecordError("Superseded review must cover the same increment and delivery.")
+            if not set(resolution["parts"]).issubset(outstanding.get(referenced["id"], set())):
+                raise RecordError("Superseded parts must be unresolved changes from the referenced review.")
+            outstanding[referenced["id"]].difference_update(resolution["parts"])
         state["reviews"].append({**data, "id": new_id(state, "reviews", "REV"), "at": utc_now(), "delivery_revision": revision, "parts": parts, "accepted_parts": accepted_parts})
         recompute_acceptance(state, inc)
     elif op == "record-blocker":
@@ -523,15 +552,44 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         inc = find(state["increments"], request.get("increment_id", ""), "increment")
         if state["project"].get("administrative_state") != "open" or inc.get("administrative_state", "open") != "open":
             raise RecordError("Paused, closed, or canceled work cannot prepare a correction.")
-        if inc["states"]["development"] != "implemented" or inc["states"]["acceptance"] != "changes_requested":
-            raise RecordError("Only an implemented increment with requested changes can prepare a correction.")
+        if inc["states"]["development"] != "implemented":
+            raise RecordError("Only an implemented increment can prepare a correction.")
         if not request.get("reason"):
             raise RecordError("Correction needs a reason.")
+        basis = request.get("basis", "review_changes")
+        if basis == "review_changes":
+            if inc["states"]["acceptance"] != "changes_requested":
+                raise RecordError("Review-driven correction needs outstanding requested changes.")
+        elif basis == "technical_failure":
+            evidence_ids = request.get("evidence_ids", [])
+            if not isinstance(evidence_ids, list) or not evidence_ids:
+                raise RecordError("Technical failure correction needs failed evidence IDs.")
+            for identifier in evidence_ids:
+                evidence = find(state["evidence"], identifier, "failed evidence")
+                if evidence["increment_id"] != inc["id"] or evidence["delivery_revision"] != inc["delivery_revision"] or evidence["result"] != "failed":
+                    raise RecordError("Technical failure evidence must be a failed check of this delivery.")
+        elif basis == "documented_defect":
+            defect = request.get("defect", {})
+            if not isinstance(defect, dict) or not defect.get("description") or not defect.get("source"):
+                raise RecordError("Documented defect correction needs a description and observed source.")
+            if defect.get("criterion") not in inc["criteria"] and defect.get("check") not in inc["required_checks"]:
+                raise RecordError("Documented defect must identify a current criterion or required check.")
+        else:
+            raise RecordError("Unknown correction basis.")
         applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
         inc["delivery_revision"] += 1
         inc["states"].update(development="ready", verification="not_run", acceptance="not_requested")
         inc["accepted_parts"] = []
         inc["correction_reason"] = request["reason"]
+        inc["correction_basis"] = basis
+    elif op == "rebind-authorization":
+        inc = find(state["increments"], request.get("increment_id", ""), "increment")
+        replacement = request.get("authorization")
+        if not isinstance(replacement, str) or replacement == inc["authorization"] or not request.get("reason"):
+            raise RecordError("Authorization rebinding needs a different decision and reason.")
+        applicable_authorization(state, replacement, inc["item_ids"], inc["id"])
+        inc["authorization"] = replacement
+        inc["authorization_changed_at"] = utc_now()
     elif op == "resume":
         inc = find(state["increments"], request.get("increment_id", ""), "increment")
         if state["project"].get("administrative_state") != "open" or inc.get("administrative_state", "open") != "open":
@@ -572,6 +630,7 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
 
 def render(store: Store, force: bool) -> dict[str, Any]:
     state = store.read()
+    observed = inspect_state(store, state)
     if force and store.view_manifest.exists():
         changed = []
         manifest = json.loads(store.view_manifest.read_text(encoding="utf-8"))
@@ -584,11 +643,21 @@ def render(store: Store, force: bool) -> dict[str, Any]:
         store.check_views()
     store.views.mkdir(parents=True, exist_ok=True); (store.views / "increments").mkdir(exist_ok=True)
     active = next((i for i in state["increments"] if i["states"]["development"] == "in_progress" and not i.get("suspended")), None)
-    summary = ["# agile-flow summary", "", f"Generated from canonical revision {state['revision']}.", "", f"Project: {state['project']['name']}", f"Objective: {state['project']['purpose']}", f"Next step: {state['project']['next_step']}", f"Active increment: {active['id'] if active else 'None'}"]
+    summary = ["# agile-flow summary", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Project: {state['project']['name']}", f"Objective: {state['project']['purpose']}", f"Next step: {state['project']['next_step']}", f"Active increment: {active['id'] if active else 'None'}", "", "## Current increment validity"]
+    for inc in observed["increments"]:
+        summary.append(f"- {inc['id']}: development {inc['states']['development']}; verification {inc['effective_verification']}; acceptance {inc['effective_acceptance']}.")
     backlog = ["# Backlog", "", f"Generated from canonical revision {state['revision']}.", ""] + [f"- {item['id']}: {item['purpose']} ({item.get('priority', {}).get('value', 'proposed')})" for item in state["backlog"]]
     files = {"summary.md": "\n".join(summary) + "\n", "backlog.md": "\n".join(backlog) + "\n"}
-    for inc in state["increments"]:
-        lines = [f"# {inc['id']}: {inc['objective']}", "", f"Generated from canonical revision {state['revision']}.", "", f"Development: {inc['states']['development']}", f"Verification: {inc['states']['verification']}", f"Acceptance: {inc['states']['acceptance']}", "", "## Scope", inc['scope'], "", "## Criteria"] + [f"- {criterion}" for criterion in inc['criteria']]
+    for inc in observed["increments"]:
+        lines = [f"# {inc['id']}: {inc['objective']}", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Development: {inc['states']['development']}", f"Current verification: {inc['effective_verification']}", f"Current acceptance: {inc['effective_acceptance']}"]
+        if inc["effective_verification"] != inc["states"]["verification"] or inc["effective_acceptance"] != inc["states"]["acceptance"]:
+            lines.extend([f"Recorded verification (historical): {inc['states']['verification']}", f"Recorded acceptance (historical): {inc['states']['acceptance']}"])
+        stale_evidence = [evidence for evidence in observed["evidence"] if evidence["increment_id"] == inc["id"] and evidence["delivery_revision"] == inc["delivery_revision"] and evidence["current_validity"] == "stale"]
+        if stale_evidence:
+            lines.extend(["", "## Stale evidence", "Covered files changed; reassess the affected checks and acceptance before treating this delivery as current."])
+            lines.extend(f"- {evidence['id']}: {', '.join(evidence['changed_paths'])}" for evidence in stale_evidence)
+        lines.extend(["", "## Scope", inc["scope"], "", "## Criteria"])
+        lines.extend(f"- {criterion}" for criterion in inc["criteria"])
         files[f"increments/{inc['id']}.md"] = "\n".join(lines) + "\n"
     for relative, content in files.items():
         (store.views / relative).write_text(content, encoding="utf-8")

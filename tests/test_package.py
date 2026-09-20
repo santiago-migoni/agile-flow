@@ -31,6 +31,9 @@ class PackageTests(unittest.TestCase):
         with zipfile.ZipFile(output) as archive:
             names = archive.namelist()
         self.assertNotIn("docs/agile-lledo.pdf", names)
+        self.assertNotIn("docs/implementation-reaudit.md", names)
+        self.assertNotIn("docs/reaudit-remediation.md", names)
+        self.assertFalse(any(name.startswith(".agile-flow/") for name in names))
         self.assertIn("scripts/agile_flow.py", names)
 
     def test_every_skill_reference_resolves_from_installed_layout(self) -> None:
