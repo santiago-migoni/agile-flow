@@ -1,0 +1,22 @@
+{
+  "name": "agile-flow",
+  "version": "0.1.0",
+  "description": "Manage small, verifiable software increments with durable local records.",
+  "author": {"name": "agile-flow contributors"},
+  "license": "MIT",
+  "keywords": ["agile", "development", "continuity", "records"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "agile-flow",
+    "shortDescription": "Durable, adaptive development records",
+    "longDescription": "Guides small software increments while preserving verification, review, and decisions locally.",
+    "developerName": "agile-flow contributors",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Initialize agile-flow for this product.",
+      "Show agile-flow status for this project.",
+      "Advance the authorized next increment."
+    ]
+  }
+}
