@@ -4,10 +4,10 @@ A Git-backed Codex marketplace containing **agile-flow**, a plugin for collabora
 
 ## Install from GitHub
 
-After publishing this repository, replace `OWNER/REPOSITORY` with its GitHub location:
+Register this marketplace:
 
 ```bash
-codex plugin marketplace add https://github.com/OWNER/REPOSITORY.git
+codex plugin marketplace add https://github.com/santiago-migoni/agile-flow.git
 ```
 
 Open Codex's Plugin Directory, choose the **Agile Flow** marketplace, and install **agile-flow**. Start a new task to use the installed skills. Git and Python 3.10 or later are required for the Git installation and local record CLI respectively. Private repositories require Git access to the repository.
@@ -41,3 +41,7 @@ python3 scripts/package_plugin.py
 ```
 
 The ZIP is optional for GitHub installation. Codex resolves the catalog directly from the Git repository. Update the plugin manifest version for subsequent published releases so installed copies can distinguish versions.
+
+## Release history
+
+[GitHub Releases](https://github.com/santiago-migoni/agile-flow/releases) is the authoritative changelog. Each release describes the changes in its matching version tag.
