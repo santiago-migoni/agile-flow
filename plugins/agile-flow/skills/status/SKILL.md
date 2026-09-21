@@ -5,7 +5,7 @@ description: Read agile-flow records and compare relevant repository state witho
 
 # Inspect status
 
-Read `../../references/session-protocol.md` and `../../references/readiness-and-quality.md`.
+Read `../../references/collaboration-flow.md`, `../../references/session-protocol.md` and `../../references/readiness-and-quality.md`.
 
 Use `inspect` and relevant read-only repository inspection. Recover the objective, `active_increment`, three work states, blockers, pending decisions, reviews, learning, next step, and any delivery evidence requiring reassessment. Closed unfinished increments retain their development label but are not active. Use `stale_evidence`, `current_stale_evidence`, `effective_verification`, and `effective_acceptance` when files changed; distinguish historical stale attempts from stale current checks. Compare recorded references and relevant repository fingerprints; label discrepancies and unknowns without rewriting decisions or claiming acceptance. Treat a view's recorded historical state as historical, not current validity.
 

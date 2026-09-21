@@ -114,6 +114,24 @@ class Store:
             raise RecordError("State revision is invalid.")
         if not isinstance(state.get("project"), dict) or not state["project"].get("id"):
             raise RecordError("Project identity is missing.")
+        project = state["project"]
+        for key in ("users", "confirmed_facts", "proposals"):
+            if key in project and (not isinstance(project[key], list) or any(not isinstance(value, str) for value in project[key])):
+                raise RecordError(f"Project {key} must be a list of strings.")
+        preparation = project.get("preparation", {})
+        if not isinstance(preparation, dict):
+            raise RecordError("Preparation proposal must be an object.")
+        allowed = {"objective", "scope", "exclusions", "criteria", "required_checks", "technical_plan", "open_decisions", "item_ids"}
+        if set(preparation) - allowed:
+            raise RecordError("Preparation proposal contains unsupported fields; it cannot grant authorization.")
+        for key, value in preparation.items():
+            if key in {"objective", "scope", "technical_plan"}:
+                if not isinstance(value, str):
+                    raise RecordError(f"Preparation {key} must be text.")
+            elif not isinstance(value, list) or any(not isinstance(entry, str) for entry in value):
+                raise RecordError(f"Preparation {key} must be a list of strings.")
+        if not set(preparation.get("item_ids", [])).issubset({item["id"] for item in state.get("backlog", [])}):
+            raise RecordError("Preparation proposal references unknown backlog work.")
         ids: set[str] = set()
         for key, prefix in (("backlog", "ITEM-"), ("increments", "INC-"), ("decisions", "DEC-"),
                             ("evidence", "EVD-"), ("reviews", "REV-"), ("blockers", "BLK-"),
@@ -290,6 +308,7 @@ def initial_state(root: Path, request: dict[str, Any]) -> dict[str, Any]:
                          "root": str(root), "constraints": project.get("constraints", []), "references": project.get("references", []),
                          "assumptions": project.get("assumptions", []), "open_questions": project.get("open_questions", []),
                          "success_criteria": project.get("success_criteria", []),
+                         **{key: project.get(key, [] if key != "preparation" else {}) for key in ("users", "confirmed_facts", "proposals", "preparation")},
                          "administrative_state": "open", "next_step": project.get("next_step", "Refine the highest-value need.")},
              "quality_policy": request.get("quality_policy", []), "backlog": [], "increments": [], "decisions": [], "evidence": [],
              "reviews": [], "blockers": [], "improvements": [], "history": []}
@@ -625,7 +644,7 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         improvement.update(state=request["state"], effect_evidence=request["effect_evidence"], reviewed_at=utc_now())
     elif op == "update-project":
         data = request.get("project", {})
-        if not data or any(key not in {"name", "purpose", "constraints", "references", "next_step", "assumptions", "open_questions", "success_criteria", "root"} for key in data):
+        if not data or any(key not in {"name", "purpose", "constraints", "references", "next_step", "assumptions", "open_questions", "success_criteria", "root", "users", "confirmed_facts", "proposals", "preparation"} for key in data):
             raise RecordError("Project update has no supported context fields.")
         if "root" in data and data["root"] != str(root):
             raise RecordError("Project location must match the selected product root.")
@@ -722,6 +741,25 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         raise RecordError(f"Unsupported operation: {op}.")
 
 
+def detail_section(title: str, value: Any, level: int = 2) -> list[str]:
+    """Render structured context without concealing nested source information."""
+    lines = ["", f"{chr(35) * min(level, 6)} {title}"]
+    if not value:
+        return lines + ["Not recorded."]
+    if isinstance(value, dict):
+        for key, entry in value.items():
+            lines.extend(detail_section(key.replace("_", " ").capitalize(), entry, level + 1))
+    elif isinstance(value, list):
+        for entry in value:
+            if isinstance(entry, dict):
+                lines.extend(detail_section(str(entry.get("id", "Record")), entry, level + 1))
+            else:
+                lines.append(f"- {entry}")
+    else:
+        lines.append(str(value))
+    return lines
+
+
 def render(store: Store, force: bool) -> dict[str, Any]:
     state = store.read()
     observed = inspect_state(store, state)
@@ -740,7 +778,24 @@ def render(store: Store, force: bool) -> dict[str, Any]:
     for inc in observed["increments"]:
         summary.append(f"- {inc['id']}: administrative {inc.get('administrative_state', 'open')}; development {inc['states']['development']}; active {'yes' if inc['active_development'] else 'no'}; verification {inc['effective_verification']}; acceptance {inc['effective_acceptance']}.")
     backlog = ["# Backlog", "", f"Generated from canonical revision {state['revision']}.", ""] + [f"- {item['id']}: {item['purpose']} ({item.get('priority', {}).get('value', 'proposed')})" for item in state["backlog"]]
-    files = {"summary.md": "\n".join(summary) + "\n", "backlog.md": "\n".join(backlog) + "\n"}
+    project = state["project"]
+    summary.extend(["", "[Product vision](vision.md) | [Backlog detail](backlog.md) | [Preparation proposal](preparation.md)"])
+    for key in ("constraints", "open_questions"):
+        summary.extend(detail_section(key.replace("_", " ").capitalize(), project.get(key, [])))
+    vision = ["# Product vision", "", f"Generated from canonical revision {state['revision']}; update through the record program.", "", project["purpose"]]
+    for key in ("users", "confirmed_facts", "assumptions", "proposals", "constraints", "success_criteria", "references", "open_questions"):
+        vision.extend(detail_section(key.replace("_", " ").capitalize(), project.get(key, [])))
+    vision.extend(detail_section("Recorded decisions (including supersession history)", state["decisions"]))
+    for item in state["backlog"]:
+        backlog.extend(["", f"# {item['id']}: {item['purpose']}"])
+        for key in ("state", "priority", "criteria", "dependencies", "uncertainties", "provenance"):
+            backlog.extend(detail_section(key.capitalize(), item.get(key)))
+    preparation = ["# Preparation proposal", "", f"Generated from canonical revision {state['revision']}.", "", "This proposal does not authorize implementation or accept a delivery."]
+    for key in ("objective", "item_ids", "scope", "exclusions", "criteria", "required_checks", "technical_plan", "open_decisions"):
+        preparation.extend(detail_section(key.replace("_", " ").capitalize(), project.get("preparation", {}).get(key)))
+    preparation.extend(detail_section("Next step", project["next_step"]))
+    files = {"summary.md": "\n".join(summary) + "\n", "backlog.md": "\n".join(backlog) + "\n",
+             "vision.md": "\n".join(vision) + "\n", "preparation.md": "\n".join(preparation) + "\n"}
     for inc in observed["increments"]:
         lines = [f"# {inc['id']}: {inc['objective']}", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Administrative state: {inc.get('administrative_state', 'open')}", f"Development: {inc['states']['development']}", f"Active development: {'yes' if inc['active_development'] else 'no'}", f"Current verification: {inc['effective_verification']}", f"Current acceptance: {inc['effective_acceptance']}"]
         if inc["effective_verification"] != inc["states"]["verification"] or inc["effective_acceptance"] != inc["states"]["acceptance"]:
@@ -751,7 +806,16 @@ def render(store: Store, force: bool) -> dict[str, Any]:
             lines.extend(f"- {evidence['id']} ({'current attempt' if evidence.get('current_attempt') else 'historical attempt'}): {', '.join(evidence['changed_paths'])}" for evidence in stale_evidence)
         lines.extend(["", "## Scope", inc["scope"], "", "## Criteria"])
         lines.extend(f"- {criterion}" for criterion in inc["criteria"])
+        for key in ("exclusions", "technical_plan", "required_checks", "uncertainties", "authorization"):
+            lines.extend(detail_section(key.replace("_", " ").capitalize(), inc.get(key)))
         files[f"increments/{inc['id']}.md"] = "\n".join(lines) + "\n"
+    tracked = json.loads(store.view_manifest.read_text()).get("files", {}) if store.view_manifest.exists() else {}
+    for relative in files:
+        path = store.views / relative
+        if path.exists() and relative not in tracked:
+            if not force:
+                raise RecordError(f"Unmanaged view already exists; preserve it before regeneration: {relative}")
+            shutil.copy2(path, path.with_name(path.name + f".manual-{uuid.uuid4().hex}.backup"))
     for relative, content in files.items():
         (store.views / relative).write_text(content, encoding="utf-8")
     manifest = {"source_revision": state["revision"], "files": {relative: file_hash(store.views / relative) for relative in files}}

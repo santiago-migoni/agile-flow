@@ -13,7 +13,7 @@ PROJECT_ONLY_FILES = {"functional-specification.md", "docs/implementation-audit.
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Package agile-flow without product records or source PDFs.")
-    parser.add_argument("--output", default="dist/agile-flow-0.1.0.zip")
+    parser.add_argument("--output", default="dist/agile-flow-0.2.0.zip")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     output = (root / args.output).resolve()

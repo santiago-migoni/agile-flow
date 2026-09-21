@@ -5,7 +5,7 @@ description: Record delivery-specific user acceptance, requested changes, or lea
 
 # Review a delivery
 
-Read `../../references/session-protocol.md`, `../../references/authorization.md`, and `../../references/review-and-learning.md` before writing records.
+Read `../../references/collaboration-flow.md`, `../../references/session-protocol.md`, `../../references/authorization.md`, and `../../references/review-and-learning.md` before writing records.
 
 Identify the increment, current or historical delivery revision, and criterion parts the user actually evaluated. Record ordinary-language acceptance only when it clearly covers those parts of that delivery. For partial acceptance, name each `accepted_parts` entry. Ask for clarification if the accepted scope is ambiguous. Preserve the actual quote or message reference verbatim. Acceptance with outstanding verification remains acceptance only; it does not change a check to passed.
 

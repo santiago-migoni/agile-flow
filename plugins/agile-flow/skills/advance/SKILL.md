@@ -1,13 +1,13 @@
 ---
 name: advance
-description: Prepare, implement, verify, or continue one authorized agile-flow increment while preserving evidence boundaries.
+description: Prepare a reviewable agile-flow proposal, or implement, verify, and continue an authorized increment while preserving evidence boundaries.
 ---
 
 # Advance an increment
 
-Read `../../references/session-protocol.md`, `../../references/authorization.md`, `../../references/readiness-and-quality.md`, and `../../references/record-contracts.md` before writing records.
+Read `../../references/collaboration-flow.md`, `../../references/session-protocol.md`, `../../references/authorization.md`, `../../references/readiness-and-quality.md`, and `../../references/record-contracts.md` before writing records.
 
-Inspect the project, authorization, active increment, blockers, relevant instructions, and repository state. Documentation-only or analysis-only requests retain that scope. Select only an increment covered by current authorization; do not start a different backlog item.
+Inspect the project, authorization, active increment, blockers, relevant instructions, and repository state. Documentation-only or analysis-only requests retain that scope. For definition or planning requests, use `update-project` with `preparation` to draft a non-executable proposal before implementation authorization. The `prepare` operation remains reserved for an authorized increment. Select only an executable increment covered by current authorization; do not start a different backlog item.
 
 Prepare missing objective, scope, exclusions, criteria, checks, uncertainty, and technical plan. Record an authorization decision if it is actually present in the request/source. When ready, start at most one unsuspended increment. Implement with normal repository safeguards, preserving unrelated changes. Record blockers and available checks. Record each check with its delivery scope, result, limitations, and observable fingerprints.
 

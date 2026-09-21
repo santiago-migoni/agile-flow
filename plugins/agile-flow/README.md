@@ -37,3 +37,7 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 ```
 
 `scripts/package_plugin.py` creates a ZIP from the current directory and explicitly excludes `docs/agile-lledo.pdf`, product record folders, caches, and temporary files.
+
+## Reviewable collaboration
+
+All six skills use a shared outcome-based flow. Read `.agile-flow/views/vision.md` for product context and `.agile-flow/views/preparation.md` for the current planning proposal. A proposal does not authorize implementation. The detailed backlog and increment views expose criteria, uncertainty, and technical plans. These views are generated from state.json; ask the agent to update the records rather than editing generated Markdown. Existing authored product documents stay in place. No project AGENTS.md is required.

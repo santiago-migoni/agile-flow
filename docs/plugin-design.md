@@ -272,3 +272,13 @@ The language choice is the user's product requirement. This document makes no un
 - Local manifest and validation contract: the available `plugin-creator` skill. Revalidate the effective schema when building the package.
 - The root-level `functional-specification.md` is an English translation of an earlier draft copy. The approved specification in `docs/` is authoritative; the earlier copy remains explicitly superseded.
 - Language amendment and design approval: user instruction on September 20, 2026. Original source PDF remains unchanged and is not included in the distributable plugin.
+
+## Collaboration outcome amendment
+
+The collaboration flow is shared by all six skills through `references/collaboration-flow.md`. Each stage produces a reviewable outcome, not merely a record mutation. This replaces the assumption that a valid record alone demonstrates useful product understanding.
+
+New generated views `vision.md` and `preparation.md` expose product synthesis and a non-executable preparation proposal. The latter is stored in optional `project.preparation`; it is distinct from an authorized increment and cannot grant authorization. Existing state files remain readable without migration. Optional `users`, `confirmed_facts`, and `proposals` distinguish audience, sourced facts, and suggestions from assumptions.
+
+An authored vision remains in its existing location. The generated synthesis does not replace or duplicate the full authored document. A project AGENTS.md is optional and remains a place for repository-specific conventions. It is not required to orchestrate the plugin.
+
+Backlog views include criteria, uncertainty, dependencies, priority reasoning, and provenance; increment views include exclusions, technical plans, checks, and authorization references. Manual-view protection also applies to the new views. Conversation-level scenarios complement persistence tests and must be reported separately from automated validation.

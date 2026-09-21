@@ -9,3 +9,24 @@ These are manual Codex skill scenarios, intentionally separate from deterministi
 5. Invoke `review` with partial acceptance, a requested label correction, and a new feature request. Confirm scoped acceptance, correction linkage, and a separate new need.
 6. Start a fresh conversation, invoke `status`, and confirm it reconstructs objective, states, blockers, decisions, and next step from records without inventing history. Confirm status itself does not change canonical revision.
 7. Invoke `close` to pause active work, then resume it. Confirm the resumption point is retained and only affected evidence is reassessed after a behavior change.
+
+## Product discovery: ambiguous environment CRUD
+
+Start in an empty temporary product. Invoke initialize, then say: "I want CRUD for Odoo environments." The agent must distinguish environment lifecycle operations from business-record operations before treating either as confirmed. An initial hypothesis may be recorded only as an assumption. Inspect both the response and generated vision, not just successful CLI writes.
+
+Clarify: "A PaaS inspired by OEC.sh, installed on one server where it also runs Odoo. No remote server registration." Then ask the agent to propose the first scope. Agree to a development environment with a URL, status, logs, and start/stop/restart. Specify Community 19.0 from Docker, and ask it to finish defining the proposal without implementing.
+
+Pass criteria:
+
+- Vision distinguishes confirmed user statements, assumptions, and agent proposals, with no confirmed SSH/multi-server or business-record CRUD requirement.
+- Corrected project questions, backlog uncertainties, and preparation agree with local deployment.
+- The agent produces readable objective, scope, exclusions, observable criteria, checks, and a reasoned technical proposal; it does not stop at "recorded and validated" or ask the user to choose each investigable detail.
+- No implementation, deployment, authorization, or delivery acceptance is fabricated.
+- The response links vision/preparation Markdown; requests in `/tmp` remain transport only.
+- A fresh status request recovers this understanding without writing records.
+
+## Existing product and narrow requests
+
+Repeat with an existing authored vision and repository instructions. The agent references the existing document without replacing it or copying its full content into JSON. A question such as "What is CRUD?" receives an answer without advancing work. Existing implementation authorization is reused only for its covered scope; the proposal is not a new approval gate.
+
+These are conversational acceptance scenarios. Automated record/view tests do not by themselves establish that a model follows these behaviors.
