@@ -12,3 +12,9 @@ Inspect the managed project and compare the request with existing backlog purpos
 Keep purpose, type, state, priority, criteria, dependencies, uncertainty, and provenance. Separate value, risk, dependencies, and effort when proposing priority. A user priority decision prevails; explain if dependencies prevent its immediate order. If reprioritizing active work, explain whether it suspends or supplements it; do not assume.
 
 Adding or refining a backlog item never starts implementation. Report the affected item, priority rationale, active-work impact, and next step.
+
+## Document-centered workflow
+
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+
+Maintain typed item files with stable IDs; the root backlog is an index. Apply DEEP to the collection and INVEST to stories. Refine nearby work, split oversized stories, use optional relative estimates, explain order and retire with provenance. Do not force bugs, NFRs, technical work or investigations into story sentences.

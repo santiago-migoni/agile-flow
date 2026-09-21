@@ -24,6 +24,8 @@ The catalog uses repository-relative paths and does not depend on a particular G
 
 See the [plugin guide](plugins/agile-flow/README.md) for the six skills: initialize, backlog, advance, review, status, and close. Product records live in the product's `.agile-flow/` directory, separate from the installed plugin.
 
+Version 0.3.0 implements document schema 2: authored Markdown owns product meaning, with explicit migration from the published 0.2.0 layout. See [the implementation and validation report](docs/document-centered-workflow-implementation.md). See the [migration guide](plugins/agile-flow/references/migration-0.3.0.md) before upgrading existing product records.
+
 ## Repository layout
 
 - `.agents/plugins/marketplace.json`: repository marketplace catalog.

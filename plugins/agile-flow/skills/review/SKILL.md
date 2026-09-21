@@ -16,3 +16,9 @@ Keep requested corrections tied to existing criteria. Capture a new need in the 
 If the user withdraws or replaces an earlier change request on the same delivery, name the earlier review and exact parts in `supersedes`. Never infer supersession from a later acceptance of another part. Preserve both reviews and their original quotes.
 
 Report the review decision, current independent states, follow-up work, and next step.
+
+## Document-centered workflow
+
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+
+Product feedback belongs in iteration review; process learning belongs in retrospective. New needs return to backlog, corrections remain linked to the delivered criteria. Create a retrospective only for actual observations or adjustments, with follow-up evidence.

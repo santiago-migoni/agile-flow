@@ -1,6 +1,6 @@
 # Readiness and quality
 
-An increment is ready only with objective, included and excluded scope, observable criteria, required checks, dependencies or uncertainties, technical approach, and applicable authorization. Use the product quality policy when it exists; propose missing quality conditions proportionally.
+An increment is ready only with objective, included and excluded scope, observable criteria, required checks, dependencies or uncertainties, technical approach, and applicable authorization. Use authored `definition-of-done.md`; propose missing quality conditions proportionally before authorized preparation. Planning can remain a draft while quality criteria are unresolved. Snapshot selected item and DoD versions; a changed draft baseline must be explicitly refined before execution preparation.
 
 An observed failed check on the current delivery or a sourced defect tied to an existing criterion or required check can justify `prepare-correction` under the existing authorization. Preserve failed evidence and increment identity, start the corrected delivery revision, and rerun affected checks. This is a technical correction, not a fabricated user change request.
 

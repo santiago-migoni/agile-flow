@@ -13,4 +13,10 @@ Create the canonical record with an `initialize` request. Store English authored
 
 Report understood context, assumptions, open decisions, observed repository facts, proposed next step, and record location.
 
-Initialization produces a readable product synthesis in `views/vision.md`, not merely a valid state file. Consolidate supplied facts and labeled hypotheses as the conversation develops. Once the next useful outcome is understood, draft a preparation proposal within the requested analysis scope; do not wait for every technical detail.
+Initialization produces a readable product synthesis in `constitution.md`, not merely a valid state file. Consolidate supplied facts and labeled hypotheses as the conversation develops. Once the next useful outcome is understood, draft a preparation proposal within the requested analysis scope; do not wait for every technical detail.
+
+## Document-centered workflow
+
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+
+Consolidate the constitution with sourced facts, assumptions, vision, mission and objectives as available. Reference existing documents. Propose roadmap horizons and an MVP learning outcome proportionally; avoid invented commitments and empty documents.

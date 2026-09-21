@@ -40,4 +40,8 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 
 ## Reviewable collaboration
 
-All six skills use a shared outcome-based flow. Read `.agile-flow/views/vision.md` for product context and `.agile-flow/views/preparation.md` for the current planning proposal. A proposal does not authorize implementation. The detailed backlog and increment views expose criteria, uncertainty, and technical plans. These views are generated from state.json; ask the agent to update the records rather than editing generated Markdown. Existing authored product documents stay in place. No project AGENTS.md is required.
+Product meaning lives in authored Markdown: constitution, roadmap/MVP, Definition of Done, typed backlog items and iteration planning, verification, review and retrospective. `backlog.md` is the compact generated index; item files hold detail. `summary.md` is a generated current situation. `.internal/state.json` contains technical metadata only. Create useful documents progressively rather than an empty scaffold.
+
+Edit authored prose while preserving the documented field markers, or ask the agent to update it. Existing product documentation remains in place and is referenced. No product-root AGENTS.md is required. See [document operations](references/document-operations.md) for the contract and explicit migration from schema 1.
+
+Version 0.3.0 implements document schema 2. See [migration from 0.2.0](references/migration-0.3.0.md). Do not use the legacy writer on migrated products. Deterministic persistence tests and agent collaboration exercises are separate evidence.

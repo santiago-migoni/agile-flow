@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-SCRIPT = Path(__file__).parents[1] / "scripts" / "agile_flow.py"
+SCRIPT = Path(__file__).parents[1] / "scripts" / "legacy_records.py"
 
 
 class RecordsHarness:

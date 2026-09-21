@@ -5,7 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 
-SCRIPT = Path(__file__).parents[1] / "scripts" / "agile_flow.py"
+SCRIPT = Path(__file__).parents[1] / "scripts" / "legacy_records.py"
 SPEC = importlib.util.spec_from_file_location("agile_flow_records", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)

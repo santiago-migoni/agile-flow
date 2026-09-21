@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import unittest
 
-from scripts.agile_flow import state_fingerprint
+from scripts.legacy_records import state_fingerprint
 from test_records import RecordsHarness
 
 

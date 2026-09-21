@@ -14,3 +14,9 @@ Closing unfinished in-progress work preserves its development state and history 
 When urgent reprioritization clearly suspends active work, record the reason and resumption point. If the request is unclear about replace versus supplement, explain the impact and wait before dependent work.
 
 Report the administrative result, preserved outstanding work, evidence needing reassessment, and resumption path.
+
+## Document-centered workflow
+
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+
+Explicit iteration transitions use target=iteration and iteration_id. Preserve unfinished item links and all historical delivery states; closure is not acceptance or verification.

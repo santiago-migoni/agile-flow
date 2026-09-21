@@ -19,7 +19,7 @@ Use the earliest stage that needs attention, reusing context and decisions alrea
 
 ## Normal development cycle
 
-**Understand → prioritize → prepare → develop and verify → review → adapt.**
+**Constitution → roadmap and MVP → refined backlog → iteration planning → development and verification → review → learning.**
 
 1. **Understand the product.** Reuse the user's statements and relevant repository evidence. Distinguish confirmed facts, assumptions, and proposals. Resolve ambiguities that would change the product; investigate technical uncertainty within the requested scope. Produce a readable synthesis rather than ending with storage confirmation.
 2. **Choose the next useful outcome.** Maintain a coherent backlog, explain priority, and make near-term scope concrete. Correct related records when the user clarifies intent. Keep optional future expansion out of current blockers.
@@ -38,9 +38,9 @@ Stop dependent execution at missing authorization, a necessary unresolved produc
 
 The user should be able to identify the understood product, agreed scope, current result, unresolved decisions, and next action without reading internal JSON requests.
 
-- Present product context through `views/vision.md`, planning through `views/preparation.md`, and work detail through backlog and increment views under the product's `.agile-flow/`.
+- Present context through `constitution.md`, direction and MVP through `roadmap.md`, quality through `definition-of-done.md`, needs through `backlog/*.md`, and iteration scope through `iterations/ITER-*/sprint_planning.md`. Verification, review and retrospective documents appear only when meaningful records exist.
 - Keep existing authored product documents in place and reference them. Do not create a competing editable copy.
-- Update canonical records through the record program; generated Markdown is not an independent editable authority.
+- Authored Markdown is the functional authority. Only `backlog.md` and `summary.md` are generated. Technical metadata lives in `.internal/state.json`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.
 - After a write, check view generation and compare the readable result with the user's intent. Report rendering failures and preserve manual edits.
 - Conclude with the substantive result and next useful action. A successful mutation is not proof of semantic correctness, completed functionality, or approval.
@@ -51,7 +51,11 @@ The user should be able to identify the understood product, agreed scope, curren
 - [Session protocol](references/session-protocol.md): root resolution, record operations, and resumption.
 - [Authorization](references/authorization.md): scope, permission reuse, and boundaries.
 - [Readiness and quality](references/readiness-and-quality.md): preparation and evidence.
-- [Record contracts](references/record-contracts.md): canonical state, views, and recovery.
+- [Record contracts](references/record-contracts.md): document authority, evidence, and recovery.
 - [Review and learning](references/review-and-learning.md): acceptance, corrections, and adaptation.
 
 Keep this map and the detailed contracts consistent. When they conflict, follow higher-priority instructions and surface the discrepancy rather than inventing authorization.
+
+## Source and product boundaries
+
+The product checkout, plugin source repository, and installed plugin cache are separate. A product-format request does not authorize patching installed scripts or tests. Route renderer improvements to the actual source repository. Never patch the cache. Migration of a live schema-1 project is explicit, previewed and backed up. No installation, release or live migration follows automatically from source development.

@@ -16,13 +16,13 @@ Persistence supports the collaboration; a successful write establishes storage i
 
 Distinguish user statements, observed facts, agent hypotheses, and proposals. Use `project.confirmed_facts` for sourced statements (include their source), `assumptions` for interpretations, and `proposals` for recommendations. Store `users` explicitly. A benchmark does not establish a requirement. Do not expand ambiguous "environment CRUD" into business-record CRUD or "my servers" into SSH/multi-server management. Ask the material product question with concrete alternatives while doing independent work.
 
-A correction must reconcile affected project questions, backlog uncertainties, preparation, and recorded decisions. Retain history and source quotations, but remove resolved questions from current lists. Decisions superseded by actual later decisions retain their references; do not invent approvals to clean up records.
+A correction must reconcile affected project questions, backlog uncertainties, iteration plans, and recorded decisions. Retain history and source quotations, but remove resolved questions from current lists. Decisions superseded by actual later decisions retain their references; do not invent approvals to clean up records.
 
 ## Synthesize and prepare
 
-During a product-definition request, consolidate known context in the generated `views/vision.md`. Existing authored vision documents remain authoritative for their own content: reference them, do not copy their full text into JSON or replace them. If the user requests a separately authored document, create and link it in the project's existing documentation structure.
+During product definition, consolidate known context in authored `constitution.md`. Reference existing authored vision documents without copying their full content. Develop `roadmap.md` with horizons and an MVP learning hypothesis when enough information exists. An MVP is a usable minimum for early users that tests whether the product is useful; it is not just the first technical task.
 
-When the outcome is sufficiently understood, use `update-project` with a `preparation` object containing `objective`, `item_ids`, `scope`, `exclusions`, `criteria`, `required_checks`, `technical_plan`, and `open_decisions`. Text fields are objective, scope, and technical_plan; the other fields are lists of strings. Missing details may remain explicitly unresolved. This produces `views/preparation.md`; it does not create an increment, authorize development, or accept a delivery. Update or clear the proposal when scope changes. Once execution is authorized, transfer the relevant proposal into the normal `prepare` request with the actual authorization reference.
+Use `plan-iteration` with a goal, selected item IDs, scope, exclusions, criteria references, checks, approach and open decisions. It produces `iterations/ITER-*/sprint_planning.md`, without an increment or authorization. Once scope is ready and execution authorized, use `prepare` with that iteration, a DoD baseline and the actual permission reference.
 
 Success criteria describe the product outcome for its user, not merely completion of this planning exercise. Keep candidate technical designs in proposals rather than confirmed facts.
 
@@ -32,6 +32,10 @@ Distinguish product decisions requiring the user's choice from technical questio
 
 ## Communicate the outcome
 
-Prefer links to readable views over state.json or temporary request files. After a write, check rendering and report any failure. Explain the understood result, remaining material uncertainty, and next useful action; do not end with storage confirmation alone. A question is optional, not a mandatory closing step. For a narrow factual or status request, answer within that scope without updating records or advancing work.
+Prefer links to authored documents and generated indexes over state.json or temporary request files. After a write, inspect the documents and report any failure. Explain the understood result, remaining material uncertainty, and next useful action; do not end with storage confirmation alone. A question is optional, not a mandatory closing step. For a narrow factual or status request, answer within that scope without updating records or advancing work.
 
-Readable views are generated projections with one canonical source. Do not hand-edit them. Their presence does not prove the understanding is correct: compare the actual content with user statements before reporting it as confirmed.
+Authored documents and generated indexes have distinct ownership. Edit the relevant authored source; regenerate only the two indexes. Compare actual prose with user statements before reporting it as confirmed.
+
+## Progressive refinement
+
+Apply DEEP to the backlog: detail near work, estimate relatively when useful, allow sourced changes and preserve meaningful order. Apply INVEST to stories: independent meaning, negotiable scope, user value, estimability, iteration-sized scope and testable criteria. Explain deficiencies and refine or split; never fabricate six passing labels or story points. Use appropriate NFR, bug, technical-work and bounded-investigation formats. Keep distant work lightweight.

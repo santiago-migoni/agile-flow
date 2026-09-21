@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import zipfile
 from pathlib import Path
 
@@ -13,9 +14,10 @@ PROJECT_ONLY_FILES = {"functional-specification.md", "docs/implementation-audit.
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Package agile-flow without product records or source PDFs.")
-    parser.add_argument("--output", default="dist/agile-flow-0.2.0.zip")
-    args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
+    version = json.loads((root / ".codex-plugin/plugin.json").read_text())["version"]
+    parser.add_argument("--output", default=f"dist/agile-flow-{version}.zip")
+    args = parser.parse_args()
     output = (root / args.output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
