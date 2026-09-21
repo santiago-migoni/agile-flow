@@ -14,6 +14,17 @@ ROOT = Path(__file__).parents[1]
 
 
 class PackageTests(unittest.TestCase):
+    def test_repository_marketplace_resolves_plugin(self) -> None:
+        repository = ROOT.parents[1]
+        catalog = json.loads((repository / ".agents/plugins/marketplace.json").read_text())
+        self.assertEqual(catalog["name"], "agile-flow")
+        entry = next(item for item in catalog["plugins"] if item["name"] == "agile-flow")
+        source = (repository / entry["source"]["path"]).resolve()
+        self.assertEqual(source, ROOT.resolve())
+        manifest = json.loads((source / ".codex-plugin/plugin.json").read_text())
+        self.assertEqual(manifest["name"], entry["name"])
+        self.assertEqual(entry["policy"]["installation"], "AVAILABLE")
+
     def test_manifest_and_skill_layout_are_complete(self) -> None:
         manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "agile-flow")
