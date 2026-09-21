@@ -6,3 +6,7 @@ dist/
 .agile-flow/
 
 /docs/agile-lledo.pdf
+
+# Reviewed static examples only; real product state remains ignored.
+!/docs/release-layout-example/.agile-flow/
+!/docs/release-layout-example/.agile-flow/**

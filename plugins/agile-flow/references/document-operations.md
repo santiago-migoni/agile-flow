@@ -1,54 +1,75 @@
-# Document operations and metadata
+# Release and story document operations
 
-## CLI
+Plugin 0.4.0 uses schema 3. The published 0.3.0 release used schema 2; schema numbers and plugin versions are different. Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
 
-```sh
-python3 <plugin>/scripts/agile_flow.py --root <product> inspect
-python3 <plugin>/scripts/agile_flow.py --root <product> --request <request.json> mutate
-python3 <plugin>/scripts/agile_flow.py --root <product> validate
-python3 <plugin>/scripts/agile_flow.py --root <product> render
-python3 <plugin>/scripts/agile_flow.py --root <product> recover
-python3 <plugin>/scripts/agile_flow.py --root <product> migrate --dry-run
-python3 <plugin>/scripts/agile_flow.py --root <product> --request <migration.json> migrate --apply
+## CLI and concurrency
+
+Run `python3 <plugin>/scripts/agile_flow.py --root <product> inspect`. For mutations pass `--request <file.json> mutate` or JSON on stdin. Include operation, unique operation_id, purpose, and the latest expected_revision/expected_fingerprint. Initialize needs project.name and project.purpose but no previous revision. `validate` and `inspect` are read-only. `render` refreshes the two indexes; `render --force` first preserves manually edited indexes. `recover` completes a pending transaction only when affected bytes agree with its journal.
+
+## Authored layout
+
+```text
+.agile-flow/
+  constitution.md
+  roadmap.md
+  summary.md                         # generated
+  backlog/
+    product-backlog.md                # generated
+    BL-0001.md
+  release/
+    v0.1.0/
+      release-0.1.0.md
+      ITER-001/
+        sprint-planning.md
+        verification.md
+        review.md
+        retrospective.md
+        user-stories/
+          US-0001.md
+        evidence/                    # only actual supporting artifacts
+  .internal/                         # metadata, journals and preserved backups
 ```
 
-Migration request: `expected_source_fingerprint` from preview and optional `item_types` mapping legacy IDs to `story`, `nfr`, `bug`, `technical`, or `research`. Use the same mapping file for preview and apply. Unresolved legacy items retain their IDs until explicit classification. Preserve the returned backup and unresolved report. A pending interrupted migration is completed with `recover`, not by rerunning migration. Preview reports target conflicts rather than overwriting existing documents.
+BL records are product needs. Each US record is concrete iteration work with type US, NFR, BUG, TCH or SPK. US identity is unique across the product, regardless of type/release/iteration. Each story has one BL parent, one iteration and its own acceptance criteria and Definition of Done. There is no parent DoD file. A BL may produce several stories across releases. A release may contain several iterations. Do not silently move a baselined story; create linked follow-up scope and preserve its original identity.
 
-## Mutation payloads
+Roadmap versions describe strategic evolution and may identify an intended MVP milestone. The release owns the detailed MVP hypothesis, early users, usable scope, feedback and learning decision. Release plans and delivered outcomes are separate fields. A plan is not authorization; a release description is not proof that it was published.
 
-Every mutation also carries the session protocol fields. Read `inspect` rather than guessing IDs.
+## Product and planning mutations
 
-| Operation | Payload and meaning |
+| Operation | Payload |
 | --- | --- |
-| initialize | `project` with name, purpose and known context. Optional vision, mission, background, objectives, agreements, scope, exclusions, stakeholders, success_factors, users, confirmed_facts, assumptions, proposals, constraints, success_criteria, references, open_questions, next_step. |
-| update-project | `project` with changed context fields; no global preparation. |
-| update-roadmap | `document` containing horizons, MVP hypothesis, audience, minimum scope, exclusions, learning/validation method and milestones. Milestone `item_ids` must exist. Dates/budgets only when sourced. |
-| update-dod | `document` with nonempty string-list `criteria` and applicable scope/rationale. Criteria become shared required checks when preparing a delivery. Optional `scoped_criteria` entries contain `criterion` and `types`; only rules matching selected work types apply, so investigations need not inherit deployment checks. |
-| update-backlog | `item` with purpose, explicit type for new work, existing id for refinement. Optional order, priority/basis, criteria, dependencies, uncertainties, provenance, estimate/basis, story, value, scope, exclusions and type-specific fields. |
-| reorder-backlog | `item_ids` containing every recorded item once, in order. |
-| retire-backlog | `item_id`, `reason`; preserve identity and provenance. |
-| classify-backlog | `item_id`, `type`, `reason`; resolve a migrated unknown type with an explicit identity mapping. |
-| plan-iteration | `iteration` with goal, scope, item_ids; optional existing id, exclusions, technical_plan, tasks, timeframe, risks, open_decisions and verification approach. Creates a draft without permission. Once deliveries are baselined, use another iteration for new scope. |
-| record-decision | `decision` with kind, author, reason, scope, source and actual quote where available. Authorization requires user author and structured scope (item_ids, increment_ids or project=true). |
-| prepare | `iteration_id`, `increment` with item_ids, objective, scope, criteria, required_checks, authorization decision ID; optional exclusions and technical_plan. Requires applicable DoD and resolved material decisions. |
-| start / mark-implemented | `increment_id`; completion may include `baseline`. These record actual work, never perform implementation. |
-| record-evidence | `evidence` with increment_id, check, result (passed/failed/not_run), scope, paths; include command/procedure, environment, criterion links and limitations when relevant. |
-| record-review | `review` with increment_id, decision, user_quote; scoped parts, accepted_parts, requested_changes and explicit supersession as relevant. |
-| record-blocker / resolve-blocker | `blocker` with increment_id, condition and resolution_requirement for new blocker; resolving uses blocker_id and resolution. |
-| record-improvement | `iteration_id`, `improvement` with observation, adjustment and target_cycle; include expected benefit when known. |
-| follow-up-improvement | `improvement_id`, `state` (applied, insufficient_evidence or closed), `effect_evidence`. |
-| pause / close / reopen | `target` project, iteration or increment; matching iteration_id/increment_id, reason; close action cancel for cancellation. Never imply completion. |
+| initialize | project with name, purpose and known context; preserve original source quotations. No global quality_policy. |
+| update-project | project with changed purpose/vision/mission, users, stakeholders, objectives, boundaries, agreements, sourced facts, assumptions, proposals, questions, references or next_step. |
+| update-backlog | item with purpose; optional existing BL id, value, users, outcome, scope, exclusions, success_indicators, dependencies (BL IDs), assumptions, open_questions, priority, order, provenance, references, target_release. |
+| reorder-backlog | item_ids containing every BL exactly once. |
+| retire-backlog / complete-backlog | item_id (BL), reason; records the actual decision without deleting its history. |
+| update-roadmap | document with direction, versions (rows with version such as v0.1.0, stage, intended outcome, capabilities, dependencies, status), milestones, assumptions, uncertainties, adaptation_criteria, release_references and changes as useful. No detailed mvp. |
+| update-release | release with version id, objective, optional users, value, item_ids (BL), scope, exclusions, mvp, dependencies, risks, open_questions, exit_conditions, delivered_outcome, learning, upgrade_notes and publication. New status defaults to draft. Published status requires delivered_outcome and publication references; publishing is never performed by this operation. |
+| plan-iteration | iteration with release_id, goal and scope; optional existing id, item_ids, exclusions, technical_plan, tasks, verification_plan, dependencies, risks, open_decisions, timeframe. A draft may begin without stories; update-story selects its new story in that draft. |
+| update-story | story with purpose, parent_id (BL), iteration_id and type for new work; existing US id for refinement. Include criteria, dod, scope, exclusions, value, priority/order, estimate/basis, dependencies (US), open_questions and provenance as useful. |
 
-Correction/rebinding/resumption and delivery-change payloads follow the preserved domain engine in `scripts/legacy_records.py`; inspect the relevant operation before use rather than inventing fields. This module supplies validated domain transitions and the migration reader; `agile_flow.py` is the only current workflow entry point.
+Story-specific fields follow the approved type: US uses story; NFR quality_attribute/applicability/verification_method; BUG reproduction/observed/expected/impact; TCH approach/components; SPK question/work_limit/findings/recommendation. Do not force technical or defect records into a fictional user-story sentence.
 
-## Markdown contract
+Criteria accept text or rows `{id: AC-01, condition: ..., result: ...}`. DoD accepts text or rows `{id: DOD-01, requirement: ..., evidence: ...}`. Text is normalized to numbered rows; keep existing IDs when refining or reordering structured conditions. Drafts may have unresolved criteria/DoD, but execution preparation requires both. No arbitrary point estimate is required.
 
-```markdown
-<!-- af: {"key": "vision", "type": "text"} -->
-## Vision
+## Delivery operations
 
-Customers book independently.
-<!-- /af -->
-```
+Record sourced authorization with record-decision: decision.kind=authorization, author=user, reason, source, actual quote where available, and scope covering US IDs, increment IDs or the project. BL scope does not automatically authorize its future stories.
 
-Supported types: text, string-list, number, boolean, null, object, array. Text lists use Markdown bullets with two-space continuation lines. Object/array containers contain nested marked fields; arrays use numeric keys in sequence. Decision and agreement object lists use compact Markdown tables. Their hidden column/type metadata preserves optional fields and exact quotes; use record operations to add rows or columns. Functional values are visible in Markdown, not hidden JSON. Preserve these markers during manual editing. Use operation requests to add structured fields; free prose outside fields is preserved as notes and is not silently promoted to a decision. Titles are descriptive; IDs within marked fields own identity. Do not copy full authored documents into JSON metadata.
+Prepare with iteration_id and increment containing selected US item_ids, objective, scope and authorization decision ID; optional required_checks, technical_plan and exclusions. Criteria and mandatory checks are taken from the selected stories and preserved as delivery baselines. Check identifiers include the story and condition ID. Newly selected stories receive a planning baseline. After refining a selected story, update plan-iteration to review and refresh the draft baseline before preparation. Preparing does not execute software changes.
+
+Use start, mark-implemented, record-evidence, record-review, prepare-correction, mark-delivery-change, rebind-authorization and resume for actual work under the preserved lifecycle engine. Read the relevant domain payload in scripts/legacy_records.py when needed. Evidence carries increment_id, check, result, scope, paths and actual procedure/environment/limitations. Review carries increment_id, a real user_quote or message_reference, decision and scoped parts; never infer acceptance from tests.
+
+record-blocker uses blocker with increment_id, condition, resolution_requirement; resolve-blocker needs blocker_id and resolution. record-improvement needs iteration_id and improvement with observation, adjustment, target_cycle; follow-up-improvement needs improvement_id, state and effect_evidence. pause/close/reopen accepts target=iteration plus iteration_id, or the existing project/increment targets. Closure does not establish completion.
+
+## Markdown contract and templates
+
+`templates/documents.json` is the renderer's actual section layout, not a collection of disconnected examples. `template_documents.py` applies it to visible authoritative fields. The shared codec's hidden af markers contain keys/types, not another copy of product meaning. Authored fields remain editable. Preserve markers and table structure; use operations to add structured rows or columns. Free notes survive targeted updates and must be read as context, not automatically promoted into authorization.
+
+Overview tables keep IDs, assignment, type and status visible. Prose sections and requirement tables carry meaning. Technical hashes and bookkeeping are grouped separately. Indexes and summary are derived; their edits require preservation and reconciliation. Retire records rather than deleting authored history. Read actual documents, not only inspect output.
+
+See [schema migration](migration-release-layout.md) before using this source against old projects.
+
+## Report context
+
+Use `update-report` with `iteration_id`, `document` and `fields` to maintain readable context without changing evidence or acceptance. Supported fields: verification — `scope`, `conclusion`; review — `presented_result`, `resulting_work`, `unresolved_feedback`; retrospective — `retain`, `follow_up`. Use the existing record-evidence, record-review and improvement operations for sourced events. Narrative context never grants authorization or acceptance.

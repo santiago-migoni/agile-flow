@@ -1,0 +1,651 @@
+{
+  "constitution": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Purpose",
+      [
+        "purpose",
+        "background",
+        "problem",
+        "vision",
+        "mission"
+      ]
+    ],
+    [
+      "People and value",
+      [
+        "users",
+        "stakeholders"
+      ]
+    ],
+    [
+      "Objectives and success factors",
+      [
+        "objectives",
+        "success_criteria",
+        "success_factors"
+      ]
+    ],
+    [
+      "Product boundaries",
+      [
+        "scope",
+        "exclusions",
+        "constraints"
+      ]
+    ],
+    [
+      "Decisions and collaboration agreements",
+      [
+        "decisions",
+        "agreements"
+      ]
+    ],
+    [
+      "Assumptions and open decisions",
+      [
+        "confirmed_facts",
+        "assumptions",
+        "proposals",
+        "open_questions"
+      ]
+    ],
+    [
+      "Sources",
+      [
+        "references"
+      ]
+    ],
+    [
+      "Changes",
+      [
+        "amendments"
+      ]
+    ]
+  ],
+  "roadmap": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Strategic direction",
+      [
+        "direction",
+        "purpose"
+      ]
+    ],
+    [
+      "Version roadmap",
+      [
+        "versions"
+      ]
+    ],
+    [
+      "Major milestones",
+      [
+        "milestones"
+      ]
+    ],
+    [
+      "Planning assumptions and uncertainty",
+      [
+        "assumptions",
+        "uncertainties"
+      ]
+    ],
+    [
+      "Adaptation criteria",
+      [
+        "adaptation_criteria"
+      ]
+    ],
+    [
+      "Release references",
+      [
+        "release_references"
+      ]
+    ],
+    [
+      "Changes",
+      [
+        "changes"
+      ]
+    ]
+  ],
+  "product_item": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Problem or opportunity",
+      [
+        "purpose",
+        "problem"
+      ]
+    ],
+    [
+      "Intended users and expected value",
+      [
+        "users",
+        "value"
+      ]
+    ],
+    [
+      "Expected product outcome",
+      [
+        "outcome"
+      ]
+    ],
+    [
+      "Scope",
+      [
+        "scope",
+        "exclusions"
+      ]
+    ],
+    [
+      "Success indicators",
+      [
+        "success_indicators"
+      ]
+    ],
+    [
+      "Dependencies, assumptions and open questions",
+      [
+        "dependencies",
+        "assumptions",
+        "open_questions"
+      ]
+    ],
+    [
+      "Delivery breakdown",
+      [
+        "story_links"
+      ]
+    ],
+    [
+      "Priority rationale",
+      [
+        "priority"
+      ]
+    ],
+    [
+      "Sources",
+      [
+        "provenance",
+        "references"
+      ]
+    ],
+    [
+      "Changes",
+      [
+        "changes"
+      ]
+    ]
+  ],
+  "release": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Release objective",
+      [
+        "objective"
+      ]
+    ],
+    [
+      "Target users and expected value",
+      [
+        "users",
+        "value"
+      ]
+    ],
+    [
+      "Planned scope",
+      [
+        "item_ids",
+        "scope",
+        "exclusions"
+      ]
+    ],
+    [
+      "MVP definition",
+      [
+        "mvp"
+      ]
+    ],
+    [
+      "Delivery organization",
+      [
+        "iteration_links"
+      ]
+    ],
+    [
+      "Dependencies, risks and open decisions",
+      [
+        "dependencies",
+        "risks",
+        "open_questions"
+      ]
+    ],
+    [
+      "Release exit conditions",
+      [
+        "exit_conditions"
+      ]
+    ],
+    [
+      "Scope changes",
+      [
+        "changes"
+      ]
+    ],
+    [
+      "Delivered outcome",
+      [
+        "delivered_outcome"
+      ]
+    ],
+    [
+      "Learning and next decisions",
+      [
+        "learning"
+      ]
+    ],
+    [
+      "Upgrade and migration notes",
+      [
+        "upgrade_notes"
+      ]
+    ],
+    [
+      "Publication references",
+      [
+        "publication"
+      ]
+    ]
+  ],
+  "story": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Need and value",
+      [
+        "purpose",
+        "value"
+      ]
+    ],
+    [
+      "Scope",
+      [
+        "scope",
+        "exclusions"
+      ]
+    ],
+    [
+      "Type-specific detail",
+      [
+        "story",
+        "quality_attribute",
+        "applicability",
+        "verification_method",
+        "reproduction",
+        "observed",
+        "expected",
+        "impact",
+        "approach",
+        "components",
+        "question",
+        "work_limit",
+        "findings",
+        "recommendation"
+      ]
+    ],
+    [
+      "Acceptance criteria",
+      [
+        "criteria"
+      ]
+    ],
+    [
+      "Definition of Done",
+      [
+        "dod"
+      ]
+    ],
+    [
+      "Dependencies and open questions",
+      [
+        "dependencies",
+        "uncertainties",
+        "open_questions"
+      ]
+    ],
+    [
+      "Delivery and evidence references",
+      [
+        "delivery_links"
+      ]
+    ],
+    [
+      "Sources",
+      [
+        "provenance",
+        "references"
+      ]
+    ],
+    [
+      "Changes",
+      [
+        "changes"
+      ]
+    ]
+  ],
+  "planning": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Iteration goal and expected result",
+      [
+        "goal",
+        "expected_result"
+      ]
+    ],
+    [
+      "Selected stories and baselines",
+      [
+        "item_documents"
+      ]
+    ],
+    [
+      "Scope",
+      [
+        "scope",
+        "exclusions"
+      ]
+    ],
+    [
+      "Technical approach",
+      [
+        "technical_plan"
+      ]
+    ],
+    [
+      "Implementation tasks",
+      [
+        "tasks"
+      ]
+    ],
+    [
+      "Verification plan",
+      [
+        "verification_plan"
+      ]
+    ],
+    [
+      "Dependencies, risks and open decisions",
+      [
+        "dependencies",
+        "risks",
+        "open_decisions"
+      ]
+    ],
+    [
+      "Authorization and agreements",
+      [
+        "authorization_note",
+        "agreements"
+      ]
+    ],
+    [
+      "Plan changes",
+      [
+        "changes"
+      ]
+    ],
+    [
+      "Delivery increments",
+      [
+        "increments"
+      ]
+    ]
+  ],
+  "verification": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Verified scope and baselines",
+      [
+        "scope"
+      ]
+    ],
+    [
+      "Check results and execution details",
+      [
+        "evidence"
+      ]
+    ],
+    [
+      "Unavailable checks and blockers",
+      [
+        "blockers"
+      ]
+    ],
+    [
+      "Verification conclusion",
+      [
+        "conclusion"
+      ]
+    ]
+  ],
+  "review": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Presented result",
+      [
+        "presented_result"
+      ]
+    ],
+    [
+      "User feedback and acceptance decisions",
+      [
+        "reviews"
+      ]
+    ],
+    [
+      "Resulting work",
+      [
+        "resulting_work"
+      ]
+    ],
+    [
+      "Unresolved feedback",
+      [
+        "unresolved_feedback"
+      ]
+    ]
+  ],
+  "retrospective": [
+    [
+      "Overview",
+      [
+        "id",
+        "name",
+        "type",
+        "state",
+        "status",
+        "parent_id",
+        "release_id",
+        "iteration_id",
+        "order",
+        "estimate",
+        "estimate_basis",
+        "revision",
+        "timeframe",
+        "target_release",
+        "administrative_state"
+      ]
+    ],
+    [
+      "Observations and proposed improvements",
+      [
+        "improvements"
+      ]
+    ],
+    [
+      "What to retain",
+      [
+        "retain"
+      ]
+    ],
+    [
+      "Follow-up",
+      [
+        "follow_up"
+      ]
+    ]
+  ]
+}

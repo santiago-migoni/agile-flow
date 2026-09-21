@@ -19,7 +19,7 @@ Use the earliest stage that needs attention, reusing context and decisions alrea
 
 ## Normal development cycle
 
-**Constitution → roadmap and MVP → refined backlog → iteration planning → development and verification → review → learning.**
+**Constitution → version roadmap → concrete release and MVP definition → product BL needs → iteration US work → development and verification → review → learning.**
 
 1. **Understand the product.** Reuse the user's statements and relevant repository evidence. Distinguish confirmed facts, assumptions, and proposals. Resolve ambiguities that would change the product; investigate technical uncertainty within the requested scope. Produce a readable synthesis rather than ending with storage confirmation.
 2. **Choose the next useful outcome.** Maintain a coherent backlog, explain priority, and make near-term scope concrete. Correct related records when the user clarifies intent. Keep optional future expansion out of current blockers.
@@ -38,9 +38,9 @@ Stop dependent execution at missing authorization, a necessary unresolved produc
 
 The user should be able to identify the understood product, agreed scope, current result, unresolved decisions, and next action without reading internal JSON requests.
 
-- Present context through `constitution.md`, direction and MVP through `roadmap.md`, quality through `definition-of-done.md`, needs through `backlog/*.md`, and iteration scope through `iterations/ITER-*/sprint_planning.md`. Verification, review and retrospective documents appear only when meaningful records exist.
+- Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
 - Keep existing authored product documents in place and reference them. Do not create a competing editable copy.
-- Authored Markdown is the functional authority. Only `backlog.md` and `summary.md` are generated. Technical metadata lives in `.internal/state.json`; preserve manual authored edits.
+- Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Technical metadata lives in `.internal/state.json`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.
 - After a write, check view generation and compare the readable result with the user's intent. Report rendering failures and preserve manual edits.
 - Conclude with the substantive result and next useful action. A successful mutation is not proof of semantic correctness, completed functionality, or approval.
@@ -59,3 +59,5 @@ Keep this map and the detailed contracts consistent. When they conflict, follow 
 ## Source and product boundaries
 
 The product checkout, plugin source repository, and installed plugin cache are separate. A product-format request does not authorize patching installed scripts or tests. Route renderer improvements to the actual source repository. Never patch the cache. Migration of a live schema-1 project is explicit, previewed and backed up. No installation, release or live migration follows automatically from source development.
+
+Do not turn a release into only a changelog: preserve planned scope separately from delivered outcome. The roadmap may identify the MVP milestone; detailed MVP scope and learning belong in the release. No parent Definition of Done document is created.

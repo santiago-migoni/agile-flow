@@ -19,6 +19,8 @@ Report the review decision, current independent states, follow-up work, and next
 
 ## Document-centered workflow
 
-Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog/product-backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
 
 Product feedback belongs in iteration review; process learning belongs in retrospective. New needs return to backlog, corrections remain linked to the delivered criteria. Create a retrospective only for actual observations or adjustments, with follow-up evidence.
+
+Use the schema-3 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.

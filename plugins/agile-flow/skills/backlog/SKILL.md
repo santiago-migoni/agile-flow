@@ -15,6 +15,8 @@ Adding or refining a backlog item never starts implementation. Report the affect
 
 ## Document-centered workflow
 
-Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog/product-backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
 
-Maintain typed item files with stable IDs; the root backlog is an index. Apply DEEP to the collection and INVEST to stories. Refine nearby work, split oversized stories, use optional relative estimates, explain order and retire with provenance. Do not force bugs, NFRs, technical work or investigations into story sentences.
+Maintain BL product needs and the generated product-backlog index. Define concrete US work only in its release iteration, using type US/NFR/BUG/TCH/SPK and an embedded DoD. Apply DEEP to the collection and INVEST to stories. Refine nearby work, split oversized stories, use optional relative estimates, explain order and retire with provenance. Do not force bugs, NFRs, technical work or investigations into story sentences.
+
+Use the schema-3 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.

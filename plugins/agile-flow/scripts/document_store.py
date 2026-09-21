@@ -39,6 +39,9 @@ def atomic(path, value):
 
 
 class DocumentStore:
+    schema_version = 2
+    generated = GENERATED
+    identity_groups = ['backlog','iterations','increments','decisions','evidence','reviews','blockers','improvements']
     def __init__(self, root):
         self.root = Path(root).resolve()
         self.directory = self.root / '.agile-flow'
@@ -72,7 +75,7 @@ class DocumentStore:
                 raise Error('Legacy schema detected. Run migrate --dry-run; migration is explicit.')
             raise Error('No document project exists; initialize first.')
         data = json.loads(self.safe('.internal/state.json').read_text())
-        if data.get('schema_version') != 2 or data.get('integrity') != engine.digest({k:v for k,v in data.items() if k != 'integrity'}):
+        if data.get('schema_version') != self.schema_version or data.get('integrity') != engine.digest({k:v for k,v in data.items() if k != 'integrity'}):
             raise Error('Technical state integrity failed; recover explicitly.')
         return data
 
@@ -165,10 +168,10 @@ class DocumentStore:
 
     def read(self):
         meta = self.metadata(); files = self.inventory()
-        missing=set(meta['documents'])-set(files)-GENERATED
+        missing=set(meta['documents'])-set(files)-self.generated
         if missing: raise Error('Authored documents are missing; restore them before continuing: '+', '.join(sorted(missing)))
         state=self.decode(files,meta)
-        current_ids={row['id'] for group in ['backlog','iterations','increments','decisions','evidence','reviews','blockers','improvements'] for row in state[group]}
+        current_ids={row['id'] for group in self.identity_groups for row in state[group]}
         historical_aliases={old for old,new in meta.get('legacy_item_mapping',{}).items() if old!=new and new in current_ids}
         removed=set(meta.get('identities',[]))-current_ids-historical_aliases
         if removed: raise Error('Recorded identities were removed; preserve history and use explicit retirement: '+', '.join(sorted(removed)))
@@ -234,13 +237,13 @@ class DocumentStore:
         """Write-ahead journal with before/after bytes; replay refuses unrelated edits."""
         current = self.inventory()
         if current != before: raise Error('Documents changed during the transaction; retry from inspect.')
-        for path in GENERATED:
+        for path in self.generated:
             if path in before and hash_text(before[path]) != meta.get('documents', {}).get(path):
                 raise Error(f'Generated index was edited: {path}. Preserve and reconcile before render --force.')
         next_meta = copy.deepcopy(meta)
-        next_meta.update(schema_version=2, revision=meta.get('revision',0)+1, documents={p:hash_text(t) for p,t in desired.items()})
+        next_meta.update(schema_version=self.schema_version, revision=meta.get('revision',0)+1, documents={p:hash_text(t) for p,t in desired.items()})
         decoded=self.decode(desired,next_meta)
-        next_meta['identities']=sorted(set(meta.get('identities',[])) | {row['id'] for group in ['backlog','iterations','increments','decisions','evidence','reviews','blockers','improvements'] for row in decoded[group]})
+        next_meta['identities']=sorted(set(meta.get('identities',[])) | {row['id'] for group in self.identity_groups for row in decoded[group]})
         next_meta.setdefault('operations', {})[operation_id] = {'digest': request_digest, 'revision': next_meta['revision']}
         next_meta.pop('integrity',None); next_meta['integrity'] = engine.digest(next_meta)
         changes = {p:{'before':before.get(p),'after':desired.get(p)} for p in set(before)|set(desired) if before.get(p)!=desired.get(p)}
@@ -300,7 +303,7 @@ class DocumentStore:
                     return engine.response('already_applied',revision=existing['revision'])
                 if request.get('expected_revision')!=meta['revision'] or request.get('expected_fingerprint')!=self.fingerprint(meta,files):
                     return engine.response('conflict',errors=['Stale revision or document fingerprint.'])
-                missing=set(meta['documents'])-set(files)-GENERATED
+                missing=set(meta['documents'])-set(files)-self.generated
                 if missing: raise Error('Authored documents were removed; restore them and retire records explicitly: '+', '.join(sorted(missing)))
                 self.apply(state,request,files)
                 if request['operation']=='classify-backlog':
@@ -418,12 +421,12 @@ class DocumentStore:
         with self.locked():
             meta,files,state=self.read()
             if force:
-                for path in GENERATED:
+                for path in self.generated:
                     if path in files and hash_text(files[path])!=meta['documents'].get(path):
                         backup=self.safe(f'.internal/manual/{uuid.uuid4().hex}-{path}');atomic(backup,files[path])
                         meta['documents'][path]=hash_text(files[path])
             desired=dict(files); generated=self.encode(state,files)
-            for path in GENERATED: desired[path]=generated[path]
+            for path in self.generated: desired[path]=generated[path]
             return self.commit(meta,files,desired,'render-'+uuid.uuid4().hex,engine.digest(desired))
 
     def migrate(self,apply=False,request=None):

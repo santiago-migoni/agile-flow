@@ -17,6 +17,8 @@ Initialization produces a readable product synthesis in `constitution.md`, not m
 
 ## Document-centered workflow
 
-Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
+Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/state.json` is bookkeeping. Preserve authored edits and refresh only `backlog/product-backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
 
-Consolidate the constitution with sourced facts, assumptions, vision, mission and objectives as available. Reference existing documents. Propose roadmap horizons and an MVP learning outcome proportionally; avoid invented commitments and empty documents.
+Consolidate the constitution with sourced facts, assumptions, vision, mission and objectives as available. Reference existing documents. Propose version-based roadmap stages and place detailed MVP scope/learning in the relevant release; avoid invented commitments and empty documents.
+
+Use the schema-3 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.

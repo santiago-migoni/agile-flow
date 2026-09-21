@@ -40,8 +40,8 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 
 ## Reviewable collaboration
 
-Product meaning lives in authored Markdown: constitution, roadmap/MVP, Definition of Done, typed backlog items and iteration planning, verification, review and retrospective. `backlog.md` is the compact generated index; item files hold detail. `summary.md` is a generated current situation. `.internal/state.json` contains technical metadata only. Create useful documents progressively rather than an empty scaffold.
+Version 0.4.0 implements schema 3: authored constitution and version roadmap; concrete releases with optional MVP definition; product needs in backlog/BL-nnnn.md; and US-nnnn.md work records under release/<version>/ITER-nnn/user-stories/. A story’s type is US, NFR, BUG, TCH or SPK and its DoD is embedded. Iteration records use sprint-planning.md, verification.md, review.md and retrospective.md. No empty ceremony documents are scaffolded.
 
-Edit authored prose while preserving the documented field markers, or ask the agent to update it. Existing product documentation remains in place and is referenced. No product-root AGENTS.md is required. See [document operations](references/document-operations.md) for the contract and explicit migration from schema 1.
+Only backlog/product-backlog.md and summary.md are generated. templates/documents.json drives the actual editorial layout. Functional values remain in visible Markdown with typed markers; technical metadata stays under .internal/.
 
-Version 0.3.0 implements document schema 2. See [migration from 0.2.0](references/migration-0.3.0.md). Do not use the legacy writer on migrated products. Deterministic persistence tests and agent collaboration exercises are separate evidence.
+See [document operations](references/document-operations.md) and [migration from older layouts](references/migration-release-layout.md). The previously published 0.3.0 uses schema 2; upgrading the plugin does not automatically migrate existing products. Deterministic tests and independent agent exercises are different forms of evidence.

@@ -39,7 +39,7 @@ def parse_nodes(text: str, position: int = 0, nested: bool = False):
             return nodes, len(text)
         meta = json.loads(begin.group(1))
         key, kind = meta['key'], meta['type']
-        if not isinstance(key, str) or kind not in {'object', 'array', 'text', 'string-list', 'table', 'number', 'boolean', 'null'}:
+        if not isinstance(key, str) or kind not in {'object', 'array', 'text', 'string-list', 'table', 'properties', 'number', 'boolean', 'null'}:
             raise ValueError('Invalid Markdown field metadata.')
         heading_end = text.find('\n', begin.end())
         if heading_end < 0 or not text[begin.end():heading_end].startswith('#'):
@@ -56,7 +56,17 @@ def parse_nodes(text: str, position: int = 0, nested: bool = False):
             if stop < 0 or BEGIN.search(text, body, stop):
                 raise ValueError('Unclosed or nested scalar field.')
             raw = text[body:stop].strip('\n')
-            if kind == 'table':
+            if kind == 'properties':
+                lines=[line for line in raw.splitlines() if line.strip()]
+                if len(lines)!=len(meta['fields'])+2:raise ValueError('Metadata table row count changed.')
+                value={}
+                for line,(path,typ) in zip(lines[2:],meta['fields']):
+                    cells=line[2:-2].split(' | ')
+                    if len(cells)!=2:raise ValueError('Malformed metadata table.')
+                    content=html.unescape(cells[1].replace('<br>','\n'))
+                    value[path]=content if typ=='text' else json.loads(content)
+                    if kind_of(value[path])!=typ:raise ValueError('Metadata field type changed.')
+            elif kind == 'table':
                 columns=meta['columns']; schemas=meta['rows']
                 lines=[line for line in raw.splitlines() if line.strip()]
                 if len(lines)!=len(schemas)+2: raise ValueError('Decision table row count changed; update through the record operation.')
@@ -115,15 +125,26 @@ def field(key: str, value: Any, level: int = 2) -> str:
     kind = kind_of(value)
     title = ('Entry '+str(int(key)+1)) if key.isdigit() else key.replace('_', ' ').capitalize()
     metadata={'key':key,'type':kind}
-    if key in {'decisions','agreements'} and isinstance(value,list) and value and all(isinstance(row,dict) for row in value):
+    if (isinstance(value,list) and value and all(isinstance(row,dict) for row in value)
+            and (key.split('/')[-1] in {'decisions','agreements'}
+                 or (len(set(k for row in value for k in row)) <= 8
+                     and all(not isinstance(v,(dict,list)) for row in value for v in row.values())))):
         kind='table'
         columns=list(dict.fromkeys(k for row in value for k in row))
         preferred=['id','kind','author','reason','scope','source','status','supersedes']
         columns=[k for k in preferred if k in columns]+[k for k in columns if k not in preferred]
         metadata={'key':key,'type':kind,'columns':columns,'rows':[{k:kind_of(v) for k,v in row.items()} for row in value]}
+    if key=='Overview' and isinstance(value,dict):
+        kind='properties';metadata={'key':key,'type':kind,'fields':[[k,kind_of(v)] for k,v in value.items()]}
     marker = json.dumps(metadata, ensure_ascii=False)
     start = f'<!-- af: {marker} -->\n{"#" * min(level, 6)} {title}\n\n'
-    if kind == 'table':
+    if kind == 'properties':
+        def cell(v):
+            raw=v if isinstance(v,str) else json.dumps(v,ensure_ascii=False)
+            return html.escape(raw,quote=False).replace('|','&#124;').replace('\n','<br>')
+        body='| Field | Value |\n| --- | --- |\n'
+        for path,v in value.items():body+='| '+path.split('/')[-1].replace('_',' ').capitalize()+' | '+cell(v)+' |\n'
+    elif kind == 'table':
         def cell(v):
             raw=v if isinstance(v,str) else json.dumps(v,ensure_ascii=False)
             return html.escape(raw,quote=False).replace('|','&#124;').replace('\n','<br>')

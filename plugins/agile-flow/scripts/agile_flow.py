@@ -6,9 +6,9 @@ from pathlib import Path
 import sys
 
 try:
-    from .document_store import DocumentStore, engine
+    from .release_store import ReleaseStore as DocumentStore, engine
 except ImportError:
-    from document_store import DocumentStore, engine
+    from release_store import ReleaseStore as DocumentStore, engine
 
 
 def main():

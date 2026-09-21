@@ -20,9 +20,9 @@ A correction must reconcile affected project questions, backlog uncertainties, i
 
 ## Synthesize and prepare
 
-During product definition, consolidate known context in authored `constitution.md`. Reference existing authored vision documents without copying their full content. Develop `roadmap.md` with horizons and an MVP learning hypothesis when enough information exists. An MVP is a usable minimum for early users that tests whether the product is useful; it is not just the first technical task.
+During product definition, consolidate known context in authored `constitution.md`. Reference existing authored vision documents without copying their full content. Develop `roadmap.md` with version stages, then a release document with concrete scope and any MVP learning hypothesis when enough information exists. An MVP is a usable minimum for early users that tests whether the product is useful; it is not just the first technical task.
 
-Use `plan-iteration` with a goal, selected item IDs, scope, exclusions, criteria references, checks, approach and open decisions. It produces `iterations/ITER-*/sprint_planning.md`, without an increment or authorization. Once scope is ready and execution authorized, use `prepare` with that iteration, a DoD baseline and the actual permission reference.
+Use `plan-iteration` with a goal, selected item IDs, scope, exclusions, criteria references, checks, approach and open decisions. It produces `release/<version>/ITER-*/sprint-planning.md`, without an increment or authorization. Once scope is ready and execution authorized, use `prepare` with that iteration, the selected stories’ own DoD baselines and the actual permission reference.
 
 Success criteria describe the product outcome for its user, not merely completion of this planning exercise. Keep candidate technical designs in proposals rather than confirmed facts.
 
