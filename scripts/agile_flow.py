@@ -436,11 +436,21 @@ def review_is_current(review: dict[str, Any], latest: dict[str, dict[str, Any]],
         bound_ids = legacy_review_evidence_ids(state, review)
         if bound_ids is None:
             return not historical_stale and not latest
-    if bound_ids != [evidence["id"] for evidence in latest.values()]:
-        return False
+    # Evidence IDs describe provenance, not the identity of the accepted delivery.
+    fingerprints = review.get("reviewed_fingerprints")
+    if fingerprints is None:
+        evidence_by_id = {ev["id"]: ev for ev in state["evidence"]}
+        if any(evidence_id not in evidence_by_id for evidence_id in bound_ids):
+            return False
+        fingerprints = {}
+        for evidence_id in bound_ids:
+            for relative, previous in evidence_by_id[evidence_id].get("fingerprints", {}).items():
+                if relative in fingerprints and fingerprints[relative] != previous:
+                    return False
+                fingerprints[relative] = previous
     if any(evidence.get("current_validity") != "current" for evidence in latest.values()):
         return False
-    for relative, previous in review.get("reviewed_fingerprints", {}).items():
+    for relative, previous in fingerprints.items():
         path = (root / relative).resolve()
         current = file_hash(path) if path.is_relative_to(root) and path.is_file() else None
         if current != previous:

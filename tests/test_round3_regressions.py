@@ -97,7 +97,7 @@ class RoundThreeRegressions(RecordsHarness, unittest.TestCase):
         self.mutate({"operation": "record-review", "operation_id": "new-accept", "purpose": "Accept second delivery", "review": {"increment_id": "INC-0001", "decision": "accepted", "parts": ["Returns greeting"], "user_quote": "I accept delivery two."}})
         self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "accepted")
 
-    def test_t02_new_check_does_not_inherit_earlier_acceptance(self):
+    def test_q01_new_check_preserves_unchanged_delivery_acceptance(self):
         self.prepared()
         self.mutate({"operation": "start", "operation_id": "start", "purpose": "Start", "increment_id": "INC-0001"})
         self.mutate({"operation": "mark-implemented", "operation_id": "implemented", "purpose": "Deliver", "increment_id": "INC-0001"})
@@ -105,7 +105,7 @@ class RoundThreeRegressions(RecordsHarness, unittest.TestCase):
         self.mutate({"operation": "record-review", "operation_id": "early-accept", "purpose": "Accept with manual check outstanding", "review": {"increment_id": "INC-0001", "decision": "accepted", "parts": ["Returns greeting"], "user_quote": "I accept it with the manual check outstanding."}})
         self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "accepted")
         self.mutate({"operation": "record-evidence", "operation_id": "later-manual", "purpose": "Later manual check", "evidence": {"increment_id": "INC-0001", "check": "manual", "result": "passed", "scope": "Greeting"}})
-        self.assertEqual((self.inspect()["increments"][0]["effective_verification"], self.inspect()["increments"][0]["effective_acceptance"]), ("passed", "pending"))
+        self.assertEqual((self.inspect()["increments"][0]["effective_verification"], self.inspect()["increments"][0]["effective_acceptance"]), ("passed", "accepted"))
 
     def test_t02_legacy_review_without_binding_remains_readable_and_conservative(self):
         self.prepared()
@@ -123,7 +123,7 @@ class RoundThreeRegressions(RecordsHarness, unittest.TestCase):
         state_path.write_text(json.dumps(state))
         self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "accepted")
         self.mutate({"operation": "record-evidence", "operation_id": "legacy-later-manual", "purpose": "Later check after legacy review", "evidence": {"increment_id": "INC-0001", "check": "manual", "result": "passed", "scope": "app.py", "paths": ["app.py"]}})
-        self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "pending")
+        self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "accepted")
         covered.write_text("second\n")
         self.assertEqual(self.inspect()["increments"][0]["effective_acceptance"], "pending")
 
