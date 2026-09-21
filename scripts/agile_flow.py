@@ -31,6 +31,13 @@ class RecordError(Exception):
     pass
 
 
+def active_development(inc: dict[str, Any], project: dict[str, Any]) -> bool:
+    return (project.get("administrative_state", "open") == "open"
+            and inc.get("administrative_state", "open") == "open"
+            and inc.get("states", {}).get("development") == "in_progress"
+            and not inc.get("suspended", False))
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
@@ -132,14 +139,14 @@ class Store:
             states = inc.get("states", {})
             if states.get("development") not in DEVELOPMENT or states.get("verification") not in VERIFY or states.get("acceptance") not in ACCEPT:
                 raise RecordError(f"Invalid work states on {inc['id']}.")
-            if states["development"] == "in_progress" and not inc.get("suspended", False):
+            if active_development(inc, state["project"]):
                 active += 1
             if inc.get("authorization") and inc["authorization"] not in auth_ids:
                 raise RecordError(f"Increment {inc['id']} references missing authorization.")
             if not set(inc.get("item_ids", [])).issubset({item["id"] for item in state.get("backlog", [])}):
                 raise RecordError(f"Increment {inc['id']} references missing backlog work.")
         if active > 1:
-            raise RecordError("At most one unsuspended increment may be in progress.")
+            raise RecordError("At most one open, unsuspended increment may be in progress.")
         for item in state.get("evidence", []):
             if item.get("increment_id") not in increment_ids or item.get("result") not in RESULTS:
                 raise RecordError("Evidence has an invalid increment or result.")
@@ -393,9 +400,58 @@ def snapshot_paths(root: Path, paths: list[str]) -> dict[str, str]:
     return snapshots
 
 
+def latest_evidence_by_check(state: dict[str, Any], inc: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    latest: dict[str, dict[str, Any]] = {}
+    for evidence in state["evidence"]:
+        if evidence["increment_id"] == inc["id"] and evidence["delivery_revision"] == inc["delivery_revision"]:
+            latest[evidence["check"]] = evidence
+    return latest
+
+
+def observed_paths(root: Path, evidence: list[dict[str, Any]]) -> dict[str, str | None]:
+    paths = {relative for entry in evidence for relative in entry.get("fingerprints", {})}
+    observed: dict[str, str | None] = {}
+    for relative in sorted(paths):
+        path = (root / relative).resolve()
+        observed[relative] = file_hash(path) if path.is_relative_to(root) and path.is_file() else None
+    return observed
+
+
+def legacy_review_evidence_ids(state: dict[str, Any], review: dict[str, Any]) -> list[str] | None:
+    seen: dict[str, str] = {}
+    for event in state.get("history", []):
+        for change in event.get("changes", []):
+            after = change.get("after")
+            if change.get("path", "").startswith("evidence/") and isinstance(after, dict) and after.get("increment_id") == review["increment_id"] and after.get("delivery_revision") == review["delivery_revision"]:
+                seen[after["check"]] = after["id"]
+            if change.get("path") == f"reviews/{review['id']}":
+                return list(seen.values())
+    return None
+
+
+def review_is_current(review: dict[str, Any], latest: dict[str, dict[str, Any]], root: Path,
+                      historical_stale: bool, state: dict[str, Any]) -> bool:
+    bound_ids = review.get("evidence_ids")
+    if bound_ids is None:
+        bound_ids = legacy_review_evidence_ids(state, review)
+        if bound_ids is None:
+            return not historical_stale and not latest
+    if bound_ids != [evidence["id"] for evidence in latest.values()]:
+        return False
+    if any(evidence.get("current_validity") != "current" for evidence in latest.values()):
+        return False
+    for relative, previous in review.get("reviewed_fingerprints", {}).items():
+        path = (root / relative).resolve()
+        current = file_hash(path) if path.is_relative_to(root) and path.is_file() else None
+        if current != previous:
+            return False
+    return True
+
+
 def inspect_state(store: Store, state: dict[str, Any]) -> dict[str, Any]:
     observed = copy.deepcopy(state)
     stale = []
+    current_stale = []
     for evidence in observed["evidence"]:
         changed = []
         for relative, previous in evidence.get("fingerprints", {}).items():
@@ -409,7 +465,12 @@ def inspect_state(store: Store, state: dict[str, Any]) -> dict[str, Any]:
         else:
             evidence["current_validity"] = "current"
     for inc in observed["increments"]:
-        current = [ev for ev in observed["evidence"] if ev["increment_id"] == inc["id"] and ev["delivery_revision"] == inc["delivery_revision"] and ev["current_validity"] == "current"]
+        latest = latest_evidence_by_check(observed, inc)
+        for evidence in latest.values():
+            evidence["current_attempt"] = True
+            if evidence["current_validity"] == "stale":
+                current_stale.append(evidence["id"])
+        current = [ev for ev in latest.values() if ev["current_validity"] == "current"]
         checks = inc.get("required_checks", [])
         results = {ev["check"]: ev["result"] for ev in current}
         if any(results.get(check) == "failed" for check in checks): value = "failed"
@@ -417,8 +478,19 @@ def inspect_state(store: Store, state: dict[str, Any]) -> dict[str, Any]:
         elif any(result == "passed" for result in results.values()): value = "partial"
         else: value = "not_run"
         inc["effective_verification"] = value
-        inc["effective_acceptance"] = "pending" if any(ev["id"] in stale and ev["increment_id"] == inc["id"] and ev["delivery_revision"] == inc["delivery_revision"] for ev in observed["evidence"]) and inc["states"]["acceptance"] == "accepted" else inc["states"]["acceptance"]
-    return response("ok", revision=state["revision"], fingerprint=state_fingerprint(state), project=observed["project"], location_discrepancy=observed["project"].get("root") != str(store.root), backlog=observed["backlog"], decisions=observed["decisions"], increments=observed["increments"], blockers=observed["blockers"], improvements=observed["improvements"], evidence=observed["evidence"], reviews=observed["reviews"], stale_evidence=stale, history=observed["history"])
+        inc["active_development"] = active_development(inc, observed["project"])
+        current_reviews = [review for review in observed["reviews"] if review["increment_id"] == inc["id"] and review["delivery_revision"] == inc["delivery_revision"]]
+        accepted_by_part: dict[str, dict[str, Any]] = {}
+        for review in current_reviews:
+            if review["decision"] == "accepted":
+                for part in review["parts"]: accepted_by_part[part] = review
+            elif review["decision"] == "partial":
+                for part in review["accepted_parts"]: accepted_by_part[part] = review
+        historical_stale = any(ev["id"] in stale and ev["increment_id"] == inc["id"] and ev["delivery_revision"] == inc["delivery_revision"] for ev in observed["evidence"])
+        acceptance_current = all(part in accepted_by_part and review_is_current(accepted_by_part[part], latest, store.root, historical_stale, observed) for part in inc["criteria"])
+        inc["effective_acceptance"] = "pending" if inc["states"]["acceptance"] == "accepted" and not acceptance_current else inc["states"]["acceptance"]
+    active = next((inc["id"] for inc in observed["increments"] if inc["active_development"]), None)
+    return response("ok", revision=state["revision"], fingerprint=state_fingerprint(state), project=observed["project"], location_discrepancy=observed["project"].get("root") != str(store.root), active_increment=active, backlog=observed["backlog"], decisions=observed["decisions"], increments=observed["increments"], blockers=observed["blockers"], improvements=observed["improvements"], evidence=observed["evidence"], reviews=observed["reviews"], stale_evidence=stale, current_stale_evidence=current_stale, history=observed["history"])
 
 
 def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
@@ -461,7 +533,7 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
             raise RecordError("Paused, closed, or canceled work cannot start.")
         if inc["states"]["development"] != "ready" or not inc.get("authorization"): raise RecordError("Only a ready, authorized increment can start.")
         applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
-        if any(i["states"]["development"] == "in_progress" and not i.get("suspended") for i in state["increments"]): raise RecordError("Another increment is already in progress.")
+        if any(active_development(i, state["project"]) for i in state["increments"]): raise RecordError("Another increment is already in progress.")
         inc["states"]["development"] = "in_progress"; inc["suspended"] = False
     elif op == "mark-implemented":
         inc = find(state["increments"], request.get("increment_id", ""), "increment")
@@ -478,6 +550,10 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         if data["check"] not in inc["required_checks"]: raise RecordError("Evidence check is not required by this increment.")
         if data.get("delivery_revision", inc["delivery_revision"]) != inc["delivery_revision"]:
             raise RecordError("Evidence must refer to the current delivery revision.")
+        prior = latest_evidence_by_check(state, inc).get(data["check"])
+        if prior and any(observed_paths(root, [prior]).get(relative) != previous for relative, previous in prior.get("fingerprints", {}).items()):
+            if data.get("change_impact") != "non_behavioral" or not data.get("impact_reason"):
+                raise RecordError("Covered files changed; same-delivery reassessment needs non_behavioral impact and a reason. Behavior-affecting changes need mark-delivery-change first.")
         paths = data.get("paths", [])
         fingerprints = snapshot_paths(root, paths)
         state["evidence"].append({**data, "id": new_id(state, "evidence", "EVD"), "at": utc_now(), "delivery_revision": inc["delivery_revision"], "limitations": data.get("limitations", ""), "fingerprints": fingerprints, "environment": data.get("environment", {})})
@@ -514,7 +590,8 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
             if not set(resolution["parts"]).issubset(outstanding.get(referenced["id"], set())):
                 raise RecordError("Superseded parts must be unresolved changes from the referenced review.")
             outstanding[referenced["id"]].difference_update(resolution["parts"])
-        state["reviews"].append({**data, "id": new_id(state, "reviews", "REV"), "at": utc_now(), "delivery_revision": revision, "parts": parts, "accepted_parts": accepted_parts})
+        reviewed = latest_evidence_by_check(state, inc) if revision == inc["delivery_revision"] else {}
+        state["reviews"].append({**data, "id": new_id(state, "reviews", "REV"), "at": utc_now(), "delivery_revision": revision, "parts": parts, "accepted_parts": accepted_parts, "evidence_ids": [evidence["id"] for evidence in reviewed.values()], "reviewed_fingerprints": observed_paths(root, list(reviewed.values()))})
         recompute_acceptance(state, inc)
     elif op == "record-blocker":
         data = request.get("blocker", {}); find(state["increments"], data.get("increment_id", ""), "increment")
@@ -596,7 +673,7 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
             raise RecordError("Closed or paused project work cannot resume.")
         if not inc.get("suspended") or inc["states"]["development"] != "in_progress":
             raise RecordError("Only a suspended in-progress increment can resume.")
-        if any(i["id"] != inc["id"] and i["states"]["development"] == "in_progress" and not i.get("suspended") for i in state["increments"]):
+        if any(i["id"] != inc["id"] and active_development(i, state["project"]) for i in state["increments"]):
             raise RecordError("Another increment is already in progress.")
         applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
         inc["suspended"] = False
@@ -609,7 +686,11 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
         if target == "project":
             if action == "pause": state["project"]["administrative_state"] = "paused"
             elif action == "close": state["project"]["administrative_state"] = "closed"
-            elif action == "reopen": state["project"]["administrative_state"] = "open"
+            elif action == "reopen":
+                for inc in state["increments"]:
+                    if inc.get("administrative_state", "open") == "open" and inc["states"]["development"] == "in_progress" and not inc.get("suspended"):
+                        applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
+                state["project"]["administrative_state"] = "open"
             elif action == "cancel": state["project"]["administrative_state"] = "canceled"
             else: raise RecordError("Invalid administrative action.")
         else:
@@ -617,9 +698,12 @@ def mutate(state: dict[str, Any], request: dict[str, Any], root: Path) -> None:
             if action == "pause": inc["suspended"] = True; inc["resumption_point"] = request.get("resumption_point", "Resume from recorded state.")
             elif action == "close": inc["administrative_state"] = "closed"
             elif action == "reopen":
+                if inc["states"]["development"] in {"ready", "in_progress", "canceled"}:
+                    applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
+                if inc["states"]["development"] == "in_progress" and not inc.get("suspended") and state["project"].get("administrative_state") == "open" and any(i["id"] != inc["id"] and active_development(i, state["project"]) for i in state["increments"]):
+                    raise RecordError("Another increment is already in progress.")
                 inc["administrative_state"] = "open"
                 if inc["states"]["development"] == "canceled":
-                    applicable_authorization(state, inc["authorization"], inc["item_ids"], inc["id"])
                     inc["delivery_revision"] += 1
                     inc["states"].update(development="ready", verification="not_run", acceptance="not_requested")
             elif action == "cancel": inc["administrative_state"] = "canceled"; inc["states"]["development"] = "canceled"; inc["suspended"] = False
@@ -642,20 +726,19 @@ def render(store: Store, force: bool) -> dict[str, Any]:
     else:
         store.check_views()
     store.views.mkdir(parents=True, exist_ok=True); (store.views / "increments").mkdir(exist_ok=True)
-    active = next((i for i in state["increments"] if i["states"]["development"] == "in_progress" and not i.get("suspended")), None)
-    summary = ["# agile-flow summary", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Project: {state['project']['name']}", f"Objective: {state['project']['purpose']}", f"Next step: {state['project']['next_step']}", f"Active increment: {active['id'] if active else 'None'}", "", "## Current increment validity"]
+    summary = ["# agile-flow summary", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Project: {state['project']['name']}", f"Objective: {state['project']['purpose']}", f"Next step: {state['project']['next_step']}", f"Active increment: {observed['active_increment'] or 'None'}", "", "## Current increment validity"]
     for inc in observed["increments"]:
-        summary.append(f"- {inc['id']}: development {inc['states']['development']}; verification {inc['effective_verification']}; acceptance {inc['effective_acceptance']}.")
+        summary.append(f"- {inc['id']}: administrative {inc.get('administrative_state', 'open')}; development {inc['states']['development']}; active {'yes' if inc['active_development'] else 'no'}; verification {inc['effective_verification']}; acceptance {inc['effective_acceptance']}.")
     backlog = ["# Backlog", "", f"Generated from canonical revision {state['revision']}.", ""] + [f"- {item['id']}: {item['purpose']} ({item.get('priority', {}).get('value', 'proposed')})" for item in state["backlog"]]
     files = {"summary.md": "\n".join(summary) + "\n", "backlog.md": "\n".join(backlog) + "\n"}
     for inc in observed["increments"]:
-        lines = [f"# {inc['id']}: {inc['objective']}", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Development: {inc['states']['development']}", f"Current verification: {inc['effective_verification']}", f"Current acceptance: {inc['effective_acceptance']}"]
+        lines = [f"# {inc['id']}: {inc['objective']}", "", f"Generated from canonical revision {state['revision']} with current file observations.", "", f"Administrative state: {inc.get('administrative_state', 'open')}", f"Development: {inc['states']['development']}", f"Active development: {'yes' if inc['active_development'] else 'no'}", f"Current verification: {inc['effective_verification']}", f"Current acceptance: {inc['effective_acceptance']}"]
         if inc["effective_verification"] != inc["states"]["verification"] or inc["effective_acceptance"] != inc["states"]["acceptance"]:
             lines.extend([f"Recorded verification (historical): {inc['states']['verification']}", f"Recorded acceptance (historical): {inc['states']['acceptance']}"])
         stale_evidence = [evidence for evidence in observed["evidence"] if evidence["increment_id"] == inc["id"] and evidence["delivery_revision"] == inc["delivery_revision"] and evidence["current_validity"] == "stale"]
         if stale_evidence:
-            lines.extend(["", "## Stale evidence", "Covered files changed; reassess the affected checks and acceptance before treating this delivery as current."])
-            lines.extend(f"- {evidence['id']}: {', '.join(evidence['changed_paths'])}" for evidence in stale_evidence)
+            lines.extend(["", "## Stale evidence", "Historical attempts remain visible. Only stale current attempts require renewed checks; acceptance must match the reviewed current evidence."])
+            lines.extend(f"- {evidence['id']} ({'current attempt' if evidence.get('current_attempt') else 'historical attempt'}): {', '.join(evidence['changed_paths'])}" for evidence in stale_evidence)
         lines.extend(["", "## Scope", inc["scope"], "", "## Criteria"])
         lines.extend(f"- {criterion}" for criterion in inc["criteria"])
         files[f"increments/{inc['id']}.md"] = "\n".join(lines) + "\n"

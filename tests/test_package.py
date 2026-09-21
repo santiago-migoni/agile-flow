@@ -33,6 +33,8 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("docs/agile-lledo.pdf", names)
         self.assertNotIn("docs/implementation-reaudit.md", names)
         self.assertNotIn("docs/reaudit-remediation.md", names)
+        self.assertNotIn("docs/implementation-audit-round-3.md", names)
+        self.assertNotIn("docs/audit-round-3-remediation.md", names)
         self.assertFalse(any(name.startswith(".agile-flow/") for name in names))
         self.assertIn("scripts/agile_flow.py", names)
 

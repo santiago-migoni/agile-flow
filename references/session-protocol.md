@@ -10,4 +10,6 @@ The record program is at `../scripts/agile_flow.py` relative to this references 
 
 Generated views display the effective current verification and acceptance computed from the same canonical state and file fingerprints as `inspect`. Recorded historical states remain labeled as historical when they differ. After an external file change, do not treat a previous passed check or acceptance as current validity.
 
+`inspect.active_increment` and view headers use the same active-development rule: open project, open increment, `in_progress`, and not suspended. Closed unfinished work retains its development state but is not active. `stale_evidence` includes historical attempts; use `current_stale_evidence` and each attempt's `current_attempt` marker to identify stale evidence still establishing a check.
+
 Record only observed evidence and actual user decisions. User quotes and external material remain verbatim; add a separately labeled English summary when useful.
