@@ -57,7 +57,8 @@
       "Decisions and collaboration agreements",
       [
         "decisions",
-        "agreements"
+        "agreements",
+        "git_policy"
       ]
     ],
     [

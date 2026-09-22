@@ -40,8 +40,8 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 
 ## Reviewable collaboration
 
-Version 0.4.0 implements schema 3: authored constitution and version roadmap; concrete releases with optional MVP definition; product needs in backlog/BL-nnnn.md; and US-nnnn.md work records under release/<version>/ITER-nnn/user-stories/. A story’s type is US, NFR, BUG, TCH or SPK and its DoD is embedded. Iteration records use sprint-planning.md, verification.md, review.md and retrospective.md. No empty ceremony documents are scaffolded.
+Version 0.5.0 implements schema 4: clean authored Markdown, release-owned iterations, BL product needs and US work records with type US/NFR/BUG/TCH/SPK. Each story owns its acceptance criteria and DoD. Only product-backlog.md and summary.md are generated indexes.
 
-Only backlog/product-backlog.md and summary.md are generated. templates/documents.json drives the actual editorial layout. Functional values remain in visible Markdown with typed markers; technical metadata stays under .internal/.
+Executable Markdown templates and portable structural schemas support partial updates without af markers. Technical metadata and baselines are versioned; local caches, journals and backups are ignored. Git preview and commit operations follow explicit authorization or an agreed outcome policy and preserve unrelated changes.
 
-See [document operations](references/document-operations.md) and [migration from older layouts](references/migration-release-layout.md). The previously published 0.3.0 uses schema 2; upgrading the plugin does not automatically migrate existing products. Deterministic tests and independent agent exercises are different forms of evidence.
+See [document operations](references/document-operations.md) and [clean Markdown, Git and migration](references/clean-markdown-and-git.md). Installing 0.5.0 does not migrate existing products. Automated tests and independent agent exercises are different forms of evidence.

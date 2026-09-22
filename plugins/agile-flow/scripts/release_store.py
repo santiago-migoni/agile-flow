@@ -62,15 +62,21 @@ class ReleaseStore(DocumentStore):
             raise Error('Define DoD on each story; initialization does not accept a global quality policy.')
         return super().transaction(request)
 
+    def unpack_document(self,path,text):
+        return docs.unpack(text)
+
+    def render_document(self,path,kind,title,data,old):
+        return docs.render(kind,title,data,old)
+
     def metadata(self):
         if self.path.exists() and not self.pending.exists():
             version=json.loads(self.path.read_text()).get('schema_version')
-            if version != 3: raise Error('Older document schema detected; run migrate --dry-run explicitly.')
+            if version != self.schema_version: raise Error('Older document schema detected; run migrate --dry-run explicitly.')
         return super().metadata()
 
     def decode(self, files, meta):
         if 'constitution.md' not in files: raise Error('Constitution is missing.')
-        definition=docs.unpack(files['constitution.md'])
+        definition=self.unpack_document('constitution.md',files['constitution.md'])
         state={'schema_version':1,'revision':meta['revision'],'project':definition['project'],
                'decisions':definition.get('decisions',[]),'history':[],'quality_policy':[],
                'roadmap':None,'definition_of_done':None}
@@ -78,7 +84,7 @@ class ReleaseStore(DocumentStore):
             if key!='decisions':state[key]=[]
         for path,text in files.items():
             if path in self.generated or path=='constitution.md':continue
-            value=docs.unpack(text)
+            value=self.unpack_document(path,text)
             if path=='roadmap.md':state['roadmap']=value
             elif re.fullmatch(r'backlog/BL-[0-9]{4,}\.md',path):
                 row=value['item'];row['_path']=path
@@ -177,7 +183,7 @@ class ReleaseStore(DocumentStore):
     def inspect(self):
         meta,files,state=self.read()
         observed=engine.inspect_state(self,state)
-        observed.update(schema_version=3,fingerprint=self.fingerprint(meta,files),stories=observed.pop('backlog'),
+        observed.update(schema_version=self.schema_version,fingerprint=self.fingerprint(meta,files),stories=observed.pop('backlog'),
                         backlog=state['product_backlog'],releases=state['releases'],iterations=state['iterations'],roadmap=state['roadmap'],documents=sorted(files))
         observed['document_changes']=[p for p in sorted(set(files)|set(meta['documents'])) if hash_text(files.get(p))!=meta['documents'].get(p)]
         return observed
@@ -185,7 +191,7 @@ class ReleaseStore(DocumentStore):
     def encode(self,state,old):
         desired={}
         def add(path,kind,title,data):
-            desired[path]=docs.render(kind,title,data,old.get(path))
+            desired[path]=self.render_document(path,kind,title,data,old.get(path))
         add('constitution.md','constitution',state['project']['name']+' — Project constitution',{'project':state['project'],'decisions':state['decisions']})
         if state.get('roadmap') is not None:add('roadmap.md','roadmap','Product roadmap',state['roadmap'])
         for item in state['product_backlog']:

@@ -1,6 +1,6 @@
 # Record contracts
 
-Schema 3 uses authored Markdown for functional authority. The constitution defines product context; the roadmap describes version stages; release documents define concrete scope and optional MVP learning. Product BL needs live under backlog/, and US work records of type US/NFR/BUG/TCH/SPK live inside release/<version>/<iteration>/user-stories/. Each US owns its acceptance criteria and DoD. Only backlog/product-backlog.md and summary.md are generated indexes.
+Schema 4 uses authored Markdown for functional authority. The constitution defines product context; the roadmap describes version stages; release documents define concrete scope and optional MVP learning. Product BL needs live under backlog/, and US work records of type US/NFR/BUG/TCH/SPK live inside release/<version>/<iteration>/user-stories/. Each US owns its acceptance criteria and DoD. Only backlog/product-backlog.md and summary.md are generated indexes.
 
 Read [document operations](document-operations.md) for payloads, templates and paths. No global DoD, global preparation document or direct iterations/ directory exists in new projects. Existing schemas require [explicit migration](migration-release-layout.md), never silent file renaming.
 
@@ -11,3 +11,5 @@ At most one open, unsuspended in_progress increment may be active, in an open it
 Delivery preparation freezes selected story criteria, their DoD and source hashes. Later refinement does not reinterpret prior delivery acceptance. The latest attempt per check determines current verification; previous attempts remain historical. Reviews bind actual user decisions to delivery revision, parts and evidence fingerprints. Another check on unchanged accepted work preserves acceptance. Changed covered behavior requires reassessment through delivery-change/correction operations.
 
 The engine validates declared structure and observed bytes, not the authenticity of a quote or semantic truth of a non-behavioral change declaration. The agent must use actual sources and evidence. Release publication references record an observed publication; this local record program never publishes software.
+
+The registry now lives at .internal/registry.json with clean document schemas. Manifest and baseline references are portable; locks, transaction journals and backups live under ignored .internal/local/. Review [clean Markdown and Git](clean-markdown-and-git.md) for checkout reconciliation and authorized commits.

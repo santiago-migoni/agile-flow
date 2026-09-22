@@ -40,7 +40,7 @@ The user should be able to identify the understood product, agreed scope, curren
 
 - Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
 - Keep existing authored product documents in place and reference them. Do not create a competing editable copy.
-- Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Technical metadata lives in `.internal/state.json`; preserve manual authored edits.
+- Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Portable technical metadata lives in `.internal/registry.json`; local control lives in `.internal/local/`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.
 - After a write, check view generation and compare the readable result with the user's intent. Report rendering failures and preserve manual edits.
 - Conclude with the substantive result and next useful action. A successful mutation is not proof of semantic correctness, completed functionality, or approval.
@@ -58,6 +58,10 @@ Keep this map and the detailed contracts consistent. When they conflict, follow 
 
 ## Source and product boundaries
 
-The product checkout, plugin source repository, and installed plugin cache are separate. A product-format request does not authorize patching installed scripts or tests. Route renderer improvements to the actual source repository. Never patch the cache. Migration of a live schema-1 project is explicit, previewed and backed up. No installation, release or live migration follows automatically from source development.
+The product checkout, plugin source repository, and installed plugin cache are separate. A product-format request does not authorize patching installed scripts or tests. Route renderer improvements to the actual source repository. Never patch the cache. Migration of a live legacy project is explicit, previewed and backed up. No installation, release or live migration follows automatically from source development.
 
 Do not turn a release into only a changelog: preserve planned scope separately from delivered outcome. The roadmap may identify the MVP milestone; detailed MVP scope and learning belong in the release. No parent Definition of Done document is created.
+
+## Clean documents and Git
+
+The current source implements schema 4. Read [clean Markdown and Git](references/clean-markdown-and-git.md). Documents contain no private field markers. Executable Markdown templates and portable structural schemas coordinate partial updates. Preserve user notes and reject ambiguous headings. Reconstruct from the current checkout, never from stale local caches. At a coherent outcome, follow the user-sourced Git policy; preview explicit paths before committing. Initialization, publishing and destructive Git operations require their own authorization.

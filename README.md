@@ -24,9 +24,9 @@ The catalog uses repository-relative paths and does not depend on a particular G
 
 See the [plugin guide](plugins/agile-flow/README.md) for the six skills: initialize, backlog, advance, review, status, and close. Product records live in the product's `.agile-flow/` directory, separate from the installed plugin.
 
-Version 0.4.0 implements document schema 3: release-owned iterations, BL product needs and typed US work records with per-story acceptance criteria and Definition of Done. Authored Markdown owns product meaning. See [implementation evidence](docs/release-story-workflow-implementation.md), [rendered examples](docs/release-layout-example/README.md) and [migration instructions](plugins/agile-flow/references/migration-release-layout.md).
+Version 0.5.0 implements document schema 4: clean Markdown, release-owned iterations, typed US work records with per-story DoD, portable technical metadata and scoped Git commits. See [implementation evidence](docs/clean-markdown-git-implementation.md), [rendered examples](docs/clean-markdown-example/README.md) and [editing, Git and migration instructions](plugins/agile-flow/references/clean-markdown-and-git.md).
 
-Existing 0.2.0 and 0.3.0 projects require explicit previewed migration; installing the plugin does not migrate their documents.
+Existing 0.2.0, 0.3.0 and 0.4.0 projects require explicit previewed migration; installing the plugin does not migrate their documents.
 
 ## Repository layout
 

@@ -40,14 +40,21 @@ def atomic(path, value):
 
 class DocumentStore:
     schema_version = 2
+    metadata_relative = '.internal/state.json'
+    pending_relative = '.internal/pending.json'
+    lock_relative = '.internal/.lock'
+    backup_relative = '.internal/state.backup.json'
+    archive_relative = '.internal/transactions'
+    manual_relative = '.internal/manual'
+
     generated = GENERATED
     identity_groups = ['backlog','iterations','increments','decisions','evidence','reviews','blockers','improvements']
     def __init__(self, root):
         self.root = Path(root).resolve()
         self.directory = self.root / '.agile-flow'
         self.internal = self.directory / '.internal'
-        self.path = self.internal / 'state.json'
-        self.pending = self.internal / 'pending.json'
+        self.path = self.directory / self.metadata_relative
+        self.pending = self.directory / self.pending_relative
 
     def safe(self, relative):
         rel = Path(relative)
@@ -62,19 +69,20 @@ class DocumentStore:
 
     @contextmanager
     def locked(self):
-        self.safe('.internal/.lock').parent.mkdir(parents=True, exist_ok=True)
-        with self.safe('.internal/.lock').open('a+') as lock:
+        self.safe(self.lock_relative).parent.mkdir(parents=True, exist_ok=True)
+        with self.safe(self.lock_relative).open('a+') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
             yield
 
     def metadata(self):
+        if self.metadata_relative!='.internal/registry.json' and (self.internal/'registry.json').exists():raise Error('Newer document schema detected; use its current writer.')
         if self.pending.exists():
             raise Error('Interrupted transaction exists; run recover before reading or writing.')
         if not self.path.exists():
             if (self.directory / 'state.json').exists():
                 raise Error('Legacy schema detected. Run migrate --dry-run; migration is explicit.')
             raise Error('No document project exists; initialize first.')
-        data = json.loads(self.safe('.internal/state.json').read_text())
+        data = json.loads(self.safe(self.metadata_relative).read_text())
         if data.get('schema_version') != self.schema_version or data.get('integrity') != engine.digest({k:v for k,v in data.items() if k != 'integrity'}):
             raise Error('Technical state integrity failed; recover explicitly.')
         return data
@@ -248,29 +256,29 @@ class DocumentStore:
         next_meta.pop('integrity',None); next_meta['integrity'] = engine.digest(next_meta)
         changes = {p:{'before':before.get(p),'after':desired.get(p)} for p in set(before)|set(desired) if before.get(p)!=desired.get(p)}
         old_metadata = self.path.read_text() if self.path.exists() else None
-        changes['.internal/state.json'] = {'before':old_metadata,'after':json.dumps(next_meta,indent=2)+'\n'}
+        changes[self.metadata_relative] = {'before':old_metadata,'after':json.dumps(next_meta,indent=2)+'\n'}
         if old_metadata is not None:
-            backup=self.safe('.internal/state.backup.json')
+            backup=self.safe(self.backup_relative)
             atomic(backup, old_metadata)
         journal={'id':uuid.uuid4().hex, 'at':engine.utc_now(), 'operation_id':operation_id, 'changes':changes, 'source_documents':before, 'context':context or {}}
         journal['integrity']=engine.digest(journal)
-        atomic(self.safe('.internal/pending.json'),json.dumps(journal,indent=2))
+        atomic(self.safe(self.pending_relative),json.dumps(journal,indent=2))
         self.replay()
         return engine.response('applied', revision=next_meta['revision'], fingerprint=self.fingerprint(next_meta,desired), documents='written')
 
     def replay(self):
-        journal=json.loads(self.safe('.internal/pending.json').read_text())
+        journal=json.loads(self.safe(self.pending_relative).read_text())
         if journal.get('integrity') != engine.digest({k:v for k,v in journal.items() if k!='integrity'}): raise Error('Transaction journal integrity failed.')
         for path, change in journal['changes'].items():
             p=self.safe(path); current=p.read_text() if p.exists() else None
             if current not in (change['before'], change['after']): raise Error(f'Recovery conflict in {path}; preserve user changes before recovery.')
         # Metadata is committed last. Read commands refuse a pending journal.
-        for path, change in sorted(journal['changes'].items(), key=lambda x:x[0]=='.internal/state.json'):
+        for path, change in sorted(journal['changes'].items(), key=lambda x:x[0]==self.metadata_relative):
             p=self.safe(path)
             if change['after'] is None:
                 if p.exists(): p.unlink()
             else: atomic(p,change['after'])
-        archive=self.safe(f".internal/transactions/{journal['id']}.json")
+        archive=self.safe(f"{self.archive_relative}/{journal['id']}.json")
         archive.parent.mkdir(parents=True,exist_ok=True)
         os.replace(self.pending,archive)
 
@@ -281,6 +289,7 @@ class DocumentStore:
         return engine.response('applied', recovery='completed')
 
     def transaction(self, request):
+        if self.metadata_relative!='.internal/registry.json' and (self.internal/'registry.json').exists():raise Error('Newer document schema detected; use its current writer.')
         if not request.get('operation_id') or not request.get('purpose'): raise Error('Operation ID and purpose are required.')
         with self.locked():
             if self.pending.exists(): raise Error('Recover the interrupted transaction first.')
@@ -423,7 +432,7 @@ class DocumentStore:
             if force:
                 for path in self.generated:
                     if path in files and hash_text(files[path])!=meta['documents'].get(path):
-                        backup=self.safe(f'.internal/manual/{uuid.uuid4().hex}-{path}');atomic(backup,files[path])
+                        backup=self.safe(f'{self.manual_relative}/{uuid.uuid4().hex}-{path}');atomic(backup,files[path])
                         meta['documents'][path]=hash_text(files[path])
             desired=dict(files); generated=self.encode(state,files)
             for path in self.generated: desired[path]=generated[path]

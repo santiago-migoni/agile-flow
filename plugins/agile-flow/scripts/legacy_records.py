@@ -209,7 +209,7 @@ class Store:
                 os.unlink(temp_name)
 
     def transaction(self, request: dict[str, Any]) -> dict[str, Any]:
-        if (self.directory / ".internal" / "state.json").exists() or (self.directory / ".internal" / "pending.json").exists():
+        if (self.directory / ".internal" / "registry.json").exists() or (self.directory / ".internal" / "state.json").exists() or (self.directory / ".internal" / "pending.json").exists():
             return response("failed", errors=["Document schema is active; use agile_flow.py instead of the legacy writer."])
         operation_id = request.get("operation_id")
         if not isinstance(operation_id, str) or not operation_id.strip():

@@ -1,6 +1,6 @@
 # Release and story document operations
 
-Plugin 0.4.0 uses schema 3. The published 0.3.0 release used schema 2; schema numbers and plugin versions are different. Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
+Version 0.5.0 uses schema 4. Plugin 0.4.0 uses schema 3. The published 0.3.0 release used schema 2; schema numbers and plugin versions are different. Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
 
 ## CLI and concurrency
 
@@ -64,11 +64,9 @@ record-blocker uses blocker with increment_id, condition, resolution_requirement
 
 ## Markdown contract and templates
 
-`templates/documents.json` is the renderer's actual section layout, not a collection of disconnected examples. `template_documents.py` applies it to visible authoritative fields. The shared codec's hidden af markers contain keys/types, not another copy of product meaning. Authored fields remain editable. Preserve markers and table structure; use operations to add structured rows or columns. Free notes survive targeted updates and must be read as context, not automatically promoted into authorization.
+The current writer emits clean Markdown with no af markers. Templates in templates/markdown/ drive section order; templates/documents.json supplies field grouping. Portable document schemas store keys and types, not functional content. Read [clean Markdown and Git](clean-markdown-and-git.md) for editing, concurrency, migration and versioning contracts.
 
-Overview tables keep IDs, assignment, type and status visible. Prose sections and requirement tables carry meaning. Technical hashes and bookkeeping are grouped separately. Indexes and summary are derived; their edits require preservation and reconciliation. Retire records rather than deleting authored history. Read actual documents, not only inspect output.
-
-See [schema migration](migration-release-layout.md) before using this source against old projects.
+Use operations to add new structured fields or complex records. Existing text and homogeneous table rows can be edited manually. Preserve structured headings; ambiguous or duplicate headings require reconciliation. Additional Notes sections remain authored context and do not grant authorization. Root DoD and old iteration layouts remain historical.
 
 ## Report context
 
