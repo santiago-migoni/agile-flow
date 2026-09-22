@@ -11,7 +11,7 @@ try:
 except ImportError:
     import markdown_records as md
 
-LAYOUTS = Path(__file__).resolve().parents[1] / 'templates' / 'documents.json'
+LAYOUTS = Path(__file__).resolve().parents[1] / 'templates' / 'legacy' / 'documents.json'
 
 
 def unpack(text):

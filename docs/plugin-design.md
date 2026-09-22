@@ -1,5 +1,7 @@
 # agile-flow Plugin Design
 
+> Historical approved baseline. Its statements and results apply to the stage documented below; they do not describe every aspect of the current writer. Preserve the original decisions and evidence. See [current documentation](README.md) for maintained contracts and examples.
+
 **Date:** September 20, 2026.  
 **Version:** First version, English language amendment.  
 **Status:** Approved.  

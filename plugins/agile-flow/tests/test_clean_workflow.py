@@ -44,7 +44,7 @@ class CleanWorkflow(unittest.TestCase):
 
     def test_manual_rows_notes_and_table_spacing(self):
         self.setup_plan();p=self.store.directory/'release/v0.1.0/ITER-001/user-stories/US-0001.md'
-        text=p.read_text().replace('| AC-01 | One booking persists |','|AC-01|One booking persists|\n| AC-02 | Customer receives confirmation |')
+        text=p.read_text().replace('| AC-01 | Not recorded | One booking persists |','|AC-01|Not recorded|One booking persists|\n| AC-02 | Not recorded | Customer receives confirmation |')
         text+='\n## Owner notes\n\nKeep the operator workflow available.\n\n<details>\n<summary>Operator context</summary>\nKeep this explanation.\n</details>\n';p.write_text(text)
         self.assertEqual(len(self.store.inspect()['stories'][0]['criteria']),2)
         self.op('update-project',project={'next_step':'Review new criteria'})

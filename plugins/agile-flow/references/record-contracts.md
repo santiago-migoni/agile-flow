@@ -2,7 +2,7 @@
 
 Schema 4 uses authored Markdown for functional authority. The constitution defines product context; the roadmap describes version stages; release documents define concrete scope and optional MVP learning. Product BL needs live under backlog/, and US work records of type US/NFR/BUG/TCH/SPK live inside release/<version>/<iteration>/user-stories/. Each US owns its acceptance criteria and DoD. Only backlog/product-backlog.md and summary.md are generated indexes.
 
-Read [document operations](document-operations.md) for payloads, templates and paths. No global DoD, global preparation document or direct iterations/ directory exists in new projects. Existing schemas require [explicit migration](migration-release-layout.md), never silent file renaming.
+Read [document operations](document-operations.md) for payloads, templates and paths. No global DoD, global preparation document or direct iterations/ directory exists in new projects. Existing schemas require [explicit migration](migration.md), never silent file renaming.
 
 The technical registry holds schema/revision, identities, hashes and operation IDs. Journals preserve before/after bytes and provenance for recoverable writes; no current functional JSON competes with Markdown. Locks coordinate cooperating writers. Requests check revision and actual document fingerprints. Missing authored identities, stale requests and conflicting edits are surfaced. Read-only status never rewrites documents. Manual generated-index edits are backed up before an explicit forced refresh.
 

@@ -1,6 +1,6 @@
 # Migrate to release-owned stories (schema 3)
 
-> Historical schema-3 guide for version 0.4.0. Current source uses [clean Markdown migration](clean-markdown-and-git.md#migration), while retaining the explicit release assignment requirements below.
+> Historical schema-3 guide for version 0.4.0. For the current writer, start with [compatibility and migration](migration.md), retaining the explicit release assignment requirements below.
 
 This is an explicit data-layout migration, separate from installing or publishing the plugin. Work in the actual product checkout using the new source entry point. Do not modify the installed cache or automatically migrate live projects during plugin development.
 

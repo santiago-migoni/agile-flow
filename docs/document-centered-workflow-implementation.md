@@ -1,5 +1,7 @@
 # Document-centered workflow implementation
 
+> Historical implementation or validation record. Its statements and results apply to the stage documented below; they do not describe every aspect of the current writer. Preserve the original decisions and evidence. See [current documentation](README.md) for maintained contracts and examples.
+
 Date: 2026-09-21
 Status: Implemented and validated for release v0.3.0; installation and live migration not performed.
 Baseline: document-centered-workflow-specification.md. Upgrade baseline: 0.2.0.

@@ -1,5 +1,7 @@
 # Document design examples
 
+> Historical presentation exhibit. Keep these files for comparison with their original design stage. The [current editorial examples](../examples/editorial/README.md) and [executable template contracts](../../plugins/agile-flow/templates/README.md) define the current source presentation. Product version directories in this exhibit identify the synthetic product, not the plugin release.
+
 > Historical intermediate design examples. For the v0.4.0 structure, use [the rendered release-layout example](../release-layout-example/README.md).
 
 Status: Proposed reading format for review. Not implemented in the renderer.

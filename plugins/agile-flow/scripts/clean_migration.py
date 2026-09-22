@@ -23,16 +23,24 @@ def inventory(store):
 
 def migrate(store,apply,request):
     if store.pending.exists() or (store.internal/'pending.json').exists():raise Error('Recover the pending transaction before migration.')
-    if store.path.exists():store.read();return engine.response('already_applied',schema_version=4)
+    if store.path.exists():
+        store.read()
+        if all(isinstance(v,dict) and v.get('codec')=='editorial-v2' for v in store.schemas.values()):
+            return engine.response('already_applied',schema_version=4,codec='editorial-v2')
     hashes=inventory(store)
     if not hashes:raise Error('No project records to migrate.')
     fingerprint=engine.digest(hashes)
-    source_schema=json.loads((store.internal/'state.json').read_text()).get('schema_version') if (store.internal/'state.json').exists() else 1
+    source_schema=4 if store.path.exists() else 1
+    if source_schema!=4 and (store.internal/'state.json').exists():
+        source_schema=json.loads((store.internal/'state.json').read_text()).get('schema_version')
     with tempfile.TemporaryDirectory(prefix='af-clean-migration-') as temp:
         from pathlib import Path
         root=Path(temp);shutil.copytree(store.directory,root/'.agile-flow')
-        old=ReleaseStore(root);unresolved=[]
-        if source_schema!=3:
+        if source_schema==4:
+            old=type(store)(root)
+        else:old=ReleaseStore(root)
+        unresolved=[]
+        if source_schema not in {3,4}:
             preview=old.migrate(request=request)
             if preview.get('blocking'):return engine.response('preview',source_fingerprint=fingerprint,source_schema=source_schema,target_schema=4,blocking=preview['blocking'])
             result=old.migrate(True,{**request,'expected_source_fingerprint':preview['source_fingerprint']});unresolved=result.get('unresolved',[])
@@ -41,7 +49,10 @@ def migrate(store,apply,request):
         originals={}
         for path,text in marked.items():
             if path in store.generated:originals[path]=text;continue
-            plain,schema=codec.strip(text);store.schemas[path]=schema;originals[path]=plain
+            if source_schema==4:
+                store.schemas[path]=copy.deepcopy(old.schemas[path]);store.technical[path]=copy.deepcopy(old.technical.get(path,{}));originals[path]=text
+            else:
+                plain,schema=codec.strip(text);store.schemas[path]=schema;originals[path]=plain
         desired=store.encode(state,originals)
         # Preserve a valid draft baseline across a format-only conversion. A baseline
         # already changed in the source remains stale and requires actual replanning.
@@ -51,7 +62,7 @@ def migrate(store,apply,request):
         desired=store.encode(state,desired)
         store.validate(store.decode(desired,meta))
     source=store.inventory()
-    report=engine.response('preview',source_schema=source_schema,target_schema=4,source_fingerprint=fingerprint,documents=sorted(desired),blocking=[],unresolved=unresolved,changes={p:{'before':source.get(p),'after':desired.get(p)} for p in set(source)|set(desired) if source.get(p)!=desired.get(p)},preserved_files=hashes)
+    report=engine.response('preview',source_schema=source_schema,target_schema=4,target_codec='editorial-v2',source_fingerprint=fingerprint,documents=sorted(desired),blocking=[],unresolved=unresolved,changes={p:{'before':source.get(p),'after':desired.get(p)} for p in set(source)|set(desired) if source.get(p)!=desired.get(p)},preserved_files=hashes)
     if not apply:return report
     if request.get('expected_source_fingerprint')!=fingerprint:raise Error('Migration needs the reviewed source fingerprint.')
     with store.locked():

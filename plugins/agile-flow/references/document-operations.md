@@ -1,6 +1,6 @@
 # Release and story document operations
 
-Version 0.5.0 uses schema 4. Plugin 0.4.0 uses schema 3. The published 0.3.0 release used schema 2; schema numbers and plugin versions are different. Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
+The current writer uses schema 4 with the editorial-v2 codec. Plugin versions, document schemas and codecs are distinct; see the [compatibility and migration table](migration.md). Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
 
 ## CLI and concurrency
 
@@ -64,10 +64,13 @@ record-blocker uses blocker with increment_id, condition, resolution_requirement
 
 ## Markdown contract and templates
 
-The current writer emits clean Markdown with no af markers. Templates in templates/markdown/ drive section order; templates/documents.json supplies field grouping. Portable document schemas store keys and types, not functional content. Read [clean Markdown and Git](clean-markdown-and-git.md) for editing, concurrency, migration and versioning contracts.
+The current writer emits clean Markdown with no af markers. Executable editorial templates in [templates/markdown/](../templates/README.md) drive prose, tables, repeatable records and conditional blocks. The reader uses portable reversible bindings. templates/legacy/clean-markdown-v1/ and templates/legacy/documents.json remain legacy compatibility inputs only. Portable document schemas store keys and types, not functional content. Read [clean Markdown and Git](clean-markdown-and-git.md) for editing, concurrency, migration and versioning contracts.
 
 Use operations to add new structured fields or complex records. Existing text and homogeneous table rows can be edited manually. Preserve structured headings; ambiguous or duplicate headings require reconciliation. Additional Notes sections remain authored context and do not grant authorization. Root DoD and old iteration layouts remain historical.
 
 ## Report context
 
 Use `update-report` with `iteration_id`, `document` and `fields` to maintain readable context without changing evidence or acceptance. Supported fields: verification — `scope`, `conclusion`; review — `presented_result`, `resulting_work`, `unresolved_feedback`; retrospective — `retain`, `follow_up`. Use the existing record-evidence, record-review and improvement operations for sourced events. Narrative context never grants authorization or acceptance.
+
+
+Existing schema-4 clean-markdown-v1 projects remain inspectable, but mutation and index rendering require the explicit [editorial format conversion](editorial-format.md). The migration preview identifies `target_codec: editorial-v2` and the exact changed document text; its source fingerprint is required for application.

@@ -1,5 +1,7 @@
 # Document-centered product and iteration workflow
 
+> Historical approved baseline. Its statements and results apply to the stage documented below; they do not describe every aspect of the current writer. Preserve the original decisions and evidence. See [current documentation](README.md) for maintained contracts and examples.
+
 Date: 2026-09-21
 Status: Consolidated functional baseline for implementation. The user endorsed the document model and requested this consolidation; implementation, migration, and release are not claimed complete.
 Product: Agile Flow

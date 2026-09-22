@@ -1,6 +1,6 @@
-# Migrate product records from 0.2.0 to 0.3.0
+# Migrate JSON records to authored Markdown (schema 1 → 2)
 
-> Historical guide for the published 0.3.0 schema-2 layout. For current source, use [release-layout migration](migration-release-layout.md).
+> Historical guide for the published 0.3.0 schema-2 layout. For the current writer, start with [compatibility and migration](migration.md). The version checks and commands below apply only to the historical target.
 
 Updating the plugin and migrating a product are separate operations. Run migration with the released 0.3.0 program against the real product root. Do not reinitialize the product, edit the installed cache, delete old views or move product records to a temporary directory. Stop other agents from writing these records during preview and migration.
 

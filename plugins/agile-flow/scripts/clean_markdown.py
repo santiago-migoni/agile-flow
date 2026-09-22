@@ -195,15 +195,19 @@ def restore(text,structure):
 
 
 def unpack(text,structure):
+    if isinstance(structure,dict) and structure.get('codec')=='editorial-v2':
+        try:from . import editorial_codec
+        except ImportError:import editorial_codec
+        return editorial_codec.unpack(text,structure)
     return templates.unpack(restore(text,structure))
 
 
-def render(kind,title,data,old=None,structure=None):
+def render_v1(kind,title,data,old=None,structure=None):
     marked=restore(old,structure) if old is not None else None
     result=templates.render(kind,title,data,marked)
     if old is None:
         from pathlib import Path
-        template=(Path(__file__).resolve().parents[1]/'templates/markdown'/(kind+'.md')).read_text()
+        template=(Path(__file__).resolve().parents[1]/'templates/legacy/clean-markdown-v1'/(kind+'.md')).read_text()
         order=[h['title'] for h in headings(template) if h['level']==2]
         nodes,_=md.parse_nodes(result)
         if any(n.key.casefold() not in order for n in nodes):raise ValueError('Template omits a structured section.')
@@ -211,3 +215,29 @@ def render(kind,title,data,old=None,structure=None):
     clean,new_schema=strip(result)
     if unpack(clean,new_schema)!=data:raise ValueError('Clean Markdown round-trip changed meaning.')
     return clean,new_schema
+
+
+def render(kind,title,data,old=None,structure=None,**context):
+    try:from . import editorial_codec
+    except ImportError:import editorial_codec
+    notes=''
+    if old is not None:
+        if isinstance(structure,dict) and structure.get('codec')=='editorial-v2':
+            _,notes=editorial_codec.extract(old,structure)
+        else:
+            # Validate the old reader before converting; retain all unbound H2 notes.
+            unpack(old,structure)
+            known=set()
+            def collect(nodes):
+                for node in nodes:
+                    known.add((node['level'],node['heading']));collect(node['children'])
+            collect(structure)
+            spans=[]
+            for heading in headings(old):
+                if heading['level']>1 and (heading['level'],heading['title']) not in known and not any(a<=heading['start']<b for a,b in spans):
+                    spans.append((heading['start'],heading['end']))
+            extras=[old[a:b].strip() for a,b in spans]
+            # A nested free section becomes a standalone Notes section rather than
+            # being lost when its old parent is replaced by the editorial layout.
+            notes='\n\n'.join(re.sub(r'^#{3,} ', '## ', extra, count=1) for extra in extras)
+    return editorial_codec.render(kind,title,data,notes,**context)

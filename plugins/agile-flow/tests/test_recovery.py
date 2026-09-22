@@ -1,3 +1,5 @@
+import json
+import hashlib
 import unittest
 from test_records import RecordsHarness
 import importlib.util
@@ -54,3 +56,25 @@ class RecoveryTest(RecordsHarness, unittest.TestCase):
             result = store.transaction(request)
         self.assertEqual((result["status"], result["views"]), ("applied", "failed"))
         self.assertEqual(store.read()["project"]["name"], "Fixture")
+
+    def test_invalid_backup_is_rejected_and_snapshots_are_unique(self):
+        self.initialize(); self.backlog()
+        backup = self.root / ".agile-flow" / "state.backup.json"
+        data = json.loads(backup.read_text()); data["project"]["name"] = "Tampered"; backup.write_text(json.dumps(data))
+        _, result = self.call("recover")
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(self.inspect()["project"]["name"], "Test")
+
+    def test_manual_reconciliation_preserves_original_snapshot(self):
+        self.initialize()
+        path = self.root / ".agile-flow" / "state.json"
+        data = json.loads(path.read_text()); data["project"]["next_step"] = "Review the revised goal."
+        path.write_text(json.dumps(data))
+        raw_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+        request = {"operation_id": "manual-review", "expected_raw_hash": raw_hash, "reason": "Reviewed the intentional context edit.", "reviewed_by": "user"}
+        code, result = self.call("reconcile-manual", request)
+        self.assertEqual((code, result["status"]), (0, "applied"))
+        self.assertTrue(Path(result["preserved_snapshot"]).exists())
+        self.assertEqual(self.inspect()["project"]["next_step"], "Review the revised goal.")
+        _, replay = self.call("reconcile-manual", request)
+        self.assertEqual((replay["status"], replay["fingerprint"]), ("already_applied", result["fingerprint"]))

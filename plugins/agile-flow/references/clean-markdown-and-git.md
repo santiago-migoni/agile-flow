@@ -1,12 +1,12 @@
 # Clean Markdown and Git contract
 
-Version 0.5.0 uses document schema 4. Version 0.4.0 uses schema 3. Installing the plugin does not automatically migrate product records.
+The current writer uses document schema 4. Consult the [compatibility and migration table](migration.md) for published versions and older codecs. Installing the plugin does not automatically migrate product records.
 
 ## Document authority
 
 Constitution, roadmap, BL needs, releases and iteration US records keep the existing release layout. Each US owns criteria and DoD. Readable Markdown owns all product meaning and decisions. No af comments are emitted. Read the documents themselves, including additional notes, before deciding what work is authorized.
 
-Templates in templates/markdown/ drive titles and section order. The JSON layout describes field grouping. Portable registry schemas describe field keys, heading paths and types. They do not contain a duplicate editable product. Technical baseline hashes and identity metadata live in .internal/baselines/records.json. Do not hand-edit schemas to invent evidence or acceptance.
+The complete templates in templates/markdown/ drive editorial-v2 composition and reading. The [template catalog](../templates/README.md) defines their editing and conditional-content contracts. Compatibility layouts and JSON grouping are used only by the legacy codec. Portable registry schemas describe field keys, presentation slots, record identities and types. They do not contain a duplicate editable product. Technical baseline hashes and identity metadata live in .internal/baselines/records.json. Do not hand-edit schemas to invent evidence or acceptance.
 
 Existing text, list entries and homogeneous table rows may be edited directly. Table spacing is flexible; maintain headers and condition IDs. Extra Notes headings and prose survive updates. New field types or complex record entries use the operation API. Missing, duplicated or renamed structured headings cause a conflict. Nested snapshots use readable field/value tables; structural edits there require reconciliation. Escaped source content is not automatically rewritten.
 

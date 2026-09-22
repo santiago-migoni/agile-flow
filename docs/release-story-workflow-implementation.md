@@ -1,5 +1,7 @@
 # Release and story workflow implementation
 
+> Historical implementation or validation record. Its statements and results apply to the stage documented below; they do not describe every aspect of the current writer. Preserve the original decisions and evidence. See [current documentation](README.md) for maintained contracts and examples.
+
 ## Implemented contract
 
 Plugin 0.4.0 implements schema 3; plugin 0.3.0 uses schema 2.
@@ -10,7 +12,7 @@ All work records use globally unique US-nnnn.md identities inside iteration/user
 
 ## Rendering and collaboration
 
-Executable editorial layouts live in plugins/agile-flow/templates/documents.json. Functional content remains in visible typed Markdown; hidden markers contain keys and types. Overview and simple record tables support scanning; complex events use stacked sections. Targeted updates preserve free notes. Only the product backlog index and summary are generated. Their edits require reconciliation; force regeneration saves originals.
+At this release, executable editorial layouts lived in plugins/agile-flow/templates/documents.json. That preserved compatibility asset is now [templates/legacy/documents.json](../plugins/agile-flow/templates/legacy/documents.json). Functional content remains in visible typed Markdown; hidden markers contain keys and types. Overview and simple record tables support scanning; complex events use stacked sections. Targeted updates preserve free notes. Only the product backlog index and summary are generated. Their edits require reconciliation; force regeneration saves originals.
 
 All six skills and macro instructions describe the same model. Narrative report context cannot inject evidence or acceptance. Preparation freezes story criteria, DoD and hashes. Newly selected stories receive a planning baseline; refining them requires explicit plan refresh. Authorization, implementation, verification and user acceptance remain distinct.
 

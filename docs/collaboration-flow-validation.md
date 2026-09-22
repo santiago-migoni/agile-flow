@@ -1,5 +1,7 @@
 # Collaboration flow validation
 
+> Historical implementation or validation record. Its statements and results apply to the stage documented below; they do not describe every aspect of the current writer. Preserve the original decisions and evidence. See [current documentation](README.md) for maintained contracts and examples.
+
 The plugin now defines reviewable outcomes for understanding, prioritization, preparation, development, and review. All six skills load the same collaboration reference. Product context separates users, sourced confirmed facts, assumptions, and proposals. A non-executable preparation proposal can be recorded before development authorization; normal increment preparation and execution retain their authorization checks.
 
 Generated vision and preparation views expose the product context, planning scope, exclusions, criteria, checks, technical approach, and open decisions. Backlog and increment views now expose their detail. Existing authored documents remain in place, and new generated view names cannot silently overwrite unmanaged files. Existing records remain readable without migration.
