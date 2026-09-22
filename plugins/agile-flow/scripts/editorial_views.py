@@ -32,6 +32,13 @@ def generate(store,state,available):
                             'acceptance':i['effective_acceptance'],'limit':i.get('limitations','Not recorded')} for i in observed['increments']],
              'pending':[{'item':b['id'],'impact':b['condition'],'resolution':b['resolution_requirement']} for b in state['blockers'] if b['state']=='open']+
                        [{'item':q,'impact':'Not recorded','resolution':'User clarification'} for q in project.get('open_questions',[])]}
+    summary['deferred'] = []; summary['investigate'] = []
+    for kind, label, path in [('product_design', 'Product design', 'product-design.md'), ('architecture', 'Architecture', 'architecture.md')]:
+        for row in (state.get(kind) or {}).get('open_questions', []):
+            group = {'now': 'pending', 'later': 'deferred', 'investigate': 'investigate'}[row['timing']]
+            summary[group].append({'item': row['question']+' — ['+label+']('+path+')',
+                                   'impact': row.get('impact', 'Not recorded'),
+                                   'resolution': row.get('revisit_when') or ('Agent investigation' if group == 'investigate' else 'User clarification')})
     git=store.git.status()
     if git['available']:
         summary['git']=[{'branch':git['branch'] or 'Detached HEAD','commit':git['head'] or 'No commits',

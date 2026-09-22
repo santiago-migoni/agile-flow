@@ -1,5 +1,7 @@
 # Readiness and quality
 
+Readiness applies to delivery execution, not discovery or design. Do not require an iteration to discuss a solution. Refer to product-design.md and architecture.md when present; only decisions affecting the selected work need resolution now. Estimates are optional and need an explained basis.
+
 An increment is ready only with objective, included and excluded scope, observable criteria, required checks, dependencies or uncertainties, technical approach, and applicable authorization. Use each selected story’s embedded Definition of Done; propose missing item-specific conditions before authorized preparation. Planning can remain a draft while quality criteria are unresolved. Snapshot selected story versions and their embedded DoD; a changed draft baseline must be explicitly refined before execution preparation.
 
 An observed failed check on the current delivery or a sourced defect tied to an existing criterion or required check can justify `prepare-correction` under the existing authorization. Preserve failed evidence and increment identity, start the corrected delivery revision, and rerun affected checks. This is a technical correction, not a fabricated user change request.

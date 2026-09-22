@@ -31,7 +31,7 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertNotIn("mcpServers", manifest)
         self.assertNotIn("apps", manifest)
-        for name in ("initialize", "backlog", "advance", "review", "status", "close"):
+        for name in ("discover", "define", "design", "plan", "implement", "initialize", "backlog", "advance", "review", "status", "close"):
             content = (ROOT / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
             self.assertTrue(content.startswith(f"---\nname: {name}\n"))
             self.assertIn("../../references/", content)
@@ -48,6 +48,9 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("docs/audit-round-3-remediation.md", names)
         self.assertFalse(any(name.startswith(".agile-flow/") for name in names))
         self.assertIn("scripts/agile_flow.py", names)
+        self.assertIn("scripts/design_documents.py", names)
+        self.assertIn("templates/markdown/architecture.md", names)
+        self.assertIn("templates/markdown/product_design.md", names)
 
     def test_every_skill_reference_resolves_from_installed_layout(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

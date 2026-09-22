@@ -1,6 +1,6 @@
 # Document presentation contracts
 
-The eleven Markdown files below are complete editorial templates: visible metadata, prose composition, table columns, repeatable rows and conditional blocks. They define the target presentation for every product document. Plugin-owned output is English; actual source quotations retain their original language.
+The thirteen Markdown files below are complete editorial templates: visible metadata, prose composition, table columns, repeatable rows and conditional blocks. They define the target presentation for every product document. Plugin-owned output is English; actual source quotations retain their original language.
 
 ## Catalog
 
@@ -68,3 +68,10 @@ Portable registry schemas contain source paths, types, literal presentation stru
 ## Validation for renderer integration
 
 Exercise every document with populated and sparse data. Include multiple versions with list-valued capabilities/dependencies, all five work types, partial acceptance, repeated evidence attempts, superseded decisions and manual notes. Compare rendered structure with these templates as well as round-trip meaning. Check relative links, readable unknown states, omission of inapplicable blocks and absence of leftover placeholders. Automated storage tests alone do not establish presentation fidelity.
+
+## Consultative design documents
+
+- [Product design](markdown/product_design.md): purpose, boundaries, user journeys, screens, states, accessibility, alternatives, decisions and questions.
+- [Architecture](markdown/architecture.md): constraints, alternatives, components, data ownership, integrations, operation, decisions and questions.
+
+Both are optional authored documents created by their update operations when content is meaningful. They do not require releases or iterations. Repeated tables use the row vocabulary in [document operations](../references/document-operations.md#optional-design-document-operations). Decision status and source preserve the distinction between proposed and settled choices; execution authority remains separate.

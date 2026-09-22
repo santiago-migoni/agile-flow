@@ -10,11 +10,13 @@ try:
     from .document_store import DocumentStore,atomic
     from . import clean_markdown as codec
     from .git_workflow import GitWorkflow
+    from . import design_documents as design
 except ImportError:
     from release_store import ReleaseStore,engine,Error,hash_text
     from document_store import DocumentStore,atomic
     import clean_markdown as codec
     from git_workflow import GitWorkflow
+    import design_documents as design
 
 TECHNICAL={'document_baseline','planning_baseline','reviewed_fingerprints','fingerprints'}
 
@@ -42,6 +44,17 @@ class CleanStore(ReleaseStore):
         self.technical=baseline
         return meta
 
+    def decode(self, files, meta):
+        # Older layouts retain their original decoder; optional design paths are
+        # handled only by the current writer and remain authored authorities.
+        core = {path: text for path, text in files.items() if path not in design.DOCUMENTS.values()}
+        state = super().decode(core, meta)
+        for kind, path in design.DOCUMENTS.items():
+            if path in files:
+                state[kind] = self.unpack_document(path, files[path])
+        self.validate(state)
+        return state
+
     def validate(self,state):
         # Editorial rows add context to previously text-only project lists. The
         # lifecycle engine still receives its original textual validation shape;
@@ -57,6 +70,9 @@ class CleanStore(ReleaseStore):
                             raise Error('Structured project '+key+' needs '+primary+'.')
                         values[n]=value[primary]
         super().validate(checked)
+        for kind in design.DOCUMENTS:
+            if state.get(kind) is not None:
+                design.validate(kind, state[kind], Error)
 
     def unpack_document(self,path,text):
         if path not in self.schemas:raise Error('Unknown document schema: '+path)
@@ -118,6 +134,7 @@ class CleanStore(ReleaseStore):
         self.render_observed=engine.inspect_state(self,state)
         self.render_paths=set(old)|{'constitution.md','summary.md','backlog/product-backlog.md'}
         if state.get('roadmap') is not None:self.render_paths.add('roadmap.md')
+        self.render_paths.update(path for kind, path in design.DOCUMENTS.items() if state.get(kind) is not None)
         for r in state['product_backlog']:self.render_paths.add(f"backlog/{r['id']}.md")
         for r in state['releases']:self.render_paths.add(f"release/{r['id']}/release-{r['id'][1:]}.md")
         for it in state['iterations']:
@@ -129,6 +146,9 @@ class CleanStore(ReleaseStore):
                 path=base+'/'+name+'.md'
                 if state.get('report_context',{}).get(path) or any(r['iteration_id']==it['id'] for g in groups for r in state[g]):self.render_paths.add(path)
         desired=super().encode(state,old)
+        for kind, path in design.DOCUMENTS.items():
+            if state.get(kind) is not None:
+                desired[path] = self.render_document(path, kind, state['project']['name']+' — '+kind.replace('_',' ').title(), state[kind], old.get(path))
         try:from .editorial_views import generate
         except ImportError:from editorial_views import generate
         desired.update(generate(self,state,set(desired)))
@@ -178,6 +198,9 @@ class CleanStore(ReleaseStore):
 
     def inspect(self):
         result=super().inspect();result['git']=self.git.status()
+        for kind, path in design.DOCUMENTS.items():
+            if self.safe(path).exists():
+                result[kind] = self.unpack_document(path, self.safe(path).read_text())
         return result
 
     @contextmanager
@@ -196,7 +219,10 @@ class CleanStore(ReleaseStore):
         return super().transaction(request)
 
     def apply(self,state,request,files):
-        if request['operation']=='set-git-policy':
+        if request['operation'] in {'update-product-design', 'update-architecture'}:
+            kind = request['operation'][7:].replace('-', '_')
+            design.update(state, kind, request, engine.utc_now(), Error)
+        elif request['operation']=='set-git-policy':
             policy=request['policy']
             if policy.get('commits') not in {'on-request','automatic'} or not request.get('source'):raise Error('Git policy needs commit mode and actual user source.')
             if policy.get('commits')=='automatic' and not policy.get('outcomes'):raise Error('Automatic policy must name authorized outcomes.')

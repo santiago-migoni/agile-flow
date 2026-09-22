@@ -5,6 +5,8 @@ description: Explicitly pause, cancel, close, or reopen agile-flow work while pr
 
 # Close or pause work
 
+Read [the collaboration protocol](../../references/collaboration-protocol.md) and [document ownership](../../references/document-ownership.md). Reuse settled decisions and the current mandate; do not infer stage transitions from document completion.
+
 Read `../../references/collaboration-flow.md`, `../../references/session-protocol.md`, `../../references/authorization.md`, and `../../references/record-contracts.md` before writing records.
 
 Apply only an explicit administrative instruction. A status question does not pause or close anything. Pause preserves a resumption point and stops new development actions; it does not erase blockers or evidence. Closing reports implemented state, verification, acceptance, and outstanding work without manufacturing completion. Project cancellation or closure never deletes files.

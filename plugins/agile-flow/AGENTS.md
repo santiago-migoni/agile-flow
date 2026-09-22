@@ -4,41 +4,36 @@ Agile Flow helps a user and an agent turn a need into a useful, verified deliver
 
 Read this map when applying an Agile Flow skill. It does not authorize work, replace the user's request, or override applicable product-repository instructions. Installing the plugin does not install this file into the product repository. Resolve the actual product root before reading or changing its records.
 
-## Route by intent
+## Route by intent and responsibility
 
-Use the earliest stage that needs attention, reusing context and decisions already available. Do not restart discovery or require every stage on every request.
+The same collaborator first helps decide what to build, then designs and delivers it under the current mandate. Roles do not require separate agents. Read [the collaboration protocol](references/collaboration-protocol.md) for message semantics and transition rules.
 
-| User intent | Skill | Required outcome |
+| Intent | Skill | Role and outcome |
 | --- | --- | --- |
-| Start a product or adopt a repository | [initialize](skills/initialize/SKILL.md) | Shared product understanding, labeled assumptions, and a proposed first useful outcome. |
-| Capture or prioritize needs | [backlog](skills/backlog/SKILL.md) | Coherent needs, priority rationale, and a bounded next outcome. |
-| Define the next delivery or advance authorized work | [advance](skills/advance/SKILL.md) | A reviewable preparation proposal, or implementation with scoped verification evidence. |
-| Evaluate a delivered result | [review](skills/review/SKILL.md) | Actual user feedback and explicit follow-up for the reviewed scope. |
-| Ask where work stands | [status](skills/status/SKILL.md) | A read-only account of facts, uncertainty, current validity, and next action. |
-| Explicitly pause, cancel, close, or reopen | [close](skills/close/SKILL.md) | The requested administrative transition with unfinished work preserved. |
+| Explore a problem or adopt a product | [discover](skills/discover/SKILL.md) | Product manager: shared understanding |
+| Define behavior, journeys, scope or priorities | [define](skills/define/SKILL.md) | Product manager: agreed needs and experience |
+| Discuss interface or technical solution | [design](skills/design/SKILL.md) | Product engineer, consultative: alternatives and sourced choices |
+| Organize a delivery | [plan](skills/plan/SKILL.md) | Product engineer: stories and reviewable iteration |
+| Execute authorized work | [implement](skills/implement/SKILL.md) | Product engineer: usable result and evidence |
+| Evaluate delivery | [review](skills/review/SKILL.md) | Both: actual acceptance, corrections and learning |
+| Ask where work stands | [status](skills/status/SKILL.md) | Read-only situation and next action |
+| Pause, cancel, close or reopen | [close](skills/close/SKILL.md) | Requested administrative change |
 
-## Normal development cycle
+initialize routes to discover; backlog routes to define; advance routes by current intent to discover/define/design/plan/implement. Existing record operation names remain compatible.
 
-**Constitution → version roadmap → concrete release and MVP definition → product BL needs → iteration US work → development and verification → review → learning.**
+## Continue within the mandate
 
-1. **Understand the product.** Reuse the user's statements and relevant repository evidence. Distinguish confirmed facts, assumptions, and proposals. Resolve ambiguities that would change the product; investigate technical uncertainty within the requested scope. Produce a readable synthesis rather than ending with storage confirmation.
-2. **Choose the next useful outcome.** Maintain a coherent backlog, explain priority, and make near-term scope concrete. Correct related records when the user clarifies intent. Keep optional future expansion out of current blockers.
-3. **Prepare a reviewable proposal.** State objective, included and excluded scope, observable criteria, checks, technical approach, and remaining product decisions. Preparation may proceed under a definition or planning request without implementation permission. A proposal is not an executable increment or delivery acceptance.
-4. **Develop under existing authorization.** When scope is ready and execution is covered, use the normal authorized preparation/start flow. Keep at most one active development increment. Reuse valid permission; do not require ceremonial reapproval. Verify against the actual delivery and record limits or blockers honestly.
-5. **Review the result.** Present what changed, the evidence, and what the user is evaluating. Keep implementation, verification, and user acceptance separate. Record only decisions the user actually made.
-6. **Adapt or close.** Correct existing criteria within the same increment when appropriate. Record new needs separately, apply useful learning, and preserve history. Administrative closure requires the user's instruction and never manufactures completion.
+Treat explicit user definitions as settled within their stated scope. Record them and continue the current responsibility without redundant confirmation. A confirmation of one host does not approve a stack, exclusions or implementation. Distinguish definitions, preferences, exploration, delegation and execution requests. Resolve delegated and routine technical choices autonomously.
 
-## When to continue or stop
+Discovery does not automatically create a release. Definition does not imply planning. Planning does not imply execution. Document completion never triggers a transition. Existing authorization may cover several activities; reuse it without ceremonial approval or special phrases. Ask one or two material questions at a time, with context, alternatives and a recommendation where useful. Continue independent authorized work while a necessary decision is pending. Defer future uncertainty rather than presenting it as a current blocker.
 
-Continue useful work within the current request when remaining questions can be investigated or deferred without changing the agreed outcome. Ask a focused question when a material product decision is necessary, explaining its concrete impact. Do not turn every technical choice into a user question.
-
-Stop dependent execution at missing authorization, a necessary unresolved product decision, a real blocker, or a delivery ready for user review. Continue independent authorized work where possible. A narrow explanation or status request does not start a development cycle or mutate records.
+Reopen a settled decision only for contradiction, infeasibility or material new evidence, preserving its source and history. Return to the relevant role without restarting unrelated work. Keep at most one active implementation increment; development, verification and user acceptance remain separate.
 
 ## Make progress reviewable
 
 The user should be able to identify the understood product, agreed scope, current result, unresolved decisions, and next action without reading internal JSON requests.
 
-- Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
+- Follow [document ownership](references/document-ownership.md). product-design.md owns journeys and interaction design; architecture.md owns technical alternatives and decisions. Create them only with useful content, independently of releases or iterations. Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
 - Keep existing authored product documents in place and reference them. Do not create a competing editable copy.
 - Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Portable technical metadata lives in `.internal/registry.json`; local control lives in `.internal/local/`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.

@@ -6,10 +6,13 @@
 - [Document operations](../plugins/agile-flow/references/document-operations.md): supported records and operations.
 - [Compatibility and migration](../plugins/agile-flow/references/migration.md): published formats, current codec and historical target procedures.
 - [Editorial template contracts](../plugins/agile-flow/templates/README.md): current document composition and editing rules.
-- [Current rendered examples](examples/editorial/README.md): synthetic examples of all eleven formats.
+- [Current rendered examples](examples/editorial/README.md): synthetic examples of the eleven delivery formats.
 - [Editorial integration validation](editorial-integration-validation.md): evidence and limits of the source integration.
 
 - [Source organization](source-organization.md): behavioral test ownership, compatibility assets and preservation evidence.
+
+- [Consultative implementation](consultative-workflow-implementation.md): role contracts, optional design records and validation evidence.
+- [Consultative examples](examples/consultative/README.md): product design and architecture before scheduling a delivery.
 
 ## Product direction and historical baselines
 

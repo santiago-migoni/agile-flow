@@ -1,4 +1,4 @@
-# Release and story document operations
+# Product, design and delivery document operations
 
 The current writer uses schema 4 with the editorial-v2 codec. Plugin versions, document schemas and codecs are distinct; see the [compatibility and migration table](migration.md). Always select the actual product root. Do not initialize a temporary directory as the product or modify installed plugin code.
 
@@ -11,6 +11,8 @@ Run `python3 <plugin>/scripts/agile_flow.py --root <product> inspect`. For mutat
 ```text
 .agile-flow/
   constitution.md
+  product-design.md                  # optional, meaningful design content only
+  architecture.md                    # optional, independent of iterations
   roadmap.md
   summary.md                         # generated
   backlog/
@@ -39,7 +41,9 @@ Roadmap versions describe strategic evolution and may identify an intended MVP m
 | Operation | Payload |
 | --- | --- |
 | initialize | project with name, purpose and known context; preserve original source quotations. No global quality_policy. |
-| update-project | project with changed purpose/vision/mission, users, stakeholders, objectives, boundaries, agreements, sourced facts, assumptions, proposals, questions, references or next_step. |
+| update-project | project with changed purpose/vision/mission, users, stakeholders, objectives, scope, exclusions, constraints, agreements, confirmed_facts, assumptions, proposals, open_questions, references or next_step. |
+| update-product-design | document with purpose on creation; partial updates support status, scope, exclusions, journeys, screens, states, accessibility, alternatives, decisions, open_questions and references. |
+| update-architecture | document with purpose on creation; partial updates support status, scope, exclusions, constraints, components, data, integrations, operations, alternatives, decisions, open_questions and references. |
 | update-backlog | item with purpose; optional existing BL id, value, users, outcome, scope, exclusions, success_indicators, dependencies (BL IDs), assumptions, open_questions, priority, order, provenance, references, target_release. |
 | reorder-backlog | item_ids containing every BL exactly once. |
 | retire-backlog / complete-backlog | item_id (BL), reason; records the actual decision without deleting its history. |
@@ -74,3 +78,57 @@ Use `update-report` with `iteration_id`, `document` and `fields` to maintain rea
 
 
 Existing schema-4 clean-markdown-v1 projects remain inspectable, but mutation and index rendering require the explicit [editorial format conversion](editorial-format.md). The migration preview identifies `target_codec: editorial-v2` and the exact changed document text; its source fingerprint is required for application.
+
+## Optional design document operations
+
+Follow [document ownership](document-ownership.md). `update-product-design` and `update-architecture` create or merge top-level fields. Omitted fields remain unchanged; a supplied list replaces that list, so preserve previous decisions, IDs and unresolved rows. The writer manages `updated_at` and `changes`; do not send these fields. Each change uses the request purpose and optional provenance. Creation requires a meaningful purpose; no release, iteration or implementation authorization is inferred. `inspect` exposes `product_design` and `architecture` only when present.
+
+Document status is draft (default), in-review, agreed or superseded. `agreed` must reflect actual agreement; it never grants implementation permission. Each knowledge row may use proposed, confirmed, decided, superseded or rejected. These labels must reflect the actual conversation, not an assumption.
+
+| Field | Row vocabulary |
+| --- | --- |
+| journeys | id, actor, trigger, steps (text list), outcome, status |
+| screens | id, journey, screen, information, actions, status |
+| states | context, state, behavior, recovery, status |
+| accessibility | need, behavior, verification, status |
+| alternatives | topic, option, benefits, costs, recommendation, status |
+| components | component, responsibility, interfaces, boundary, status |
+| data | data, owner, persistence, lifecycle, status |
+| integrations | system, contract, failure, trust_boundary, status |
+| operations | concern, approach, cost, verification, status |
+| decisions | id, decision, scope, basis, source, rationale, status, supersedes (optional local decision ID) |
+| open_questions | question, impact, timing (now/later/investigate), revisit_when |
+
+Settled decision rows require a source and basis: user-definition, user-confirmation, delegated or technical-discretion. Cite the actual instruction for delegation, or the agreed boundary and technical evidence for routine discretion. An explicit user definition needs no second confirmation. Proposed decisions have no execution effect. These local IDs do not substitute for DEC authorization records. IDs are local to the design document; preserve old rows when superseding. The update operation rejects deletion of existing decision IDs and replacement of settled decision text, scope, basis or source. Add a new sourced row with supersedes and retain the earlier row as superseded. Later questions require a revisit point. The summary separates immediate questions, investigable questions and deferred topics. Existing plain project questions remain unclassified pending questions until deliberately refined; do not guess their timing.
+
+Example request after inspecting current revision and fingerprint (replace transport values with actual values):
+
+```json
+{
+  "operation": "update-architecture",
+  "operation_id": "architecture-backend-choice-1",
+  "purpose": "Record the user's backend definition and continue interface design",
+  "expected_revision": 3,
+  "expected_fingerprint": "fingerprint-from-inspect",
+  "provenance": "User message identifying the backend",
+  "document": {
+    "purpose": "Design the control plane for the agreed owner workflow",
+    "decisions": [{
+      "id": "ARCH-001",
+      "decision": "Use Django for the backend",
+      "scope": "Backend framework only",
+      "basis": "user-definition",
+      "source": "User: El backend será Django.",
+      "rationale": "Explicit user choice",
+      "status": "decided"
+    }],
+    "open_questions": [{
+      "question": "Does the owner need a separate interactive frontend?",
+      "impact": "Build complexity and operation",
+      "timing": "now"
+    }]
+  }
+}
+```
+
+These operations are additive to schema 4 / editorial-v2. Existing document schemas remain readable without rewriting or migrating records at installation. Earlier writers cannot handle the new optional paths. Older codec/layout conversions still require the explicit previewed migration process. No automatic relocation of existing constitution or sprint-plan prose occurs.

@@ -1,26 +1,8 @@
 ---
 name: initialize
-description: Start agile-flow for a new product or adopt an existing repository without replacing its documents.
+description: Compatibility entry for starting or adopting a product; routes to consultative discovery.
 ---
 
-# Initialize agile-flow
+# Initialize compatibility entry
 
-Read `../../references/collaboration-flow.md`, `../../references/session-protocol.md`, `../../references/authorization.md`, and `../../references/adaptive-method.md` before writing records.
-
-Identify the product root. If records exist, inspect and report them without duplicating initialization. Otherwise collect or reuse the supplied problem, users, outcome, constraints, success criteria, and source references. For an existing repository, inspect relevant instructions, documentation, code, and tests proportionally; distinguish observed, documented, and unverified facts. Do not migrate user documents.
-
-Create the canonical record with an `initialize` request. Store English authored summaries while preserving original source text and quotes. Propose an initial backlog and first valuable increment or bounded investigation; do not implement merely because initialization was requested.
-
-Report understood context, assumptions, open decisions, observed repository facts, proposed next step, and record location.
-
-Initialization produces a readable product synthesis in `constitution.md`, not merely a valid state file. Consolidate supplied facts and labeled hypotheses as the conversation develops. Once the next useful outcome is understood, draft a preparation proposal within the requested analysis scope; do not wait for every technical detail.
-
-## Document-centered workflow
-
-Read `../../references/document-operations.md`. Authored Markdown owns functional content; `.internal/registry.json` holds portable technical structure; `.internal/local/` is disposable local control. Preserve authored edits and refresh only `backlog/product-backlog.md` and `summary.md`. Resolve the product root; never patch installed plugin code or tests. Legacy projects require an explicit dry-run and authorized migration. Present readable outcomes, not temporary request files.
-
-Consolidate the constitution with sourced facts, assumptions, vision, mission and objectives as available. Reference existing documents. Propose version-based roadmap stages and place detailed MVP scope/learning in the relevant release; avoid invented commitments and empty documents.
-
-Use the schema-4 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.
-
-Read [clean Markdown and Git](../../references/clean-markdown-and-git.md) before writing or versioning records. Use the agreed commit policy at coherent outcomes, review explicit paths, and preserve unrelated changes. Status remains read-only. Never infer push, branch, tag or release permission from commit permission.
+Read [the collaboration protocol](../../references/collaboration-protocol.md), then follow [the discover contract](../discover/SKILL.md). Preserve the current request and existing decisions. This alias does not authorize a release, iteration or implementation. Existing operation names and project records remain valid.

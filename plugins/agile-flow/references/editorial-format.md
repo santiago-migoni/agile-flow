@@ -4,7 +4,7 @@ See [compatibility and migration](migration.md) to identify the source format. T
 
 ## Current behavior
 
-All eleven [templates](../templates/README.md) are executable presentation contracts. Roadmap rows retain list-valued capabilities and dependencies inside their cells. Constitution tables keep actors, objectives, decisions and uncertainty distinct. Each work document retains exactly its own US/NFR/BUG/TCH/SPK block and local DoD. Iteration records retain frozen baselines, actual evidence attempts and sourced reviews. Additional context preserves fields that do not fit the standard columns.
+All thirteen [templates](../templates/README.md) are executable presentation contracts. Roadmap rows retain list-valued capabilities and dependencies inside their cells. Constitution tables keep actors, objectives, decisions and uncertainty distinct. Each work document retains exactly its own US/NFR/BUG/TCH/SPK block and local DoD. Iteration records retain frozen baselines, actual evidence attempts and sourced reviews. Additional context preserves fields that do not fit the standard columns.
 
 Markdown remains the functional authority. The registry records structural bindings, not a duplicate current product state. Older codecs remain read-compatible. New projects use editorial-v2 immediately. Read operations do not rewrite existing documents.
 
@@ -44,3 +44,5 @@ Use the [editing contract](../templates/README.md#editing-contract). Preserve ma
 ## Evidence boundaries
 
 Automated tests exercise semantic round-trips, layout contracts, lifecycle boundaries, portability, migration, recovery and Git. Synthetic rendered examples demonstrate composition; they are not proof of a real Codex conversation or user acceptance of an actual product.
+
+The current source also supports optional product-design.md and architecture.md via additive schema-4 operations. These are independent of delivery scheduling and use their own stored structural bindings. See [document ownership](document-ownership.md).

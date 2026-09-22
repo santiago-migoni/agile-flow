@@ -1,6 +1,6 @@
 # {{project_name}} — Current situation
 
-**Updated:** {{date}} · [Constitution](constitution.md) · [Roadmap](roadmap.md) · [Product backlog](backlog/product-backlog.md)
+**Updated:** {{date}} · [Constitution](constitution.md) · [Product design](product-design.md) · [Architecture](architecture.md) · [Roadmap](roadmap.md) · [Product backlog](backlog/product-backlog.md)
 
 {{one_paragraph_product_objective_and_current_position}}
 
@@ -21,6 +21,18 @@
 | Item | Impact | Required resolution |
 | --- | --- | --- |
 | {{blocker_or_decision}} | {{blocked_scope}} | {{next_action}} |
+
+## Questions to investigate
+
+| Item | Impact | Required resolution |
+| --- | --- | --- |
+| {{question}} | {{impact}} | {{resolution}} |
+
+## Deferred topics
+
+| Item | Impact | Required resolution |
+| --- | --- | --- |
+| {{question}} | {{impact}} | {{revisit_when}} |
 
 ## Git status
 

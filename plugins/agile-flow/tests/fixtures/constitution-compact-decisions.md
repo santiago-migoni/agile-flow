@@ -36,9 +36,9 @@
 
 ## Decisions and collaboration agreements
 
-| ID | Decision or agreement | Kind | Scope | Source | User words | Author | Date | Replaces |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| {{decision_id}} | {{decision_or_agreement}} | {{kind}} | {{scope}} | {{source_reference}} | {{quote}} | {{author}} | {{date}} | {{prior_id_or_not_applicable}} |
+| ID | Decision or agreement | Source | Status | Replaces |
+| --- | --- | --- | --- | --- |
+| {{decision_id}} | {{decision_or_agreement}} | {{source_reference}} | {{proposed_confirmed_or_superseded}} | {{prior_id_or_not_applicable}} |
 
 **Git agreement:** {{on_request_or_automatic_outcomes_and_source}}. **Publication permission:** {{separately_agreed_scope_or_not_granted}}.
 

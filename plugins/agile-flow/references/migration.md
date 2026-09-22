@@ -8,7 +8,8 @@ Identify the actual product records before selecting migration instructions. Plu
 | 0.3.0 | Schema 2: authored typed Markdown | `.agile-flow/.internal/state.json`, schema 2 | Explicit preview and migration; supply missing release assignments. |
 | 0.4.0 | Schema 3: release-owned iterations and stories | `.agile-flow/.internal/state.json`, schema 3 | Explicit conversion to clean editorial Markdown. |
 | 0.5.0 | Schema 4, clean-markdown-v1 codec | `.agile-flow/.internal/registry.json` and `manifest.json` | Read-compatible; explicit format conversion before mutation or index rendering. |
-| 0.6.0 | Schema 4, editorial-v2 codec | Same registry location; manifest identifies editorial-v2 | Read and write directly; migration is already applied. |
+| 0.6.0 | Schema 4, editorial-v2 codec | Same registry location; manifest identifies editorial-v2 | Read and write directly with the current writer; no conversion required. |
+| 0.7.0 | Schema 4, editorial-v2 with optional design documents | Optional product-design.md and architecture.md with registered bindings | Existing editorial-v2 records remain compatible. Earlier writers cannot handle the new optional paths. |
 
 ## Current conversion procedure
 

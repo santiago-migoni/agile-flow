@@ -13,3 +13,5 @@ The workflow suites retain their distinct coverage: `test_document_workflow.py` 
 `legacy_records.py` still supplies shared lifecycle/evidence behavior as well as the historical JSON writer. The document and release stores are reused layers of the current clean store. Their code remains in place; separating the shared engine from its historical writer is outside this organization change.
 
 Fixture releases such as v0.1.0 belong to the synthetic product. Preserve persistent schema/codec identifiers and fixture identities. Renaming tests does not authorize rewriting snapshots, weakening assertions or retiring compatibility coverage.
+
+`test_design_documents.py` covers optional consultative records without delivery scheduling, sourced decision preservation, manual edits, portability, timing of open questions and absence of implied authorization. `scenarios/consultative-workflows.md` defines separate behavioral exercises.

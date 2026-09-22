@@ -22,7 +22,7 @@ The catalog uses repository-relative paths and does not depend on a particular G
 
 ## Use
 
-See the [plugin guide](plugins/agile-flow/README.md) for the six skills: initialize, backlog, advance, review, status, and close. Product records live in the product's `.agile-flow/` directory, separate from the installed plugin.
+See the [plugin guide](plugins/agile-flow/README.md) for the consultative skills: discover, define, design, plan, implement, review, status, and close. The initialize, backlog and advance entries remain compatible. Product records live in the product's `.agile-flow/` directory, separate from the installed plugin.
 
 The current source uses document schema 4 and the editorial-v2 codec: authored Markdown, release-owned iterations, typed US work records with per-story DoD, portable technical metadata and scoped Git commits. Start with the [documentation map](docs/README.md), [current rendered examples](docs/examples/editorial/README.md) and [compatibility and migration guide](plugins/agile-flow/references/migration.md).
 

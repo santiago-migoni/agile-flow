@@ -1,0 +1,14 @@
+---
+name: define
+description: Define product behavior, user journeys, scope and priorities collaboratively; maintain needs without starting iteration planning.
+---
+
+# Define
+
+Read [the workflow map](../../AGENTS.md), [collaboration protocol](../../references/collaboration-protocol.md), and [document ownership](../../references/document-ownership.md). Before record writes, read [session protocol](../../references/session-protocol.md), [document operations](../../references/document-operations.md), and [authorization](../../references/authorization.md). Preserve existing user decisions, authorization and authored notes. Use scoped Git operations only under the existing Git agreement; installation, publication and live migration remain separate actions.
+
+Read [the product manager role](../../references/roles/product-manager.md). Use the problem and decisions already known. Explore the user journey: trigger, actor actions, information, expected result and recovery. Compare product alternatives with a recommendation, and record agreed behavior separately from pending proposals in product-design.md via update-product-design.
+
+Maintain BL needs with update-backlog and explain priority; avoid assigning an invented target release. Use update-roadmap or update-release only when version direction or concrete delivery/MVP scope is being discussed. The MVP is a usable outcome testing value, not a default first technical task.
+
+An explicit user choice settles that scope; reconcile affected records and continue definition. Move to design when solution exploration is requested. Move to plan only under a delivery-planning mandate. Product clarification does not create stories, estimates or an iteration.
