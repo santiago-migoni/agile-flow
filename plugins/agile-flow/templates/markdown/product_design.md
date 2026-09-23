@@ -6,17 +6,35 @@
 
 {{purpose}}
 
+## Design decisions
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
 ## Experience boundaries
 
 **Included:** {{scope}}
 
 **Excluded:** {{exclusions}}
 
+## Product rules
+
+| ID | Rule | Scope | Knowledge | Source |
+| --- | --- | --- | --- | --- |
+| {{id}} | {{rule}} | {{scope}} | {{status}} | {{source}} |
+
+## Illustrative examples
+
+| ID | Example | Illustrates | Knowledge | Source |
+| --- | --- | --- | --- | --- |
+| {{id}} | {{example}} | {{illustrates}} | {{status}} | {{source}} |
+
 ## User journeys
 
-| ID | Actor | Trigger | Steps | Expected outcome | Knowledge |
-| --- | --- | --- | --- | --- | --- |
-| {{id}} | {{actor}} | {{trigger}} | {{steps}} | {{outcome}} | {{status}} |
+| ID | Actor | Trigger | Steps | Expected outcome | Applicability | Knowledge |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{actor}} | {{trigger}} | {{steps}} | {{outcome}} | {{applicability}} | {{status}} |
 
 ## Screens and interactions
 
@@ -42,17 +60,29 @@
 | --- | --- | --- | --- | --- | --- |
 | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
 
-## Design decisions
-
-| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} |
-
 ## Questions and revisit points
 
-| Question | Impact | Timing | Revisit when |
-| --- | --- | --- | --- |
-| {{question}} | {{impact}} | {{timing}} | {{revisit_when}} |
+| ID | Question | Impact | Timing | Revisit when | Status | Resolution | Source |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{question}} | {{impact}} | {{timing}} | {{revisit_when}} | {{status}} | {{resolution}} | {{source}} |
+
+## Proposed decisions
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
+## Decision history
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
+## Reconciliation
+
+| ID | Document | Reason | Status | Resolution | Revisit when | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{document}} | {{reason}} | {{status}} | {{resolution}} | {{revisit_when}} | {{source}} |
 
 ## Sources
 

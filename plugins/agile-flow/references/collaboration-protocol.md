@@ -11,6 +11,7 @@ Read ../AGENTS.md for intent routing. The same agent works as product manager or
 | Exploration | Evaluate options without recording a chosen solution. | “Would Django work?” |
 | Delegation | Decide within the delegated scope, explain the choice and continue. | “Choose the framework.” |
 | Confirmation | Resolve only the concrete pending question or proposal. | “Yes” to one Docker host does not approve deferred Git integration. |
+| Example / optional journey | Preserve as an illustration or conditional path, not a universal rule. | “For example, dev → staging → production” does not require every environment. |
 | Correction | Reconcile affected documents and plans, preserving the superseded agreement and source. | “We need two hosts instead.” |
 | Execution request | Reuse authorization for the identified scope. | “Implement this delivery.” needs no magic phrase. |
 
@@ -46,3 +47,19 @@ Document completion never triggers a transition. Definition does not imply itera
 Follow document-ownership.md. Persist useful partial understanding without inventing release versions, estimates or decisions. Proposed material may be documented; it must not become an agreed requirement in downstream stories or plans. A requested exploratory plan must expose its assumptions. Reference the source document instead of duplicating its full contents.
 
 Before writing, use session-protocol.md and document-operations.md. After writing, inspect the human-readable result for fidelity to the conversation. Report the substantive result and next useful action, not JSON transport details. Never patch the installed plugin cache. Program validation proves structure, not user understanding or authorization.
+
+## Consolidate the conversation
+
+For each meaningful message: understand its intent, identify the changed claim, update its principal document, then continue the current objective. Keep strategic outcomes, functional behavior and technical solutions distinct. When the user returns to strategy, stop technical drilling and recover the product outcome. Use update-collaboration for an enduring change of focus, level or independent next activity, not as a mandatory per-turn ritual.
+
+Synthesize when a topic settles, several related answers accumulate, the conversation changes level, or a correction exposes ambiguity. State what is defined, what remains proposed and the next useful activity. A synthesis of supplied facts needs no fresh approval. Recommendations and new consequential choices remain proposals. A brief confirmation resolves the referenced proposal only; continue within the mandate instead of ending with “when you want”.
+
+Populate the constitution's background, vision and objectives from supported conversation content; do not ask the user to repeat information under template labels. Mark genuinely missing material information as a scoped question. Capture sufficiently concrete needs progressively as BL items using update-backlog, without invented priority, estimates, release or iteration. Keep one principal home and link supporting detail.
+
+## Apply partial corrections
+
+Identify separately the changed proposition, compatible agreements and downstream references. Supersede only the changed decision. If a compound decision combines both, the sourced replacement must explicitly retain the compatible clause. For separate records, leave compatible decisions untouched and reference them in retained_ids. Example: allowing a production-only project removes a mandatory staging topology; it does not revoke preproduction validation.
+
+Use refine-design-records for targeted changes, questions and proposal dispositions. Preserve a resolved question with its answer and source instead of dropping it. Record affected documents as reconciliation rows, review their actual content and resolve each row with evidence after the correction is applied. Do not mark reconciliation complete merely because a record operation succeeded. Related design edits can be committed atomically in one refinement; other documents use their own operations and remain visibly pending until reconciled.
+
+Before continuing, inspect the rendered agreement, not just transaction success: does it express the user's actual statement; does an example remain optional; are compatible rules preserved; are proposals still proposals? Semantic interpretation belongs to the agent. The writer cannot establish that a source supports a claim.

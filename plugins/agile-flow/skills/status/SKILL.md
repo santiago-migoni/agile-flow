@@ -22,3 +22,5 @@ Read `../../references/document-operations.md`. Authored Markdown owns functiona
 Use the schema-4 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.
 
 Read [clean Markdown and Git](../../references/clean-markdown-and-git.md) before writing or versioning records. Use the agreed commit policy at coherent outcomes, review explicit paths, and preserve unrelated changes. Status remains read-only. Never infer push, branch, tag or release permission from commit permission.
+
+Include pending proposals, investigable questions and deferred topics without conflating them with blocking user decisions. Report any outstanding document reconciliation and the source of the current focus.

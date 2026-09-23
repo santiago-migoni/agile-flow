@@ -222,6 +222,18 @@ class CleanStore(ReleaseStore):
         if request['operation'] in {'update-product-design', 'update-architecture'}:
             kind = request['operation'][7:].replace('-', '_')
             design.update(state, kind, request, engine.utc_now(), Error)
+        elif request['operation'] == 'refine-design-records':
+            design.refine(state, request, engine.utc_now(), Error)
+        elif request['operation'] == 'update-collaboration':
+            context = request.get('context')
+            if not isinstance(context, dict) or not context or set(context) - {'focus', 'level', 'can_continue'}:
+                raise Error('Collaboration context supports focus, level and can_continue.')
+            if any(not isinstance(v, str) or not v.strip() for v in context.values()):
+                raise Error('Collaboration context requires meaningful text.')
+            if 'level' in context and context['level'] not in {'strategic', 'functional', 'technical'}:
+                raise Error('Conversation level must be strategic, functional or technical.')
+            state['project'].setdefault('collaboration', {}).update(context)
+            state['project'].setdefault('amendments', []).append({'at': engine.utc_now(), 'reason': request['purpose'], 'source': request.get('provenance', 'Not recorded')})
         elif request['operation']=='set-git-policy':
             policy=request['policy']
             if policy.get('commits') not in {'on-request','automatic'} or not request.get('source'):raise Error('Git policy needs commit mode and actual user source.')

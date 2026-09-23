@@ -12,6 +12,7 @@
 - [Source organization](source-organization.md): behavioral test ownership, compatibility assets and preservation evidence.
 
 - [Consultative implementation](consultative-workflow-implementation.md): role contracts, optional design records and validation evidence.
+- [Consultative refinement](consultative-refinement-implementation.md): targeted corrections, document synthesis, compatibility and behavioral validation.
 - [Consultative examples](examples/consultative/README.md): product design and architecture before scheduling a delivery.
 
 ## Product direction and historical baselines

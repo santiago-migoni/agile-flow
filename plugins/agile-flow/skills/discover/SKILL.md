@@ -12,3 +12,5 @@ Read [the product manager role](../../references/roles/product-manager.md). Iden
 Understand the current user workflow, friction, desired outcomes and constraints. Ask one or two material questions at a time. Record sourced facts and labeled hypotheses in the constitution using initialize/update-project; an explicit definition closes that decision without another confirmation. Do not invent a first release, MVP, stories or iteration to finish initialization. Capture emerging needs unassigned when useful.
 
 Continue to define when the conversation calls for concrete behavior. Present understood context and the next relevant topic. Do not restart discovery for an established product.
+
+Synthesize already supplied background, problem and desired outcomes into the constitution. Do not repeat questions to fill labels. At a meaningful topic boundary, consolidate known facts and open choices before continuing.

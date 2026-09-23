@@ -15,3 +15,16 @@ Use an isolated synthetic product root. Give the evaluating agent the actual ski
 | Compatibility | Repeat discovery/design requests through advance or initialize. | Same intent boundaries as new skills. |
 
 Report actual observations separately from expectations. A simulated discussion does not establish a deployed product result. Passing deterministic tests establishes document/lifecycle behavior, not conversational competence.
+
+## Extended strategic continuity exercise
+
+Provide these messages sequentially, allowing the agent to work after each:
+
+1. “I manage Docker Compose manually and want one place to understand and operate my environments; let's define the product, no implementation yet.”
+2. “Every change must be validated before production.”
+3. “For example I might develop in dev, validate in staging and promote to production.”
+4. “I can also have a project with only production.”
+5. “Let's return to the strategic level.”
+6. “Great, continue.”
+
+Afterward inspect actual files and operations: supplied background should support a meaningful constitution; needs should be captured without invented scheduling; validation and topology must remain independent; the example must remain optional; focus must return to strategy and continue within definition. Distinguish failures of conversation interpretation from writer failures. Repeat with a legacy fixture where mandatory staging was already recorded: only that decision should be superseded, compatible validation should survive, and affected documents should be reconciled or explicitly pending. Assess these outcomes manually; structural validity alone is insufficient.

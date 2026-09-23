@@ -123,15 +123,30 @@ ALIASES = {
 }
 # Each table uses the literal headings/separators from its Markdown template.
 # Fields not represented by these columns remain visible in Additional context.
+FILTERS = {
+ 'Design decisions': lambda r: r.get('status') in {'confirmed', 'decided'},
+ 'Architecture decisions': lambda r: r.get('status') in {'confirmed', 'decided'},
+ 'Proposed decisions': lambda r: r.get('status') == 'proposed',
+ 'Decision history': lambda r: r.get('status') in {'superseded', 'rejected'},
+}
+
 TABLES = {
- 'User journeys': [('journeys','id','actor','trigger','steps','outcome','status')],
+ 'Product rules': [('rules','id','rule','scope','status','source')],
+ 'Illustrative examples': [('examples','id','example','illustrates|interpretation','status','source')],
+ 'Reconciliation': [('reconciliation','id','document','reason','status','resolution','revisit_when','source')],
+ 'Current focus': [('collaboration','focus','level','can_continue')],
+ 'Current agreements': [('agreements','item','scope','source')],
+ 'Pending proposals': [('proposals','item','impact','resolution')],
+ 'Reconciliation pending': [('reconciliation','item','impact','resolution')],
+
+ 'User journeys': [('journeys','id','actor','trigger','steps','outcome','applicability','status')],
  'Screens and interactions': [('screens','id','journey','screen','information','actions','status')],
  'States and recovery': [('states','context','state','behavior','recovery','status')],
  'Accessibility': [('accessibility','need','behavior','verification','status')],
  'Alternatives and recommendations': [('alternatives','topic','option','benefits','costs','recommendation','status')],
- 'Design decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes')],
- 'Architecture decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes')],
- 'Questions and revisit points': [('open_questions','question','impact','timing','revisit_when')],
+ 'Design decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes','retained_ids')],
+ 'Architecture decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes','retained_ids')],
+ 'Questions and revisit points': [('open_questions','id','question','impact','timing','revisit_when','status','resolution','source')],
  'Components and responsibilities': [('components','component','responsibility','interfaces','boundary','status')],
  'Data and ownership': [('data','data','owner','persistence','lifecycle','status')],
  'Integrations': [('integrations','system','contract','failure','trust_boundary','status')],
@@ -141,7 +156,7 @@ TABLES = {
 
  'People and value': [('users','actor|name','need','value|expected_value'), ('stakeholders','actor|name','need','value|expected_value')],
  'Objectives and success factors': [('objectives','objective|description','evidence','knowledge|status'), ('success_criteria','criterion','evidence','knowledge')],
- 'Decisions and collaboration agreements': [('decisions','id','reason|summary|decision|purpose','kind','scope','source','quote','author','at','supersedes'), ('agreements','id','agreement|summary','kind','scope','source','quote','author','at','supersedes')],
+ 'Decisions and collaboration agreements': [('decisions','id','reason|summary|decision|purpose','kind','scope','source','quote','author','at','supersedes'), ('agreements','id','agreement|summary|decision','kind','scope','source','quote','author','at','supersedes')],
  'Facts, assumptions and open decisions': [('confirmed_facts','=Fact','statement','source|impact','resolution'), ('assumptions','=Assumption','statement','basis|impact','resolution'), ('proposals','=Proposal','statement','basis|impact','resolution'), ('open_questions','=Question','question|statement','impact','resolution')],
  'Version roadmap': [('versions','version','stage','intended_outcome','capabilities','dependencies','status')],
  'Major milestones': [('milestones','milestone|name','version','evidence|outcome')],
@@ -189,6 +204,9 @@ TABLES = {
  'Git status': [('git','branch','commit','changes','policy')],
 }
 
+TABLES['Proposed decisions'] = TABLES['Design decisions']
+TABLES['Decision history'] = TABLES['Design decisions']
+
 ALIASES.update({
  'EVD_id':'id', 'REV_id':'id', 'INC_id':'increment_id', 'check_name':'check',
  'revision':'delivery_revision', 'timestamp_or_not_run':'at',
@@ -211,7 +229,7 @@ def split_sections(text):
 REQUIRED_SECTIONS = {
  'product_design': {'Design purpose'},
  'architecture': {'Architecture purpose'},
- 'constitution': {'Purpose','People and value','Objectives and success factors','Product boundaries','Decisions and collaboration agreements','Facts, assumptions and open decisions'},
+ 'constitution': {'Purpose'},
  'roadmap': {'Version roadmap'},
  'product_backlog': {'Prioritized needs'},
  'product_item': {'Problem or opportunity','Intended users and expected value','Expected product outcome','Scope','Priority rationale'},
@@ -221,7 +239,7 @@ REQUIRED_SECTIONS = {
  'verification': {'Verified scope and baselines','Check results and execution details','Verification conclusion'},
  'review': {'Presented result','User feedback and acceptance decisions'},
  'retrospective': {'Observations and proposed improvements'},
- 'summary': {'Current release and iteration','Delivery status','Next useful action'},
+ 'summary': {'Next useful action'},
 }
 
 
@@ -289,6 +307,8 @@ class Renderer:
             items = value if is_list else [value]
             groups.append({'path':path,'list':is_list})
             for n, item in enumerate(items):
+                filtered = section in FILTERS
+                if filtered and not FILTERS[section](item): continue
                 rp = path + [n] if is_list else path
                 cells = []; shapes = []; assigned_scalar = False
                 for expression in spec[1:]:
@@ -306,13 +326,16 @@ class Renderer:
                     if isinstance(item,dict):
                         p = self.path(expression, rp) if expression != '$' else None
                     else:
-                        p = rp if not assigned_scalar else None; assigned_scalar = True
+                        eligible = not (spec[0] == 'agreements' and expression == 'id')
+                        p = rp if not assigned_scalar and eligible else None
+                        if eligible: assigned_scalar = True
                     if p is None: cells.append(MISSING); shapes.append({'literal':MISSING})
                     else:
                         raw, shape = self.encode_cell(p); self.used.add(tuple(p))
                         cells.append(raw); shapes.append({'relative':p[len(rp):], 'shape':shape})
                 rows.append('| '+' | '.join(cells)+' |')
                 descriptor={'group':len(groups)-1, 'shape':skeleton(item), 'cells':shapes}
+                if filtered: descriptor['source_index'] = n
                 if isinstance(item,dict):
                     represented={b['relative'][0] for b in shapes if 'relative' in b and b['relative']}
                     if set(item)-represented:
@@ -470,7 +493,7 @@ def parse_table(raw,slot,result,seen):
         rows.append([v.strip().replace(r'\|','&#124;') for v in re.split(r'(?<!\\)\|',line.strip()[1:-1])])
     if len(rows)<2 or rows[0]!=slot['headers'] or any(not re.fullmatch(':?-+:?',v) for v in rows[1]):raise ValueError('Changed editorial table columns.')
     descriptors=slot['rows']; actual=rows[2:]
-    dynamic=not any('fixed_identity' in r or 'position_guard' in r for r in descriptors) and len(slot['groups'])==1 and slot['groups'][0]['list'] and descriptors and all(r==descriptors[0] for r in descriptors)
+    dynamic=not any('fixed_identity' in r or 'position_guard' in r or 'source_index' in r for r in descriptors) and len(slot['groups'])==1 and slot['groups'][0]['list'] and descriptors and all(r==descriptors[0] for r in descriptors)
     if not dynamic and len(actual)!=len(descriptors):raise ValueError('Mixed rows need an explicit record operation.')
     if dynamic:
         group=slot['groups'][0];put(result,group['path'],[copy.deepcopy(descriptors[0]['shape']) for row in actual])
@@ -478,7 +501,7 @@ def parse_table(raw,slot,result,seen):
     for n,row in enumerate(actual):
         desc=descriptors[0] if dynamic else descriptors[n]; group=slot['groups'][desc['group']]
         index=counts.get(desc['group'],0);counts[desc['group']]=index+1
-        path=group['path']+([index] if group['list'] else [])
+        path=group['path']+([desc.get('source_index', index)] if group['list'] else [])
         if len(row)!=len(desc['cells']):raise ValueError('Wrong editorial table cell count.')
         if 'position_guard' in desc:
             guard=desc['position_guard']

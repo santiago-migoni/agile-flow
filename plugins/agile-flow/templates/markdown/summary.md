@@ -4,6 +4,18 @@
 
 {{one_paragraph_product_objective_and_current_position}}
 
+## Current focus
+
+| Focus | Conversation level | Independent work |
+| --- | --- | --- |
+| {{focus}} | {{level}} | {{can_continue}} |
+
+## Current agreements
+
+| Agreement | Scope | Source |
+| --- | --- | --- |
+| {{item}} | {{scope}} | {{source}} |
+
 ## Current release and iteration
 
 | Release | Release objective | Iteration | Iteration goal | Status |
@@ -33,6 +45,18 @@
 | Item | Impact | Required resolution |
 | --- | --- | --- |
 | {{question}} | {{impact}} | {{revisit_when}} |
+
+## Pending proposals
+
+| Proposal | Impact | Next action |
+| --- | --- | --- |
+| {{item}} | {{impact}} | {{resolution}} |
+
+## Reconciliation pending
+
+| Document | Impact | Next action |
+| --- | --- | --- |
+| {{item}} | {{impact}} | {{resolution}} |
 
 ## Git status
 

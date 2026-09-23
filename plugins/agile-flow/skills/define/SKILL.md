@@ -12,3 +12,5 @@ Read [the product manager role](../../references/roles/product-manager.md). Use 
 Maintain BL needs with update-backlog and explain priority; avoid assigning an invented target release. Use update-roadmap or update-release only when version direction or concrete delivery/MVP scope is being discussed. The MVP is a usable outcome testing value, not a default first technical task.
 
 An explicit user choice settles that scope; reconcile affected records and continue definition. Move to design when solution exploration is requested. Move to plan only under a delivery-planning mandate. Product clarification does not create stories, estimates or an iteration.
+
+Separate product rules, optional journeys and illustrative examples. Capture concrete BL needs progressively. Apply the partial-correction procedure in the collaboration protocol; use targeted record operations and retain compatible agreements.

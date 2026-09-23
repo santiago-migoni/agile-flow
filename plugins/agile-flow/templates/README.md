@@ -36,7 +36,7 @@ The thirteen Markdown files below are complete editorial templates: visible meta
 
 | Document | Required composition | Conditional content |
 | --- | --- | --- |
-| Constitution | Purpose; people; objectives; boundaries; agreements; facts and uncertainty. | Git agreement only when sourced; sources and changes when recorded. Empty agreements use an explicit sentence. |
+| Constitution | Purpose; people; objectives; boundaries; agreements; facts and uncertainty. | Git agreement only when sourced; sources and changes when recorded. Omit unpopulated optional sections; preserve genuinely unresolved choices as scoped questions. |
 | Roadmap | Strategic direction and version table. | Milestones, uncertainty, adaptation, release links and changes as available. An MVP milestone may appear; its detailed definition belongs to a release. |
 | Product backlog | Ordered active-needs table or "No product needs recorded." | Priority explanation and completed/retired needs. Never invent ranking. |
 | Product need | Problem, value, outcome, boundaries and priority rationale. | Indicators, dependencies, breakdown, sources and changes. Do not add story criteria or shared DoD here. |
@@ -75,3 +75,9 @@ Exercise every document with populated and sparse data. Include multiple version
 - [Architecture](markdown/architecture.md): constraints, alternatives, components, data ownership, integrations, operation, decisions and questions.
 
 Both are optional authored documents created by their update operations when content is meaningful. They do not require releases or iterations. Repeated tables use the row vocabulary in [document operations](../references/document-operations.md#optional-design-document-operations). Decision status and source preserve the distinction between proposed and settled choices; execution authority remains separate.
+
+## Consultative documents and continuity
+
+Product design separates rules, illustrative examples and conditional journeys. Product design and architecture show active decisions near the top, proposals separately, and superseded/rejected decisions as history. All are views of the same authored records; the codec stores source row indexes to read the separated tables without changing record order. Existing unfiltered bindings remain readable.
+
+The constitution may include current collaboration focus, level and independent work. Summary derives agreements, proposals, current questions, investigations, deferred topics and outstanding document reconciliation. Its date comes from recorded source changes, not the clock at view time. Empty release/delivery sections are omitted before delivery planning. A resolved question remains in its source document with its answer and provenance but leaves the pending summary.

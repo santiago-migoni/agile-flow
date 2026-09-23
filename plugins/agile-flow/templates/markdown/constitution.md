@@ -57,3 +57,9 @@
 | Date | Change | Reason or source |
 | --- | --- | --- |
 | {{date}} | {{meaningful_change}} | {{reason_or_source}} |
+
+## Current focus
+
+| Focus | Conversation level | Independent work |
+| --- | --- | --- |
+| {{focus}} | {{level}} | {{can_continue}} |

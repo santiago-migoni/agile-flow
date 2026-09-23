@@ -132,3 +132,59 @@ Example request after inspecting current revision and fingerprint (replace trans
 ```
 
 These operations are additive to schema 4 / editorial-v2. Existing document schemas remain readable without rewriting or migrating records at installation. Earlier writers cannot handle the new optional paths. Older codec/layout conversions still require the explicit previewed migration process. No automatic relocation of existing constitution or sprint-plan prose occurs.
+
+## Targeted consultation updates (schema 4 / editorial-v2)
+
+All operations use the standard operation_id, purpose, expected_revision and expected_fingerprint envelope. These operations confer no execution authorization.
+
+`update-collaboration` accepts `context` with any of `focus`, `level` (strategic, functional, technical), `can_continue`. It merges supplied fields into the constitution. Use actual authorized independent work, not a proposed stage transition.
+
+`refine-design-records` requires actual `provenance` and a nonempty `edits` list. All edits are atomic. Each edit has `document` (`product_design` or `architecture`), `collection`, `action`, stable `id`, and optionally `record`. Collections are the structured row collections of the selected document, including `rules`, `examples` in product design and `reconciliation` in either document. Initialize a meaningful document through its existing update operation first.
+
+| Action | Contract |
+| --- | --- |
+| add | Add `record` under a new ID. |
+| identify | Assign an ID to one legacy unnamed row using `match` equal to the entire current row; ambiguous matches fail. No record payload. |
+| update | Merge supplied record fields, preserving other rows and fields. Settled decisions require supersede. |
+| resolve | Question or reconciliation only; provide resolution, retain history, attach provenance. |
+| defer | Question or reconciliation only; provide revisit_when. Questions receive timing=later. |
+| adopt / reject | Pending proposal only. Adoption requires basis: user-definition, user-confirmation, delegated or technical-discretion. Provenance records the disposition source. |
+| supersede | Settled decision only; record supplies a new ID and sourced settled replacement. The old record remains superseded. Optional retained_ids names compatible decisions retained at that point. |
+
+Questions use question, impact, timing (now/later/investigate), optional status (open/resolved/deferred), resolution and source. Legacy questions without IDs or status remain readable. Reconciliation rows use id, document (project-relative path), reason, status (open/resolved/deferred), optional resolution, revisit_when and source. Resolved rows require resolution and source; deferred rows require a revisit point. The caller must inspect the affected document before claiming resolution.
+
+Example edit inside a standard refinement envelope:
+
+```json
+{
+  "document": "product_design",
+  "collection": "decisions",
+  "action": "supersede",
+  "id": "PD-001",
+  "record": {
+    "id": "PD-003",
+    "decision": "A project may have production alone; staging is optional",
+    "scope": "Environment topology",
+    "status": "decided",
+    "basis": "user-definition",
+    "source": "Actual user correction reference",
+    "retained_ids": ["PD-002"]
+  }
+}
+```
+
+Here PD-002 is the separately recorded preproduction validation agreement. It remains unchanged. If the prior claim bundled topology and validation in a single decision, retain validation explicitly in the replacement instead. Source interpretation and completeness are semantic responsibilities, not guarantees of the storage validator.
+
+For needs, keep using update-backlog with item.id to refine a single existing BL; omit id only when creating a new need. Full document update operations remain available for compatibility. Prefer targeted edits for existing collections to avoid inadvertently replacing unrelated entries. Inspect and reconcile old Markdown bindings before changing editorial format; read-only inspection does not rewrite existing documents.
+
+Product-design content rows use these preferred fields (optional IDs allow targeted refinement):
+
+| Collection | Principal fields |
+| --- | --- |
+| rules | id, rule, scope, status, source |
+| examples | id, example, illustrates, status, source |
+| journeys | id, actor, trigger, steps, outcome, applicability, status |
+
+Use applicability to state when a journey applies; absence does not make it mandatory. Keep a rule's wording in one home and reference its ID from a decision rationale rather than maintaining two independently phrased requirements. Batch refinement records one change entry per affected document, naming each edited collection/ID. Unknown legacy row fields remain readable in Additional context; do not silently remove them during reconciliation.
+
+Constitution project.agreements accepts text entries or structured rows with id, agreement, scope, source and optional kind, quote, author, at, supersedes. A text entry occupies the agreement column, not the ID. Prefer sourced structured entries for material agreements. Existing summary/decision wording aliases remain readable.

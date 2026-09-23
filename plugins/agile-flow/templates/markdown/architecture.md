@@ -6,6 +6,12 @@
 
 {{purpose}}
 
+## Architecture decisions
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
 ## Constraints and boundaries
 
 **Constraints:** {{constraints}}
@@ -44,17 +50,29 @@
 | --- | --- | --- | --- | --- |
 | {{concern}} | {{approach}} | {{cost}} | {{verification}} | {{status}} |
 
-## Architecture decisions
-
-| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} |
-
 ## Questions and revisit points
 
-| Question | Impact | Timing | Revisit when |
-| --- | --- | --- | --- |
-| {{question}} | {{impact}} | {{timing}} | {{revisit_when}} |
+| ID | Question | Impact | Timing | Revisit when | Status | Resolution | Source |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{question}} | {{impact}} | {{timing}} | {{revisit_when}} | {{status}} | {{resolution}} | {{source}} |
+
+## Proposed decisions
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
+## Decision history
+
+| ID | Decision | Scope | Basis | Source | Rationale | Status | Replaces | Retains |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{decision}} | {{scope}} | {{basis}} | {{source}} | {{rationale}} | {{status}} | {{supersedes}} | {{retained_ids}} |
+
+## Reconciliation
+
+| ID | Document | Reason | Status | Resolution | Revisit when | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{document}} | {{reason}} | {{status}} | {{resolution}} | {{revisit_when}} | {{source}} |
 
 ## Sources
 
