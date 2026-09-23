@@ -81,3 +81,11 @@ Both are optional authored documents created by their update operations when con
 Product design separates rules, illustrative examples and conditional journeys. Product design and architecture show active decisions near the top, proposals separately, and superseded/rejected decisions as history. All are views of the same authored records; the codec stores source row indexes to read the separated tables without changing record order. Existing unfiltered bindings remain readable.
 
 The constitution may include current collaboration focus, level and independent work. Summary derives agreements, proposals, current questions, investigations, deferred topics and outstanding document reconciliation. Its date comes from recorded source changes, not the clock at view time. Empty release/delivery sections are omitted before delivery planning. A resolved question remains in its source document with its answer and provenance but leaves the pending summary.
+
+## Executive presentation
+
+The constitution owns `collaboration.synthesis` and selected `collaboration.highlights`; summary projects them without inventing relevance. The generated proposal inventory groups by document and collection with counts. Immediate questions, blockers and outstanding reconciliation remain explicit. Optional secondary inventories and historical content use standard HTML details blocks around registered Markdown; edits still round-trip through the same schema.
+
+Design row tables expose stable IDs. Historical alternatives, components and operations are separate from their current tables. Old bindings need no read-time rewrite. Missing optional constitution paragraphs and header clauses are omitted; available change timestamps supply its display date. Explicit existing values, authored notes and historical wording are preserved.
+
+Agreement pointers retain their identity while linking to the owning section. The referenced Markdown owns the meaning. A changed link target or unknown reference cannot silently change the agreement's identity.

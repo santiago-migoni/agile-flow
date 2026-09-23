@@ -14,3 +14,5 @@ Maintain BL needs with update-backlog and explain priority; avoid assigning an i
 An explicit user choice settles that scope; reconcile affected records and continue definition. Move to design when solution exploration is requested. Move to plan only under a delivery-planning mandate. Product clarification does not create stories, estimates or an iteration.
 
 Separate product rules, optional journeys and illustrative examples. Capture concrete BL needs progressively. Apply the partial-correction procedure in the collaboration protocol; use targeted record operations and retain compatible agreements.
+
+At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.

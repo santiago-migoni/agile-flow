@@ -22,33 +22,33 @@
 
 ## Alternatives and recommendations
 
-| Topic | Alternative | Benefits | Costs | Recommendation | Status |
-| --- | --- | --- | --- | --- | --- |
-| {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
+| ID | Topic | Alternative | Benefits | Costs | Recommendation | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
 
 ## Components and responsibilities
 
-| Component | Responsibility | Interfaces | Boundary | Knowledge |
-| --- | --- | --- | --- | --- |
-| {{component}} | {{responsibility}} | {{interfaces}} | {{boundary}} | {{status}} |
+| ID | Component | Responsibility | Interfaces | Boundary | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{component}} | {{responsibility}} | {{interfaces}} | {{boundary}} | {{status}} |
 
 ## Data and ownership
 
-| Data | Owner | Persistence | Lifecycle | Knowledge |
-| --- | --- | --- | --- | --- |
-| {{data}} | {{owner}} | {{persistence}} | {{lifecycle}} | {{status}} |
+| ID | Data | Owner | Persistence | Lifecycle | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{data}} | {{owner}} | {{persistence}} | {{lifecycle}} | {{status}} |
 
 ## Integrations
 
-| System | Contract | Failure behavior | Trust boundary | Knowledge |
-| --- | --- | --- | --- | --- |
-| {{system}} | {{contract}} | {{failure}} | {{trust_boundary}} | {{status}} |
+| ID | System | Contract | Failure behavior | Trust boundary | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{system}} | {{contract}} | {{failure}} | {{trust_boundary}} | {{status}} |
 
 ## Operation and deployment
 
-| Concern | Approach | Operational cost | Verification | Knowledge |
-| --- | --- | --- | --- | --- |
-| {{concern}} | {{approach}} | {{cost}} | {{verification}} | {{status}} |
+| ID | Concern | Approach | Operational cost | Verification | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{concern}} | {{approach}} | {{cost}} | {{verification}} | {{status}} |
 
 ## Questions and revisit points
 
@@ -74,12 +74,33 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | {{id}} | {{document}} | {{reason}} | {{status}} | {{resolution}} | {{revisit_when}} | {{source}} |
 
+## Alternatives and recommendations history
+
+| ID | Topic | Alternative | Benefits | Costs | Recommendation | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
+
+
+## Components and responsibilities history
+
+| ID | Component | Responsibility | Interfaces | Boundary | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{component}} | {{responsibility}} | {{interfaces}} | {{boundary}} | {{status}} |
+
+
+## Operation and deployment history
+
+| ID | Concern | Approach | Operational cost | Verification | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{concern}} | {{approach}} | {{cost}} | {{verification}} | {{status}} |
+
+
 ## Sources
 
 - {{reference}}
 
 ## Changes
 
-| Date | Change | Reason or source |
-| --- | --- | --- |
-| {{date}} | {{change}} | {{source}} |
+| Date | Change | Reason or source | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{change}} | {{source}} | {{records}} |

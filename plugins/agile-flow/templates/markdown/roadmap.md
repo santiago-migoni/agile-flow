@@ -34,6 +34,6 @@
 
 ## Changes
 
-| Date | Planning change | Reason |
-| --- | --- | --- |
-| {{date}} | {{change}} | {{reason}} |
+| Date | Planning change | Reason | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{change}} | {{reason}} | {{records}} |

@@ -1,0 +1,379 @@
+{
+  "data": {
+    "purpose": "Compare deployment options",
+    "components": [
+      {
+        "id": "C-1",
+        "component": "Old edge",
+        "status": "rejected"
+      },
+      {
+        "id": "C-2",
+        "component": "Current edge",
+        "status": "decided"
+      }
+    ],
+    "changes": [
+      {
+        "at": "2026-01-02",
+        "change": "Preserve original history \u2014 components/C-1: update",
+        "source": "Synthetic user"
+      }
+    ]
+  },
+  "text": "# Workshop\n\n**Status:** Not recorded \u00b7 **Updated:** Not recorded \u00b7 [Constitution](constitution.md) \u00b7 [Product design](product-design.md)\n\n## Architecture purpose\n\nCompare deployment options\n\n## Components and responsibilities\n\n| Component | Responsibility | Interfaces | Boundary | Knowledge |\n| --- | --- | --- | --- | --- |\n| Old edge | Not recorded | Not recorded | Not recorded | rejected |\n| Current edge | Not recorded | Not recorded | Not recorded | decided |\n\n## Changes\n\n| Date | Change | Reason or source |\n| --- | --- | --- |\n| 2026-01-02 | Preserve original history \u2014 components/C-1: update | Synthetic user |\n\n## Additional context\n\n| Context | Detail |\n| --- | --- |\n| Components / 1 / Id | C-1 |\n| Components / 2 / Id | C-2 |\n",
+  "schema": {
+    "codec": "editorial-v2",
+    "kind": "architecture",
+    "shape": {
+      "purpose": null,
+      "components": [
+        {
+          "id": null,
+          "component": null,
+          "status": null
+        },
+        {
+          "id": null,
+          "component": null,
+          "status": null
+        }
+      ],
+      "changes": [
+        {
+          "at": null,
+          "change": null,
+          "source": null
+        }
+      ]
+    },
+    "sections": [
+      {
+        "heading": "",
+        "pattern": "# \u0000title\u0000\n\n**Status:** Not recorded \u00b7 **Updated:** Not recorded \u00b7 [Constitution](constitution.md) \u00b7 [Product design](product-design.md)"
+      },
+      {
+        "heading": "Architecture purpose",
+        "pattern": "\u00000\u0000"
+      },
+      {
+        "heading": "Components and responsibilities",
+        "pattern": "\u00003\u0000"
+      },
+      {
+        "heading": "Changes",
+        "pattern": "\u000011\u0000"
+      },
+      {
+        "heading": "Additional context",
+        "pattern": "| Context | Detail |\n| --- | --- |\n| Components / 1 / Id | \u000012\u0000 |\n| Components / 2 / Id | \u000013\u0000 |"
+      }
+    ],
+    "slots": [
+      {
+        "path": [
+          "purpose"
+        ],
+        "shape": {
+          "type": "text"
+        }
+      },
+      {
+        "table": true,
+        "headers": [
+          "ID",
+          "Decision",
+          "Scope",
+          "Basis",
+          "Source",
+          "Rationale",
+          "Status",
+          "Replaces",
+          "Retains"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "Topic",
+          "Alternative",
+          "Benefits",
+          "Costs",
+          "Recommendation",
+          "Status"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "Component",
+          "Responsibility",
+          "Interfaces",
+          "Boundary",
+          "Knowledge"
+        ],
+        "groups": [
+          {
+            "path": [
+              "components"
+            ],
+            "list": true
+          }
+        ],
+        "rows": [
+          {
+            "group": 0,
+            "shape": {
+              "id": null,
+              "component": null,
+              "status": null
+            },
+            "cells": [
+              {
+                "relative": [
+                  "component"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "relative": [
+                  "status"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              }
+            ],
+            "position_guard": {
+              "column": 0,
+              "digest": "5390a3789d287e98f77c2628de85d0a797e6d213ba0c66892a49ee73c424971b"
+            }
+          },
+          {
+            "group": 0,
+            "shape": {
+              "id": null,
+              "component": null,
+              "status": null
+            },
+            "cells": [
+              {
+                "relative": [
+                  "component"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "literal": "Not recorded"
+              },
+              {
+                "relative": [
+                  "status"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              }
+            ],
+            "position_guard": {
+              "column": 0,
+              "digest": "0ae9bd5b35f3c192f073ca6e0ad7b5d12521771f6f658b1e3d3a344c573dcf71"
+            }
+          }
+        ]
+      },
+      {
+        "table": true,
+        "headers": [
+          "Data",
+          "Owner",
+          "Persistence",
+          "Lifecycle",
+          "Knowledge"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "System",
+          "Contract",
+          "Failure behavior",
+          "Trust boundary",
+          "Knowledge"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "Concern",
+          "Approach",
+          "Operational cost",
+          "Verification",
+          "Knowledge"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "ID",
+          "Question",
+          "Impact",
+          "Timing",
+          "Revisit when",
+          "Status",
+          "Resolution",
+          "Source"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "ID",
+          "Decision",
+          "Scope",
+          "Basis",
+          "Source",
+          "Rationale",
+          "Status",
+          "Replaces",
+          "Retains"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "ID",
+          "Decision",
+          "Scope",
+          "Basis",
+          "Source",
+          "Rationale",
+          "Status",
+          "Replaces",
+          "Retains"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "ID",
+          "Document",
+          "Reason",
+          "Status",
+          "Resolution",
+          "Revisit when",
+          "Source"
+        ],
+        "groups": [],
+        "rows": []
+      },
+      {
+        "table": true,
+        "headers": [
+          "Date",
+          "Change",
+          "Reason or source"
+        ],
+        "groups": [
+          {
+            "path": [
+              "changes"
+            ],
+            "list": true
+          }
+        ],
+        "rows": [
+          {
+            "group": 0,
+            "shape": {
+              "at": null,
+              "change": null,
+              "source": null
+            },
+            "cells": [
+              {
+                "relative": [
+                  "at"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              },
+              {
+                "relative": [
+                  "change"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              },
+              {
+                "relative": [
+                  "source"
+                ],
+                "shape": {
+                  "type": "text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": [
+          "components",
+          0,
+          "id"
+        ],
+        "shape": {
+          "type": "text"
+        }
+      },
+      {
+        "path": [
+          "components",
+          1,
+          "id"
+        ],
+        "shape": {
+          "type": "text"
+        }
+      }
+    ]
+  }
+}

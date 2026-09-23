@@ -12,6 +12,8 @@
 | --- | --- | --- |
 | {{actor}} | {{need}} | {{value}} |
 
+**Value:** {{value}}
+
 ## Expected product outcome
 
 {{observable_change_for_the_user_or_operator}}
@@ -50,6 +52,6 @@
 
 ## Changes
 
-| Date | Change | Reason or source |
-| --- | --- | --- |
-| {{date}} | {{change}} | {{reason_or_source}} |
+| Date | Change | Reason or source | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{change}} | {{reason_or_source}} | {{records}} |

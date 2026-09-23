@@ -23,6 +23,16 @@ Existing projects are read in place. Do not automatically relocate legacy prose 
 
 Product design distinguishes rules (`rules`), conditional journeys (`journeys.applicability`) and examples (`examples`). An example is not evidence of a required sequence. Active decisions, proposed decisions and decision history are separate tables over the same records. Questions retain their resolution and source; resolved questions do not appear as pending in the summary.
 
-The constitution owns durable collaboration focus and conversation level when useful. The summary derives its date from recorded changes and presents current agreements, proposals, immediate questions, investigation, deferral and reconciliation separately. Empty release and delivery sections are omitted before delivery planning. Generated indexes never invent a mandate.
+The constitution owns durable collaboration focus and conversation level when useful. The summary derives its date from recorded changes and presents an agent-authored executive synthesis, selected recent changes, immediate questions and reconciliation; proposal inventories, investigation and deferral are supplementary. Empty release and delivery sections are omitted before delivery planning. Generated indexes never invent a mandate.
 
 For an existing project, inspect current records first. Optional reconciliation should identify missing supported constitution content, candidate BL needs, wrongly generalized examples, overly broad supersessions and unresolved proposals. Present source/destination and exact changes before any requested bulk reorganization. No live project migration is triggered by a plugin update.
+
+## Executive reading and principal agreements
+
+The agent owns relevance selection. Use `update-collaboration` to maintain a short `synthesis` of the present situation and at most five `highlights` with `text` and `references` when something material changes. Both live in the constitution; summary.md projects them. Do not recopy every settled agreement into the synthesis or treat a synthesis as new approval. At a strategic focus, summarize technical proposals by topic and link their detail. Unselected records remain fully available in their principal documents.
+
+Give each agreement one principal wording in a design decision or product rule with a stable ID. A dependent rule, journey or state may carry `agreement_refs`, for example `product-design.md::PD-001`, and explain only its local application. BL `references` and highlight `references` accept the same pointers alongside ordinary sources. Unknown pointers fail validation; references to rejected or superseded agreements surface as reconciliation pending. Historical references remain valid and are never silently redirected. A reference is neither adoption nor execution authorization.
+
+Do not rewrite existing duplicated prose automatically. During requested reconciliation, compare its scope, retain meaningful local differences and replace only demonstrably duplicated agreement wording with a pointer. Keep ID namespaces distinct between rules and decisions in each design document.
+
+Unpopulated optional constitution fields are omitted. A material missing definition belongs in a scoped open question; the renderer cannot invent the question or its answer. History and rejected/superseded alternatives, components and operations are available in folded sections. A new change records a short purpose and separate edited-record details. Existing verbose history is preserved verbatim.

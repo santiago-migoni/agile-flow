@@ -4,17 +4,21 @@
 
 {{one_paragraph_product_objective_and_current_position}}
 
-## Current focus
+## Working focus
 
-| Focus | Conversation level | Independent work |
-| --- | --- | --- |
-| {{focus}} | {{level}} | {{can_continue}} |
+| Focus | Conversation level |
+| --- | --- |
+| {{focus}} | {{level}} |
 
-## Current agreements
+## Executive synthesis
 
-| Agreement | Scope | Source |
-| --- | --- | --- |
-| {{item}} | {{scope}} | {{source}} |
+{{synthesis}}
+
+## Recent changes
+
+| Highlight | References |
+| --- | --- |
+| {{text}} | {{references}} |
 
 ## Current release and iteration
 
@@ -33,6 +37,14 @@
 | Item | Impact | Required resolution |
 | --- | --- | --- |
 | {{blocker_or_decision}} | {{blocked_scope}} | {{next_action}} |
+
+## Next useful action
+
+**Action:** {{one_concrete_next_step}}
+
+**Needed from the user:** {{specific_decision_or_none}}
+
+**Can continue now:** {{independent_authorized_work_or_none}}
 
 ## Questions to investigate
 
@@ -63,11 +75,3 @@
 | Branch | Last relevant commit | Pending work | Commit policy |
 | --- | --- | --- | --- |
 | {{observed_branch_or_no_repository}} | {{prior_commit_reference_or_none}} | {{observed_uncommitted_scope}} | {{agreed_policy_or_not_set}} |
-
-## Next useful action
-
-**Action:** {{one_concrete_next_step}}
-
-**Needed from the user:** {{specific_decision_or_none}}
-
-**Can continue now:** {{independent_authorized_work_or_none}}

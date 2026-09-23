@@ -6,7 +6,7 @@ It stores product records in `<product-root>/.agile-flow/`; it never stores prod
 
 ## Use
 
-Version 0.8.0 adds targeted consultative refinement, partial corrections that preserve compatible agreements, and clearer document synthesis.
+Version 0.9.0 adds concise executive synthesis, principal agreement references, complete identity columns and expandable history.
 
 Invoke the skill matching the current intent:
 
@@ -46,11 +46,11 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 
 ## Reviewable collaboration
 
-Version 0.8.0 implements schema 4 with the editorial-v2 codec: clean authored Markdown, release-owned iterations, BL product needs and US work records with type US/NFR/BUG/TCH/SPK. Each story owns its acceptance criteria and DoD. Only product-backlog.md and summary.md are generated indexes.
+Version 0.9.0 implements schema 4 with the editorial-v2 codec: clean authored Markdown, release-owned iterations, BL product needs and US work records with type US/NFR/BUG/TCH/SPK. Each story owns its acceptance criteria and DoD. Only product-backlog.md and summary.md are generated indexes.
 
 Executable Markdown templates and portable structural schemas support partial updates without af markers. Technical metadata and baselines are versioned; local caches, journals and backups are ignored. Git preview and commit operations follow explicit authorization or an agreed outcome policy and preserve unrelated changes.
 
-See [document operations](references/document-operations.md), [clean Markdown and Git](references/clean-markdown-and-git.md), and the [compatibility and migration table](references/migration.md). Installing 0.8.0 does not migrate existing products. Automated tests and independent agent exercises are different forms of evidence.
+See [document operations](references/document-operations.md), [clean Markdown and Git](references/clean-markdown-and-git.md), and the [compatibility and migration table](references/migration.md). Installing 0.9.0 does not migrate existing products. Automated tests and independent agent exercises are different forms of evidence.
 
 ## Document presentation
 

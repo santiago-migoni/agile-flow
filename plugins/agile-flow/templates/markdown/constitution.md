@@ -52,14 +52,28 @@
 
 - [{{source_label}}]({{source_reference}}) — {{what_it_supports}}.
 
-## Changes
-
-| Date | Change | Reason or source |
-| --- | --- | --- |
-| {{date}} | {{meaningful_change}} | {{reason_or_source}} |
-
 ## Current focus
 
 | Focus | Conversation level | Independent work |
 | --- | --- | --- |
 | {{focus}} | {{level}} | {{can_continue}} |
+
+## Executive synthesis
+
+{{collaboration.synthesis}}
+
+## Recent changes
+
+| Highlight | References |
+| --- | --- |
+| {{text}} | {{references}} |
+
+## Next action
+
+{{next_step}}
+
+## Changes
+
+| Date | Change | Reason or source | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{meaningful_change}} | {{reason_or_source}} | {{records}} |

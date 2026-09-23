@@ -158,5 +158,5 @@ def refine(state, request, now, error):
         update(working, kind, {**request, 'document': {field: rows}}, now, error)
     for kind, targets in changed.items():
         working[kind]['changes'] = copy.deepcopy(state[kind].get('changes', [])) + [{
-            'at': now, 'change': request['purpose']+' — '+ '; '.join(targets), 'source': request['provenance']}]
+            'at': now, 'change': request['purpose'], 'records': targets, 'source': request['provenance']}]
     state.clear(); state.update(working)

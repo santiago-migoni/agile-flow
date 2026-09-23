@@ -69,7 +69,7 @@ class ConsultativeRefinementTests(unittest.TestCase):
         summary = (self.store.directory/'summary.md').read_text()
         self.assertNotIn('Recovery target?', summary)
         self.assertIn('Brand colors?', summary.split('## Deferred topics')[1])
-        self.assertIn('No immediate user decision recorded', summary)
+        self.assertNotIn('## Blockers and pending decisions', summary)
 
     def test_atomic_failure_leaves_every_document_unchanged(self):
         self.start()
@@ -119,7 +119,8 @@ class ConsultativeRefinementTests(unittest.TestCase):
         self.refine(self.edit('add', 'J-1', {'actor': 'Owner', 'steps': ['dev', 'staging', 'production'], 'outcome': 'Publish change', 'applicability': 'Optional example', 'status': 'proposed'}, 'journeys'))
         summary = (self.store.directory/'summary.md').read_text()
         self.assertIn('Define product value', summary); self.assertIn('strategic', summary)
-        self.assertIn('Publish change', summary.split('## Pending proposals')[1])
+        self.assertIn('[Journeys](product-design.md)', summary.split('## Pending proposals')[1])
+        self.assertNotIn('Publish change', summary)
         self.assertNotIn('## Current release and iteration', summary)
         self.assertNotIn('**Updated:** Not recorded', summary)
         self.assertEqual(self.store.inspect()['project']['collaboration']['level'], 'strategic')
@@ -156,7 +157,7 @@ class ConsultativeRefinementTests(unittest.TestCase):
                     self.edit('add', 'Q-3', {'question': 'Name?', 'timing': 'now'}, 'open_questions'))
         history = self.store.inspect()['product_design']['changes']
         self.assertEqual(len(history), before + 1)
-        self.assertIn('Q-2', history[-1]['change']); self.assertIn('Q-3', history[-1]['change'])
+        self.assertIn('open_questions/Q-2: add', history[-1]['records']); self.assertIn('open_questions/Q-3: add', history[-1]['records'])
 
     def test_unfiltered_design_bindings_remain_readable_without_rewrite(self):
         # Published unfiltered template: emulate its original binding descriptors.

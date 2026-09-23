@@ -20,9 +20,9 @@
 
 ## Product rules
 
-| ID | Rule | Scope | Knowledge | Source |
-| --- | --- | --- | --- | --- |
-| {{id}} | {{rule}} | {{scope}} | {{status}} | {{source}} |
+| ID | Rule | Scope | Knowledge | Source | Agreement references |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{rule}} | {{scope}} | {{status}} | {{source}} | {{agreement_refs}} |
 
 ## Illustrative examples
 
@@ -32,9 +32,9 @@
 
 ## User journeys
 
-| ID | Actor | Trigger | Steps | Expected outcome | Applicability | Knowledge |
-| --- | --- | --- | --- | --- | --- | --- |
-| {{id}} | {{actor}} | {{trigger}} | {{steps}} | {{outcome}} | {{applicability}} | {{status}} |
+| ID | Actor | Trigger | Steps | Expected outcome | Applicability | Knowledge | Agreement references |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{actor}} | {{trigger}} | {{steps}} | {{outcome}} | {{applicability}} | {{status}} | {{agreement_refs}} |
 
 ## Screens and interactions
 
@@ -44,21 +44,21 @@
 
 ## States and recovery
 
-| Context | State | Expected behavior | Recovery | Knowledge |
-| --- | --- | --- | --- | --- |
-| {{context}} | {{state}} | {{behavior}} | {{recovery}} | {{status}} |
+| ID | Context | State | Expected behavior | Recovery | Knowledge | Agreement references |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{context}} | {{state}} | {{behavior}} | {{recovery}} | {{status}} | {{agreement_refs}} |
 
 ## Accessibility
 
-| Need | Expected behavior | Verification | Knowledge |
-| --- | --- | --- | --- |
-| {{need}} | {{behavior}} | {{verification}} | {{status}} |
+| ID | Need | Expected behavior | Verification | Knowledge |
+| --- | --- | --- | --- | --- |
+| {{id}} | {{need}} | {{behavior}} | {{verification}} | {{status}} |
 
 ## Alternatives and recommendations
 
-| Topic | Alternative | Benefits | Costs | Recommendation | Status |
-| --- | --- | --- | --- | --- | --- |
-| {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
+| ID | Topic | Alternative | Benefits | Costs | Recommendation | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
 
 ## Questions and revisit points
 
@@ -84,12 +84,19 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | {{id}} | {{document}} | {{reason}} | {{status}} | {{resolution}} | {{revisit_when}} | {{source}} |
 
+## Alternatives and recommendations history
+
+| ID | Topic | Alternative | Benefits | Costs | Recommendation | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
+
+
 ## Sources
 
 - {{reference}}
 
 ## Changes
 
-| Date | Change | Reason or source |
-| --- | --- | --- |
-| {{date}} | {{change}} | {{source}} |
+| Date | Change | Reason or source | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{change}} | {{source}} | {{records}} |

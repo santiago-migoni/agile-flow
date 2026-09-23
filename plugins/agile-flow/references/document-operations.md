@@ -137,7 +137,7 @@ These operations are additive to schema 4 / editorial-v2. Existing document sche
 
 All operations use the standard operation_id, purpose, expected_revision and expected_fingerprint envelope. These operations confer no execution authorization.
 
-`update-collaboration` accepts `context` with any of `focus`, `level` (strategic, functional, technical), `can_continue`. It merges supplied fields into the constitution. Use actual authorized independent work, not a proposed stage transition.
+`update-collaboration` accepts `context` with any of `focus`, `level` (strategic, functional, technical), `can_continue`, `synthesis`, `highlights`. It merges supplied fields into the constitution. Use actual authorized independent work, not a proposed stage transition.
 
 `refine-design-records` requires actual `provenance` and a nonempty `edits` list. All edits are atomic. Each edit has `document` (`product_design` or `architecture`), `collection`, `action`, stable `id`, and optionally `record`. Collections are the structured row collections of the selected document, including `rules`, `examples` in product design and `reconciliation` in either document. Initialize a meaningful document through its existing update operation first.
 
@@ -188,3 +188,28 @@ Product-design content rows use these preferred fields (optional IDs allow targe
 Use applicability to state when a journey applies; absence does not make it mandatory. Keep a rule's wording in one home and reference its ID from a decision rationale rather than maintaining two independently phrased requirements. Batch refinement records one change entry per affected document, naming each edited collection/ID. Unknown legacy row fields remain readable in Additional context; do not silently remove them during reconciliation.
 
 Constitution project.agreements accepts text entries or structured rows with id, agreement, scope, source and optional kind, quote, author, at, supersedes. A text entry occupies the agreement column, not the ID. Prefer sourced structured entries for material agreements. Existing summary/decision wording aliases remain readable.
+
+## Executive synthesis and references
+
+`context.synthesis` is a short agent-authored paragraph about the current situation. `context.highlights` is a list of at most five objects with meaningful `text` and optional `references` (list of strings). An empty highlights list clears an outdated selection. Preserve current mandates; this operation never grants execution authority. Refresh the synthesis when its claims change, not after every storage operation.
+
+```json
+{
+  "operation": "update-collaboration",
+  "context": {
+    "focus": "Define the first useful owner outcome",
+    "level": "strategic",
+    "synthesis": "Independent workspaces are defined. The next choice is which owner task the first usable outcome should replace.",
+    "highlights": [
+      {"text": "Workspace types are optional.", "references": ["product-design.md::PD-001"]}
+    ],
+    "can_continue": "Compare the already identified needs without scheduling delivery"
+  }
+}
+```
+
+Include the standard operation ID, purpose and concurrency envelope when executing. The pointer in this example must identify a real decision or rule. Pointers are `product-design.md::ID` or `architecture.md::ID`. A row's `agreement_refs` must contain only such pointers. BL and highlight `references` may also include ordinary source strings. Links render to the owning document section with the exact record identifier; they do not copy the agreement text. Historical pointers require applicability review, not automatic substitution.
+
+Record histories now store `change` as the human explanation and `records` as the precise edited-record list. Both remain authored Markdown data. Old change entries remain readable unchanged. Generated summary proposal groups expose source documents and counts, rather than every proposal body. Blockers and pending user choices remain visible.
+
+A targeted update-backlog request still includes the existing item.purpose alongside item.id and changed fields; it is a required field of that operation. Ordinary source strings remain valid even if they contain punctuation such as double colons; only the documented document::ID prefixes are interpreted as agreement pointers.

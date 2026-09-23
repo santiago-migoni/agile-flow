@@ -11,6 +11,7 @@ Identify the actual product records before selecting migration instructions. Plu
 | 0.6.0 | Schema 4, editorial-v2 codec | Same registry location; manifest identifies editorial-v2 | Read and write directly with the current writer; no conversion required. |
 | 0.7.0 | Schema 4, editorial-v2 with optional design documents | Optional product-design.md and architecture.md with registered bindings | Existing editorial-v2 records remain compatible. Earlier writers cannot handle the new optional paths. |
 | 0.8.0 | Schema 4, editorial-v2 with targeted consultation records | Separate active/proposed/historical decisions, resolved questions and reconciliation records | Existing stored bindings remain readable without rewriting. New operations and fields require the updated writer; no automatic product reconciliation or downgrade guarantee. |
+| 0.9.0 | Schema 4, editorial-v2 with executive synthesis and agreement pointers | Selected highlights, grouped proposal inventories, identity columns and expandable history | Existing stored bindings remain readable. Use current operations for explicit editorial reconciliation; render refreshes generated indexes only. New pointers and synthesis fields require this writer. |
 
 ## Current conversion procedure
 

@@ -24,3 +24,5 @@ Use the schema-4 release/BL/US contract in the shared document operations refere
 Read [clean Markdown and Git](../../references/clean-markdown-and-git.md) before writing or versioning records. Use the agreed commit policy at coherent outcomes, review explicit paths, and preserve unrelated changes. Status remains read-only. Never infer push, branch, tag or release permission from commit permission.
 
 Include pending proposals, investigable questions and deferred topics without conflating them with blocking user decisions. Report any outstanding document reconciliation and the source of the current focus.
+
+When reporting status, use the executive synthesis and identify stale claims against actual source records. Link detail instead of enumerating every agreement; remain read-only.

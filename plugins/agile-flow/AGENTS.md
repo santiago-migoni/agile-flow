@@ -38,6 +38,7 @@ The user should be able to identify the understood product, agreed scope, curren
 - Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Portable technical metadata lives in `.internal/registry.json`; local control lives in `.internal/local/`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.
 - After a write, check view generation and compare the readable result with the user's intent. Report rendering failures and preserve manual edits.
+- Maintain a concise agent-authored executive synthesis in the constitution when consolidating meaningful progress. Summary projects that selection and groups proposal inventories; it does not decide relevance. Reference principal agreements by document and ID, and reconcile historical-reference warnings before dependent work.
 - Conclude with the substantive result and next useful action. A successful mutation is not proof of semantic correctness, completed functionality, or approval.
 
 ## Detailed contracts

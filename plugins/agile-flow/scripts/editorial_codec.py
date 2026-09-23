@@ -61,6 +61,10 @@ def cell(value):
 
 def uncell(raw, shape):
     kind = shape['type']
+    if kind == 'reference-list':
+        parts = raw.split('<br>') if raw else []
+        if len(parts) != len(shape['children']): raise ValueError('Reference list changed; use a record operation.')
+        return [uncell(part, child) for part, child in zip(parts, shape['children'])]
     if kind == 'link':
         match=re.fullmatch(r'\[([^\]]+)\]\(([^)]+)\)',raw)
         if not match or match[2]!=shape['target']:raise ValueError('Changed record link; use a record operation to change its assignment.')
@@ -131,26 +135,27 @@ FILTERS = {
 }
 
 TABLES = {
- 'Product rules': [('rules','id','rule','scope','status','source')],
+ 'Product rules': [('rules','id','rule','scope','status','source','agreement_refs')],
  'Illustrative examples': [('examples','id','example','illustrates|interpretation','status','source')],
  'Reconciliation': [('reconciliation','id','document','reason','status','resolution','revisit_when','source')],
+ 'Working focus': [('collaboration','focus','level')],
  'Current focus': [('collaboration','focus','level','can_continue')],
  'Current agreements': [('agreements','item','scope','source')],
  'Pending proposals': [('proposals','item','impact','resolution')],
  'Reconciliation pending': [('reconciliation','item','impact','resolution')],
 
- 'User journeys': [('journeys','id','actor','trigger','steps','outcome','applicability','status')],
+ 'User journeys': [('journeys','id','actor','trigger','steps','outcome','applicability','status','agreement_refs')],
  'Screens and interactions': [('screens','id','journey','screen','information','actions','status')],
- 'States and recovery': [('states','context','state','behavior','recovery','status')],
- 'Accessibility': [('accessibility','need','behavior','verification','status')],
- 'Alternatives and recommendations': [('alternatives','topic','option','benefits','costs','recommendation','status')],
+ 'States and recovery': [('states','id','context','state','behavior','recovery','status','agreement_refs')],
+ 'Accessibility': [('accessibility','id','need','behavior','verification','status')],
+ 'Alternatives and recommendations': [('alternatives','id','topic','option','benefits','costs','recommendation','status')],
  'Design decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes','retained_ids')],
  'Architecture decisions': [('decisions','id','decision','scope','basis','source','rationale','status','supersedes','retained_ids')],
  'Questions and revisit points': [('open_questions','id','question','impact','timing','revisit_when','status','resolution','source')],
- 'Components and responsibilities': [('components','component','responsibility','interfaces','boundary','status')],
- 'Data and ownership': [('data','data','owner','persistence','lifecycle','status')],
- 'Integrations': [('integrations','system','contract','failure','trust_boundary','status')],
- 'Operation and deployment': [('operations','concern','approach','cost','verification','status')],
+ 'Components and responsibilities': [('components','id','component','responsibility','interfaces','boundary','status')],
+ 'Data and ownership': [('data','id','data','owner','persistence','lifecycle','status')],
+ 'Integrations': [('integrations','id','system','contract','failure','trust_boundary','status')],
+ 'Operation and deployment': [('operations','id','concern','approach','cost','verification','status')],
  'Deferred topics': [('deferred','item','impact','resolution')],
  'Questions to investigate': [('investigate','item','impact','resolution')],
 
@@ -203,6 +208,13 @@ TABLES = {
  'Blockers and pending decisions': [('pending','item','impact','resolution')],
  'Git status': [('git','branch','commit','changes','policy')],
 }
+
+for _section in ('Alternatives and recommendations', 'Components and responsibilities', 'Operation and deployment'):
+    FILTERS[_section] = lambda r: r.get('status') not in {'rejected', 'superseded'}
+    TABLES[_section+' history'] = TABLES[_section]
+    FILTERS[_section+' history'] = lambda r: r.get('status') in {'rejected', 'superseded'}
+TABLES['Recent changes'] = [('highlights', 'text', 'references'), ('collaboration.highlights', 'text', 'references')]
+TABLES['Changes'] = [(spec[0], *spec[1:], 'records') for spec in TABLES['Changes']]
 
 TABLES['Proposed decisions'] = TABLES['Design decisions']
 TABLES['Decision history'] = TABLES['Design decisions']
@@ -265,6 +277,17 @@ class Renderer:
 
     def encode_cell(self,path):
         value=get(self.data,path);raw,shape=cell(value)
+        if isinstance(value, list) and value and all(isinstance(v, str) for v in value) and path[-1] in {'agreement_refs', 'references'}:
+            parts = []; children = []
+            for member in value:
+                text, child = cell(member)
+                if member in self.links and '::' in member:
+                    text = '['+text+']('+self.links[member]+')'
+                    child = {'type': 'link', 'target': self.links[member], 'identity': member, 'inner': child}
+                parts.append(text); children.append(child)
+            return '<br>'.join(parts), {'type': 'reference-list', 'children': children}
+        if isinstance(value, str) and value in self.links and '::' in value:
+            return '['+raw+']('+self.links[value]+')', {'type': 'link', 'target': self.links[value], 'identity': value, 'inner': shape}
         if isinstance(value,str) and value in self.links and path[-1] in {'id','parent_id','release_id','iteration_id','target_release','version','iteration','story'}:
             target=self.links[value]
             return '['+raw+']('+target+')',{'type':'link','target':target,'identity':value,'inner':shape}
@@ -377,6 +400,17 @@ def render(kind,title,data,notes='',document_path=None,available=None,display=No
         template=re.sub(r'\[([^\]]+)\]\(([^)]+)\)',existing_link,template)
     if kind=='summary' and not data.get('git'):
         template=re.sub(r'^## Git status\n.*?(?=^## |\Z)','',template,flags=re.M|re.S)
+    if kind == 'product_item':
+        display = dict(display or {})
+        display.setdefault('rank_or_unranked', 'Unranked')
+        display.setdefault('version_or_unassigned', 'Unassigned')
+        display.setdefault('why_this_need_has_its_current_priority', 'Not prioritized yet')
+    if kind == 'constitution':
+        project = data.get('project', {})
+        dates = [r.get('at') for r in project.get('amendments', []) if r.get('at')]
+        dates += [r.get('at') for r in data.get('decisions', []) if r.get('at')]
+        if dates:
+            display = dict(display or {}); display.setdefault('date', max(dates))
     original_template=template
     if kind=='story':
         work=data['item'].get('type')
@@ -393,6 +427,12 @@ def render(kind,title,data,notes='',document_path=None,available=None,display=No
         for block in re.split(r'\n\s*\n',body.strip()):
             if not block:continue
             if kind=='constitution' and block.startswith('**Git agreement:**') and not data.get('project',{}).get('git_policy') and not data.get('project',{}).get('publication_permission'):continue
+            if kind == 'constitution' and not block.startswith(('|', '#')):
+                # Only omit absent optional fields; explicit empty values remain bound and readable.
+                clauses = block.split(' · ')
+                clauses = [clause for clause in clauses if not TOKEN.findall(clause) or any(writer.path(ALIASES.get(t, t)) is not None or t in writer.display for t in TOKEN.findall(clause))]
+                if not clauses: continue
+                block = ' · '.join(clauses)
             if name=='Sources':
                 source=writer.path('references|provenance')
                 if source is None:raw=pattern='No sources recorded.'
@@ -465,8 +505,15 @@ def render(kind,title,data,notes='',document_path=None,available=None,display=No
             # Empty containers survive in the structural skeleton; no functional
             # value is lost by omitting an inapplicable optional section.
             continue
-        output.append((('## '+name+'\n\n') if name else '')+'\n\n'.join(rendered))
-        sections.append({'heading':name,'pattern':'\n\n'.join(patterns)})
+        body_text = '\n\n'.join(rendered); body_pattern = '\n\n'.join(patterns)
+        folded = name in {'Changes', 'Decision history'} or name.endswith(' history')
+        folded = folded or (kind == 'summary' and name in {'Pending proposals', 'Deferred topics', 'Questions to investigate'})
+        if folded:
+            opening = '<details>\n<summary>Show '+name.lower()+'</summary>\n\n'
+            body_text = opening+body_text+'\n\n</details>'
+            body_pattern = opening+body_pattern+'\n\n</details>'
+        output.append((('## '+name+'\n\n') if name else '')+body_text)
+        sections.append({'heading':name,'pattern':body_pattern})
     remaining=writer.leftovers()
     if remaining:
         rows=[]; patterns=[]

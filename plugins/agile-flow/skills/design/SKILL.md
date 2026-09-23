@@ -14,3 +14,5 @@ Refine screens, interactions, loading/empty/error states, accessibility and reco
 Keep proposed and decided rows distinct with sources. Both documents may exist without releases or iterations. Do not call plan-iteration merely because the user asked to define backend, frontend or infrastructure. Reference relevant design from a plan when delivery organization is requested or already authorized.
 
 Keep active decisions ahead of alternatives and history. On a correction, identify the exact claim changed, preserve compatible decisions, and track affected documents until their contents have been reconciled. Match the requested conversation level.
+
+At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.

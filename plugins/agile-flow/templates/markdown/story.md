@@ -85,6 +85,6 @@ As {{actor}}, I want {{capability}}, so that {{benefit}}.
 
 ## Changes
 
-| Date | Change | Reason or source |
-| --- | --- | --- |
-| {{date}} | {{change}} | {{source}} |
+| Date | Change | Reason or source | Record details |
+| --- | --- | --- | --- |
+| {{date}} | {{change}} | {{source}} | {{records}} |

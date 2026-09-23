@@ -10,13 +10,14 @@ try:
     from .document_store import DocumentStore,atomic
     from . import clean_markdown as codec
     from .git_workflow import GitWorkflow
-    from . import design_documents as design
+    from . import design_documents as design, agreement_references as agreements
 except ImportError:
     from release_store import ReleaseStore,engine,Error,hash_text
     from document_store import DocumentStore,atomic
     import clean_markdown as codec
     from git_workflow import GitWorkflow
     import design_documents as design
+    import agreement_references as agreements
 
 TECHNICAL={'document_baseline','planning_baseline','reviewed_fingerprints','fingerprints'}
 
@@ -48,7 +49,11 @@ class CleanStore(ReleaseStore):
         # Older layouts retain their original decoder; optional design paths are
         # handled only by the current writer and remain authored authorities.
         core = {path: text for path, text in files.items() if path not in design.DOCUMENTS.values()}
-        state = super().decode(core, meta)
+        self._reading_core = True
+        try:
+            state = super().decode(core, meta)
+        finally:
+            self._reading_core = False
         for kind, path in design.DOCUMENTS.items():
             if path in files:
                 state[kind] = self.unpack_document(path, files[path])
@@ -69,6 +74,7 @@ class CleanStore(ReleaseStore):
                         if not isinstance(value.get(primary),str) or not value[primary].strip():
                             raise Error('Structured project '+key+' needs '+primary+'.')
                         values[n]=value[primary]
+        if not getattr(self, "_reading_core", False): agreements.validate(state, Error)
         super().validate(checked)
         for kind in design.DOCUMENTS:
             if state.get(kind) is not None:
@@ -124,6 +130,9 @@ class CleanStore(ReleaseStore):
             elif name=='sprint-planning.md':identity=parts[-2]
             elif name.startswith('release-'):identity=parts[1]
             if identity:links[identity]=posixpath.relpath(target,posixpath.dirname(path) or '.')
+        for ref, (_, target) in agreements.catalog(getattr(self, 'render_state', {})).items():
+            target_path, anchor = target.split('#')
+            links[ref] = posixpath.relpath(target_path, posixpath.dirname(path) or '.')+'#'+anchor
         text,schema=codec.render(kind,title,value,old,self.schemas.get(path),document_path=path,available=getattr(self,'render_paths',None),display=display,links=links)
         self.schemas[path]=schema;self.technical[path]=technical
         self.rendered_documents[path]=text
@@ -226,10 +235,14 @@ class CleanStore(ReleaseStore):
             design.refine(state, request, engine.utc_now(), Error)
         elif request['operation'] == 'update-collaboration':
             context = request.get('context')
-            if not isinstance(context, dict) or not context or set(context) - {'focus', 'level', 'can_continue'}:
-                raise Error('Collaboration context supports focus, level and can_continue.')
-            if any(not isinstance(v, str) or not v.strip() for v in context.values()):
+            if not isinstance(context, dict) or not context or set(context) - {'focus', 'level', 'can_continue', 'synthesis', 'highlights'}:
+                raise Error('Collaboration context supports focus, level, can_continue, synthesis and highlights.')
+            if any(not isinstance(v, str) or not v.strip() for k, v in context.items() if k != 'highlights'):
                 raise Error('Collaboration context requires meaningful text.')
+            if 'highlights' in context:
+                highlights = context['highlights']
+                if not isinstance(highlights, list) or len(highlights) > 5 or any(not isinstance(r, dict) or set(r) - {'text', 'references'} or not isinstance(r.get('text'), str) or not r['text'].strip() or not isinstance(r.get('references', []), list) or any(not isinstance(v, str) for v in r.get('references', [])) for r in highlights):
+                    raise Error('Highlights require at most five text/reference rows.')
             if 'level' in context and context['level'] not in {'strategic', 'functional', 'technical'}:
                 raise Error('Conversation level must be strategic, functional or technical.')
             state['project'].setdefault('collaboration', {}).update(context)

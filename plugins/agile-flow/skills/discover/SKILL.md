@@ -14,3 +14,5 @@ Understand the current user workflow, friction, desired outcomes and constraints
 Continue to define when the conversation calls for concrete behavior. Present understood context and the next relevant topic. Do not restart discovery for an established product.
 
 Synthesize already supplied background, problem and desired outcomes into the constitution. Do not repeat questions to fill labels. At a meaningful topic boundary, consolidate known facts and open choices before continuing.
+
+At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.

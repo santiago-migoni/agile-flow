@@ -15,6 +15,9 @@
 - [Consultative refinement](consultative-refinement-implementation.md): targeted corrections, document synthesis, compatibility and behavioral validation.
 - [Consultative examples](examples/consultative/README.md): product design and architecture before scheduling a delivery.
 
+- [Executive reading implementation](executive-reading-implementation.md): synthesis, principal agreement references, folded history and compatibility evidence.
+- [Executive examples](examples/executive/README.md): complete source-generated documents for a synthetic project with substantial decision/proposal volume.
+
 ## Product direction and historical baselines
 
 [Vision](vision.md) describes product direction. The [original functional specification](functional-specification.md), [original plugin design](plugin-design.md) and [document-centered specification](document-centered-workflow-specification.md) preserve approved decisions at their documented dates. Their storage layouts are not substitutes for the maintained implementation contracts above.
