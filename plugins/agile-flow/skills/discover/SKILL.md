@@ -16,3 +16,5 @@ Continue to define when the conversation calls for concrete behavior. Present un
 Synthesize already supplied background, problem and desired outcomes into the constitution. Do not repeat questions to fill labels. At a meaningful topic boundary, consolidate known facts and open choices before continuing.
 
 At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.
+
+For new-product initialization, include [project instruction setup](../../references/project-instructions.md) in the authorized workflow: preview, inspect the repository rules, and apply the managed template with the existing request as source. Existing projects require an adoption/update mandate; do not reinstall guidance on every discovery turn.

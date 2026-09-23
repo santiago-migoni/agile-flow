@@ -26,3 +26,5 @@ Read [clean Markdown and Git](../../references/clean-markdown-and-git.md) before
 Include pending proposals, investigable questions and deferred topics without conflating them with blocking user decisions. Report any outstanding document reconciliation and the source of the current focus.
 
 When reporting status, use the executive synthesis and identify stale claims against actual source records. Link detail instead of enumerating every agreement; remain read-only.
+
+Use the read-only instructions preview described in [project instructions](../../references/project-instructions.md) when reporting project guidance status. Report missing, outdated or conflicting guidance without applying it. Check whether recorded prerequisites still match the current mandate; distinguish a stale question from a real user blocker.

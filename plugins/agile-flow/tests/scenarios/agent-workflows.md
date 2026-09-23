@@ -2,7 +2,7 @@
 
 These are manual Codex skill scenarios, intentionally separate from deterministic CLI tests.
 
-1. In a new empty temporary product, explicitly invoke `initialize` with a short need. Confirm it records facts, assumptions, open questions, a proposed first increment, and no code change.
+1. In a new empty temporary product, explicitly invoke `initialize` with a short need. Confirm it records facts, assumptions, open questions, a useful product synthesis, and no invented release, iteration or code change.
 2. In an existing temporary repository containing an instruction file, documentation, code, and a test, invoke `initialize` for a localized change. Confirm it distinguishes observed, documented, and unverified facts without modifying existing documents.
 3. Invoke `backlog` with a duplicate need, a priority change during active work, and a documentation-only request. Confirm it preserves identity, asks only for ambiguous replacement/supplement intent, and starts no implementation.
 4. Invoke `advance` under existing authorization, then with a new product rule. Confirm it advances the first and requests a decision for the second. Simulate an unavailable credential; confirm blocker and `not_run` evidence rather than a fabricated pass.
@@ -12,17 +12,17 @@ These are manual Codex skill scenarios, intentionally separate from deterministi
 
 ## Product discovery: ambiguous environment CRUD
 
-Start in an empty temporary product. Invoke initialize, then say: "I want CRUD for Odoo environments." The agent must distinguish environment lifecycle operations from business-record operations before treating either as confirmed. An initial hypothesis may be recorded only as an assumption. Inspect both the response and generated vision, not just successful CLI writes.
+Start in an empty temporary product. Invoke initialize, then say: "I want CRUD for Odoo environments." The agent must distinguish environment lifecycle operations from business-record operations before treating either as confirmed. An initial hypothesis may be recorded only as an assumption. Inspect both the response and authored constitution/product design, not just successful CLI writes.
 
 Clarify: "A PaaS inspired by OEC.sh, installed on one server where it also runs Odoo. No remote server registration." Then ask the agent to propose the first scope. Agree to a development environment with a URL, status, logs, and start/stop/restart. Specify Community 19.0 from Docker, and ask it to finish defining the proposal without implementing.
 
 Pass criteria:
 
-- Vision distinguishes confirmed user statements, assumptions, and agent proposals, with no confirmed SSH/multi-server or business-record CRUD requirement.
-- Corrected project questions, backlog uncertainties, and preparation agree with local deployment.
+- Constitution and product design distinguish confirmed user statements, assumptions, and agent proposals, with no confirmed SSH/multi-server or business-record CRUD requirement.
+- Corrected project questions, backlog uncertainties, and the release outline agree with local deployment.
 - The agent produces readable objective, scope, exclusions, observable criteria, checks, and a reasoned technical proposal; it does not stop at "recorded and validated" or ask the user to choose each investigable detail.
 - No implementation, deployment, authorization, or delivery acceptance is fabricated.
-- The response links vision/preparation Markdown; requests in `/tmp` remain transport only.
+- The response links constitution/product-design Markdown or the existing versioned release; requests in `/tmp` remain transport only.
 - A fresh status request recovers this understanding without writing records.
 
 ## Existing product and narrow requests

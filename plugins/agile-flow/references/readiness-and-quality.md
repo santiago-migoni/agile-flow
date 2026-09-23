@@ -1,6 +1,6 @@
 # Readiness and quality
 
-Readiness applies to delivery execution, not discovery or design. Do not require an iteration to discuss a solution. Refer to product-design.md and architecture.md when present; only decisions affecting the selected work need resolution now. Estimates are optional and need an explained basis.
+Execution readiness gates apply to delivery execution, not discovery or design. Release-definition readiness means enough context to delimit an outcome with explicit uncertainties; planning readiness concerns the selected work, not every future implementation detail. Do not require an iteration to discuss a solution. Refer to product-design.md and architecture.md when present; only decisions affecting the selected work need resolution now. Estimates are optional and need an explained basis.
 
 An increment is ready only with objective, included and excluded scope, observable criteria, required checks, dependencies or uncertainties, technical approach, and applicable authorization. Use each selected story’s embedded Definition of Done; propose missing item-specific conditions before authorized preparation. Planning can remain a draft while quality criteria are unresolved. Snapshot selected story versions and their embedded DoD; a changed draft baseline must be explicitly refined before execution preparation.
 

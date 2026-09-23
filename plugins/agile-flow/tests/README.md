@@ -15,3 +15,5 @@ The workflow suites retain their distinct coverage: `test_document_workflow.py` 
 Fixture releases such as v0.1.0 belong to the synthetic product. Preserve persistent schema/codec identifiers and fixture identities. Renaming tests does not authorize rewriting snapshots, weakening assertions or retiring compatibility coverage.
 
 `test_design_documents.py` covers optional consultative records without delivery scheduling, sourced decision preservation, manual edits, portability, timing of open questions and absence of implied authorization. `scenarios/consultative-workflows.md` defines separate behavioral exercises.
+
+Project instruction preservation is covered by test_project_instructions.py. Conversational evaluation is specified in [project collaboration scenarios](scenarios/project-collaboration.md); deterministic tests alone do not establish instruction loading or agent behavior.

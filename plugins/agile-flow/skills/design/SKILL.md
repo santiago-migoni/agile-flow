@@ -16,3 +16,5 @@ Keep proposed and decided rows distinct with sources. Both documents may exist w
 Keep active decisions ahead of alternatives and history. On a correction, identify the exact claim changed, preserve compatible decisions, and track affected documents until their contents have been reconciled. Match the requested conversation level.
 
 At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.
+
+Continue investigable work already covered by the mandate; do not end merely by announcing it. Distinguish operation inclusion from approved behavior, especially data loss and recovery. When reclassifying a question, reconcile its stored blocking activity and revisit point, not only the executive synthesis.

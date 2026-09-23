@@ -25,3 +25,5 @@
 The [collaboration validation](collaboration-flow-validation.md), [document-centered implementation](document-centered-workflow-implementation.md), [release/story implementation](release-story-workflow-implementation.md) and [clean Markdown/Git implementation](clean-markdown-git-implementation.md) are historical delivery records. Their test counts and references to a current implementation describe their own stage.
 
 [Intermediate design examples](document-design-examples/README.md), [typed release-layout examples](release-layout-example/README.md) and [legacy clean Markdown examples](clean-markdown-example/README.md) remain available for comparison. Do not copy them over a live product or treat them as current templates.
+
+- [Project instructions and collaboration continuity](project-instructions-implementation.md): managed AGENTS.md setup, mandate continuity, preservation and validation evidence.

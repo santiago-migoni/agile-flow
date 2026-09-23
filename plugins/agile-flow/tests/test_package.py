@@ -49,6 +49,9 @@ class PackageTests(unittest.TestCase):
         self.assertFalse(any(name.startswith(".agile-flow/") for name in names))
         self.assertIn("scripts/agile_flow.py", names)
         self.assertIn("scripts/design_documents.py", names)
+        self.assertIn("scripts/project_instructions.py", names)
+        self.assertIn("templates/project-agents.md", names)
+        self.assertIn("references/project-instructions.md", names)
         self.assertIn("templates/markdown/architecture.md", names)
         self.assertIn("templates/markdown/product_design.md", names)
 

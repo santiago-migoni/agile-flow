@@ -14,3 +14,5 @@ Read [the collaboration protocol](../../references/collaboration-protocol.md) an
 - Ready, authorized execution or correction: follow [implement](../implement/SKILL.md).
 
 If “continue” is ambiguous, use the existing agreed next step and authorization. Ask only when materially different interpretations remain. Completing a document or receiving a definition does not authorize a new stage. No magic execution phrase is required.
+
+Carry any unfinished requested deliverable across clarifications. Use the agreed answer to complete that result instead of requiring the user to request it again. If independent authorized work remains, continue it; if the result is complete, report it without inventing another stage.

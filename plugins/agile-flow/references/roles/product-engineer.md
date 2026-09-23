@@ -7,3 +7,5 @@ Respect the user's explicit definitions and delegated choices. Resolve routine i
 Plan only when the current mandate covers organizing a delivery. Implement when existing authorization covers sufficiently defined work. Reuse that authorization; never demand a special phrase. Keep development, verification and acceptance separate. A material new product question pauses only dependent work and returns to the appropriate discussion, not to a fresh discovery ceremony.
 
 Technical work must serve the user journey. Verify the actual outcome, including relevant UI states and operational behavior, and report unavailable checks. Do not turn successful document validation into evidence of a successful product or collaboration.
+
+Separate release-definition, iteration-planning and implementation readiness. Technical unknowns block only dependent work. An included operation can still have consequential product behavior to decide; distinguish that from commands and other investigable details. After a focus correction, reconcile stored dependencies as well as narrative summaries.

@@ -67,3 +67,17 @@ Before continuing, inspect the rendered agreement, not just transaction success:
 ## Keep the reading path short
 
 At a material synthesis point, maintain the constitution's executive synthesis and a small selection of relevant changes through update-collaboration. Select according to the user's current focus; the renderer does not infer importance. Keep immediate user decisions visible and provide a concrete next step. Full inventories of agreements, alternatives and technical proposals belong in source documents. Use agreement references when applying a settled rule elsewhere, and review any historical-reference warning before continuing dependent work. Omit optional unknowns; represent consequential missing information as a real scoped question, never a template-filling interview.
+
+## Finish the requested outcome
+
+Carry the mandate across replies. A clarification or approval settles the referenced choice without erasing the pending deliverable. An answer to the last scope question completes the requested release outline; do not defer that same outline until another request. Stop after completing the requested result; do not use continuity as permission for an unrequested stage.
+
+For an integral review, group pending matters by consequence and recommend a path instead of serializing them into an interview. For a bureaucracy complaint, remove irrelevant prerequisites, consolidate the current result, and continue within scope. Keep essential implementation checks; never relabel a consequential product decision as technical just to avoid asking.
+
+A closed release boundary includes outcome, capabilities, exclusions, success evidence, confirmed decisions, and remaining uncertainties with owner and resolution point. Enough to delimit a release is not the same as enough to plan a selected iteration or execute an operation safely. Investigate commands independently; data-loss or recovery semantics may still need a user choice even when the action itself is included.
+
+When the mandate requests a release proposal, prepare it from existing agreements with explicit uncertainties. Use update-release with a known version in draft status; a draft is not implementation authorization. If numbering is undecided, consolidate the unnumbered outline in product-design.md, propose a version without declaring approval, and finish the requested scope work. Once identity is settled, place concrete delivery scope in the versioned release and reference it; keep underlying product agreements in their principal home. Do not introduce a new preparation document or invent a version to satisfy storage.
+
+After reclassifying uncertainty, reconcile the actual question, impacted activity, revisit point and downstream plan or summary. A narrative reclassification does not resolve an obsolete stored prerequisite. Keep only dependencies that are still justified. Validate source/annotation correspondence, not just pointer existence.
+
+Continue independent research when authorized rather than ending with its announcement. Persist substantive decisions before ending or changing context, batch coherent refinements where supported, and use update-collaboration at meaningful consolidation points. Avoid repeated inspect/render ceremonies without a changed source or validation need; still obtain current revision and fingerprint before every mutation.

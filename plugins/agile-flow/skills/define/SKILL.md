@@ -16,3 +16,5 @@ An explicit user choice settles that scope; reconcile affected records and conti
 Separate product rules, optional journeys and illustrative examples. Capture concrete BL needs progressively. Apply the partial-correction procedure in the collaboration protocol; use targeted record operations and retain compatible agreements.
 
 At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.
+
+Complete the requested outcome using [the collaboration protocol](../../references/collaboration-protocol.md). A reply settling a pending scope choice preserves the request to delimit a release. Return its consolidated outcome, scope, exclusions, success evidence and owned uncertainties. Numbering must not block that synthesis; use product-design.md for the outline until a release identity is established. Detailed technical feasibility blocks only the dependent planning or implementation activity, not all release definition.

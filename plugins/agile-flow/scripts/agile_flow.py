@@ -6,6 +6,11 @@ from pathlib import Path
 import sys
 
 try:
+    from . import project_instructions
+except ImportError:
+    import project_instructions
+
+try:
     from .clean_store import CleanStore as DocumentStore, engine
 except ImportError:
     from clean_store import CleanStore as DocumentStore, engine
@@ -15,21 +20,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', default='.', help='Explicit product checkout root.')
     parser.add_argument('--request', help='JSON request file; mutations otherwise read stdin.')
-    parser.add_argument('command', choices=['inspect', 'validate', 'mutate', 'render', 'recover', 'migrate', 'git-status', 'git-preview', 'git-commit', 'git-init'])
+    parser.add_argument('command', choices=['inspect', 'validate', 'mutate', 'render', 'recover', 'migrate', 'git-status', 'git-preview', 'git-commit', 'git-init', 'instructions'])
     parser.add_argument('--force', action='store_true', help='Back up edited generated indexes before regenerating.')
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument('--dry-run', action='store_true', help='Read-only migration preview (default).')
-    mode.add_argument('--apply', action='store_true', help='Apply migration with a reviewed source fingerprint.')
+    mode.add_argument('--dry-run', action='store_true', help='Read-only migration or instruction preview (default).')
+    mode.add_argument('--apply', action='store_true', help='Apply migration or instructions with a reviewed source fingerprint.')
     args = parser.parse_args()
     store = DocumentStore(args.root)
     try:
         request = {}
         if args.request:
             request = json.loads(Path(args.request).read_text())
-        elif args.command in {'mutate','git-preview','git-commit','git-init'} or (args.command == 'migrate' and args.apply):
+        elif args.command in {'mutate','git-preview','git-commit','git-init'} or (args.command in {'migrate', 'instructions'} and args.apply):
             request = json.loads(sys.stdin.read())
         if not isinstance(request, dict): raise ValueError('Request must be an object.')
-        if args.command == 'git-status': result = {'status':'ok',**store.git.status()}
+        if args.command == 'instructions':
+            result = project_instructions.apply(args.root, request) if args.apply else project_instructions.preview(args.root)[0]
+        elif args.command == 'git-status': result = {'status':'ok',**store.git.status()}
         elif args.command == 'git-preview':
             result = store.git_preview(request)
         elif args.command == 'git-commit':

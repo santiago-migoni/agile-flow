@@ -213,3 +213,5 @@ Include the standard operation ID, purpose and concurrency envelope when executi
 Record histories now store `change` as the human explanation and `records` as the precise edited-record list. Both remain authored Markdown data. Old change entries remain readable unchanged. Generated summary proposal groups expose source documents and counts, rather than every proposal body. Blockers and pending user choices remain visible.
 
 A targeted update-backlog request still includes the existing item.purpose alongside item.id and changed fields; it is a required field of that operation. Ordinary source strings remain valid even if they contain punctuation such as double colons; only the documented document::ID prefixes are interpreted as agreement pointers.
+
+The separate CLI command `instructions` previews managed project guidance; `instructions --apply` requires a source fingerprint and the existing authorization source. It does not mutate product records or grant execution permission. See [project instructions](project-instructions.md) for preservation, adoption and recovery.

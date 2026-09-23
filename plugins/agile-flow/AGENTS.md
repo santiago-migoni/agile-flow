@@ -2,7 +2,7 @@
 
 Agile Flow helps a user and an agent turn a need into a useful, verified delivery while preserving shared understanding across sessions. This file is the workflow map. Skills contain the stage-specific actions; shared references define record, evidence, and authorization contracts.
 
-Read this map when applying an Agile Flow skill. It does not authorize work, replace the user's request, or override applicable product-repository instructions. Installing the plugin does not install this file into the product repository. Resolve the actual product root before reading or changing its records.
+Read this map when applying an Agile Flow skill. It does not authorize work, replace the user's request, or override applicable product-repository instructions. Installing the plugin does not install this file into the product repository. Project instruction setup uses the separate [managed project template workflow](references/project-instructions.md); it never copies this internal map wholesale. Resolve the actual product root before reading or changing its records.
 
 ## Route by intent and responsibility
 
@@ -25,7 +25,7 @@ initialize routes to discover; backlog routes to define; advance routes by curre
 
 Treat explicit user definitions as settled within their stated scope. Record them and continue the current responsibility without redundant confirmation. A confirmation of one host does not approve a stack, exclusions or implementation. Distinguish definitions, preferences, exploration, delegation and execution requests. Resolve delegated and routine technical choices autonomously.
 
-Discovery does not automatically create a release. Definition does not imply planning. Planning does not imply execution. Document completion never triggers a transition. Existing authorization may cover several activities; reuse it without ceremonial approval or special phrases. Ask one or two material questions at a time, with context, alternatives and a recommendation where useful. Continue independent authorized work while a necessary decision is pending. Defer future uncertainty rather than presenting it as a current blocker.
+Discovery does not automatically create a release. Definition does not imply planning. Planning does not imply execution. Document completion never triggers a transition. Existing authorization may cover several activities; reuse it without ceremonial approval or special phrases. During focused exploration, ask one or two material questions at a time, with context, alternatives and a recommendation where useful. When the user requests an integral review, present grouped pending matters and complete the requested synthesis; apply the completed-outcome contract in the collaboration protocol. Continue independent authorized work while a necessary decision is pending. Defer future uncertainty rather than presenting it as a current blocker.
 
 Reopen a settled decision only for contradiction, infeasibility or material new evidence, preserving its source and history. Return to the relevant role without restarting unrelated work. Keep at most one active implementation increment; development, verification and user acceptance remain separate.
 

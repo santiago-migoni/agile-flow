@@ -6,7 +6,7 @@ It stores product records in `<product-root>/.agile-flow/`; it never stores prod
 
 ## Use
 
-Version 0.9.0 adds concise executive synthesis, principal agreement references, complete identity columns and expandable history.
+Version 0.10.0 adds managed project AGENTS.md instructions, safe preview/apply updates and collaboration rules that carry requests through clarification to a reviewable result.
 
 Invoke the skill matching the current intent:
 
@@ -46,12 +46,16 @@ python3 $CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py skill
 
 ## Reviewable collaboration
 
-Version 0.9.0 implements schema 4 with the editorial-v2 codec: clean authored Markdown, release-owned iterations, BL product needs and US work records with type US/NFR/BUG/TCH/SPK. Each story owns its acceptance criteria and DoD. Only product-backlog.md and summary.md are generated indexes.
+Version 0.10.0 implements schema 4 with the editorial-v2 codec: clean authored Markdown, release-owned iterations, BL product needs and US work records with type US/NFR/BUG/TCH/SPK. Each story owns its acceptance criteria and DoD. Only product-backlog.md and summary.md are generated indexes.
 
 Executable Markdown templates and portable structural schemas support partial updates without af markers. Technical metadata and baselines are versioned; local caches, journals and backups are ignored. Git preview and commit operations follow explicit authorization or an agreed outcome policy and preserve unrelated changes.
 
-See [document operations](references/document-operations.md), [clean Markdown and Git](references/clean-markdown-and-git.md), and the [compatibility and migration table](references/migration.md). Installing 0.9.0 does not migrate existing products. Automated tests and independent agent exercises are different forms of evidence.
+See [document operations](references/document-operations.md), [clean Markdown and Git](references/clean-markdown-and-git.md), and the [compatibility and migration table](references/migration.md). Installing 0.10.0 does not migrate existing products. Automated tests and independent agent exercises are different forms of evidence.
 
 ## Document presentation
 
 The [complete template catalog](templates/README.md) drives all thirteen document formats, including real tables, prose and conditional content. The editorial-v2 reader reconstructs their functional records, preserves Notes sections and rejects ambiguous edits. Existing v0.5.0 records require a previewed format migration; the schema remains 4. See the [editorial integration guide](references/editorial-format.md).
+
+## Project collaboration instructions
+
+New product setup includes a concise managed section in project-root AGENTS.md under the initialization mandate. Existing projects adopt or update it explicitly. Preview with `scripts/agile_flow.py --root <absolute-product-root> instructions`; apply with a reviewed fingerprint and existing authorization source as described in [project instructions](references/project-instructions.md). Installation and status never update a project automatically. Manual rules outside the block are preserved and edits inside it are surfaced for reconciliation. The template coordinates the skills without duplicating changing product facts.
