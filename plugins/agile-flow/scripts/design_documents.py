@@ -29,6 +29,13 @@ def validate(kind, document, error):
         if any(not isinstance(i, str) or not i.strip() for i in named) or len(set(named)) != len(named):
             raise error('Record IDs must be nonempty and unique within their collection.')
         for row in rows:
+            if 'disposition' in row:
+                if field != 'alternatives' or row['disposition'] not in {'current','not-selected','fallback','deferred'}:
+                    raise error('Invalid alternative disposition.')
+                if row['disposition'] != 'current' and (not row.get('source') or not row.get('applicability')):
+                    raise error('Alternative disposition requires source and applicability.')
+                if row['disposition'] in {'fallback','deferred'} and not row.get('revisit_when'):
+                    raise error('Deferred and fallback alternatives require a revisit point.')
             allowed = {'open', 'resolved', 'deferred'} if field in {'open_questions', 'reconciliation'} else KNOWLEDGE
             if row.get('status') is not None and row['status'] not in allowed:
                 raise error('Invalid design knowledge status.')

@@ -69,15 +69,23 @@ def generate(store,state,available):
         for field, rows in (state.get(kind) or {}).items():
             if isinstance(rows, list) and field not in {'changes', 'open_questions', 'reconciliation'}:
                 groups.append((path, field.replace('_', ' ').capitalize(), field,
-                               [r for r in rows if isinstance(r, dict) and r.get('status') == 'proposed']))
+                               [r for r in rows if isinstance(r, dict) and r.get('status') == 'proposed' and r.get('disposition','current') == 'current']))
     for path, label, field, rows in groups:
         if rows:
             proposal_groups.append({'item': '['+label+']('+path+')', 'impact': str(len(rows))+' pending',
                                     'resolution': 'Review in the source document'})
     summary['proposals'] = proposal_groups
+    for kind, path in [('product_design','product-design.md'),('architecture','architecture.md')]:
+        retained=[r for r in (state.get(kind) or {}).get('alternatives',[]) if r.get('disposition') in {'fallback','deferred'} and r.get('status') not in {'rejected','superseded'}]
+        if retained:
+            summary['deferred'].append({'item':'[Retained alternatives]('+path+')','impact':str(len(retained))+' deferred or fallback options; not current choices','resolution':'See scoped revisit points in the source document'})
     for owner, ref in agreements.stale(state):
         summary['reconciliation'].append({'item': owner, 'impact': 'References a historical agreement: '+ref, 'resolution': 'Review applicability; do not silently substitute a new agreement'})
-    if dates: summary['updated_at'] = max(dates)
+    if dates:
+        summary['updated_at'] = max(dates)
+    backlog_dates=[c['at'] for r in state.get('product_backlog',[]) for c in r.get('changes',[]) if c.get('at')]
+    backlog_dates += [h['at'] for h in state.get('history',[]) if h.get('at')]
+    if backlog_dates: backlog['updated_at'] = max(backlog_dates)
     summary['can_continue'] = project.get('collaboration', {}).get('can_continue') or ('Investigate: '+ '; '.join(r['item'] for r in summary['investigate']) if summary['investigate'] else 'No independent action recorded')
     summary['needed_from_user'] = 'See the pending user choices above' if user_question_count else 'No immediate user decision recorded'
     git=store.git.status()

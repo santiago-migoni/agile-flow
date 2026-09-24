@@ -172,7 +172,7 @@ TABLES = {
  'Dependencies, assumptions and open questions': [('dependencies','=Dependency','item|statement','impact','resolution'), ('assumptions','=Assumption','statement','impact','resolution'), ('open_questions','=Question','question|statement','impact','resolution')],
  'Delivery breakdown': [('story_links','document|story','type','release','iteration','contribution')],
  'Target users and expected value': [('users','user|name','value','evidence')],
- 'Planned scope': [('item_ids','$','contribution','rationale')],
+ 'Planned scope': [('scope_items','item_id','contribution','rationale')],
  'MVP definition': [('mvp.learning_questions','question','method','decision')],
  'Delivery organization': [('iteration_links','document|iteration','goal','contribution','status')],
  'Dependencies, risks and open decisions': [('dependencies','=Dependency','item|statement','impact|consequence','resolution|response'), ('risks','=Risk','statement|item','impact|consequence','resolution|response'), ('open_questions','=Question','question|statement','impact','resolution'), ('open_decisions','=Decision','statement','impact','resolution')],
@@ -213,6 +213,10 @@ for _section in ('Alternatives and recommendations', 'Components and responsibil
     FILTERS[_section] = lambda r: r.get('status') not in {'rejected', 'superseded'}
     TABLES[_section+' history'] = TABLES[_section]
     FILTERS[_section+' history'] = lambda r: r.get('status') in {'rejected', 'superseded'}
+# Non-current alternatives remain readable separately without claiming rejection.
+FILTERS['Alternatives and recommendations'] = lambda r: r.get('status') not in {'rejected','superseded'} and r.get('disposition','current') == 'current'
+TABLES['Retained alternatives'] = [('alternatives','id','option','disposition','applicability','revisit_when','source')]
+FILTERS['Retained alternatives'] = lambda r: r.get('status') not in {'rejected','superseded'} and r.get('disposition','current') != 'current'
 TABLES['Recent changes'] = [('highlights', 'text', 'references'), ('collaboration.highlights', 'text', 'references')]
 TABLES['Changes'] = [(spec[0], *spec[1:], 'records') for spec in TABLES['Changes']]
 
@@ -288,7 +292,7 @@ class Renderer:
             return '<br>'.join(parts), {'type': 'reference-list', 'children': children}
         if isinstance(value, str) and value in self.links and '::' in value:
             return '['+raw+']('+self.links[value]+')', {'type': 'link', 'target': self.links[value], 'identity': value, 'inner': shape}
-        if isinstance(value,str) and value in self.links and path[-1] in {'id','parent_id','release_id','iteration_id','target_release','version','iteration','story'}:
+        if isinstance(value,str) and value in self.links and path[-1] in {'id','parent_id','item_id','release_id','iteration_id','target_release','version','iteration','story'}:
             target=self.links[value]
             return '['+raw+']('+target+')',{'type':'link','target':target,'identity':value,'inner':shape}
         return raw,shape
@@ -319,6 +323,10 @@ class Renderer:
     def table(self, block, section):
         lines = block.splitlines(); headers = [v.strip() for v in lines[0].strip('|').split('|')]
         specs = TABLES.get(section, [])
+        if section == 'Planned scope' and self.path('scope_items') is None:
+            specs = [('item_ids', '$')]
+            headers = ['Product need']
+            lines = ['| Product need |', '| --- |']
         if section == '__story_metadata': specs = [('', 'type','parent_id','release_id','iteration_id','state','estimate')]
         if section == '__nfr': specs = [('', 'quality_attribute','applicability','target','verification_method')]
         rows = []; schema = []; groups = []
@@ -506,7 +514,7 @@ def render(kind,title,data,notes='',document_path=None,available=None,display=No
             # value is lost by omitting an inapplicable optional section.
             continue
         body_text = '\n\n'.join(rendered); body_pattern = '\n\n'.join(patterns)
-        folded = name in {'Changes', 'Decision history'} or name.endswith(' history')
+        folded = name in {'Changes', 'Decision history', 'Retained alternatives'} or name.endswith(' history')
         folded = folded or (kind == 'summary' and name in {'Pending proposals', 'Deferred topics', 'Questions to investigate'})
         if folded:
             opening = '<details>\n<summary>Show '+name.lower()+'</summary>\n\n'
@@ -518,7 +526,14 @@ def render(kind,title,data,notes='',document_path=None,available=None,display=No
     if remaining:
         rows=[]; patterns=[]
         for path in remaining:
-            label=' / '.join(str(k+1) if isinstance(k,int) else k.replace('_',' ').capitalize() for k in path if k not in {'project','item','release','iteration'})
+            labels=[]
+            for n, key in enumerate(path):
+                if key in {'project','item','release','iteration'}: continue
+                if isinstance(key, int):
+                    row=get(data,path[:n+1])
+                    labels.append(str(row.get('id', key+1)) if isinstance(row,dict) else str(key+1))
+                else: labels.append(key.replace('_',' ').capitalize())
+            label=' / '.join(labels)
             raw,marker=writer.capture(path)
             rows.append('| '+label+' | '+raw+' |');patterns.append('| '+label+' | '+marker+' |')
         header='| Context | Detail |\n| --- | --- |\n'

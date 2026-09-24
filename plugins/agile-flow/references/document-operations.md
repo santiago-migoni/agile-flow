@@ -215,3 +215,17 @@ Record histories now store `change` as the human explanation and `records` as th
 A targeted update-backlog request still includes the existing item.purpose alongside item.id and changed fields; it is a required field of that operation. Ordinary source strings remain valid even if they contain punctuation such as double colons; only the documented document::ID prefixes are interpreted as agreement pointers.
 
 The separate CLI command `instructions` previews managed project guidance; `instructions --apply` requires a source fingerprint and the existing authorization source. It does not mutate product records or grant execution permission. See [project instructions](project-instructions.md) for preservation, adoption and recovery.
+
+## Bounded release contributions
+
+For new or reconciled releases, send `release.scope_items` as objects with `item_id` (existing BL ID), `contribution` (the part included in this release), and `rationale` (why it belongs here). The writer derives `item_ids` when omitted. When both are supplied, they must name the same unique needs; incomplete or duplicate contributions fail before writing. A later ID-only change must reconcile the contributions too. Do not narrow a product-wide BL just because one release delivers part of it.
+
+Legacy `item_ids` and narrative `scope` remain readable. Narrative scope appears under Scope detail, never as a substitute for bounded contribution rows. The writer cannot invent a contribution or rationale for an old identifier. Existing bindings remain readable; the next authorized write uses the current presentation and preserves authored notes.
+
+## Alternative disposition
+
+Keep technical knowledge (`status`) separate from delivery applicability (`disposition`). Alternatives may use `current` (default), `not-selected`, `fallback`, or `deferred`. Non-current dispositions require `source` and `applicability`; fallback and deferred also require `revisit_when`. These are editorial classifications grounded in actual choices, not invented rejection or approval. Use targeted `update` refinement with these fields. Retained alternatives remain visible in their own section and do not count as current pending proposals. Reclassifying one alternative never approves another automatically.
+
+After a scoped approval, reconcile dependent journeys, recovery states, release contributions and pending inventories. Preserve any undecided part of a compound proposal explicitly; do not mark the whole row decided because one part was approved.
+
+Older editorial-v2 readers can reconstruct these fields through stored bindings. An older writer does not understand the new presentation or disposition-aware summary and can regress it on the next mutation. Upgrade the writer before continuing changes to an adopted project; compatibility of read-only inspection is not a claim of write compatibility. Source development does not install a new plugin version.

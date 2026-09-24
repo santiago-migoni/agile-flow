@@ -18,3 +18,5 @@ Keep active decisions ahead of alternatives and history. On a correction, identi
 At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.
 
 Continue investigable work already covered by the mandate; do not end merely by announcing it. Distinguish operation inclusion from approved behavior, especially data loss and recovery. When reclassifying a question, reconcile its stored blocking activity and revisit point, not only the executive synthesis.
+
+A technical investigation can be planned as bounded SPK work under the existing planning mandate. Record its question, work limit and expected evidence; do not require every integration to be proven before any iteration can be planned. Block only the dependent execution. A chosen stack is not a complete application design: describe component responsibilities, data ownership, operation lifecycle and failure recovery to the depth needed by the selected work, without turning future detail into a checklist for the user.

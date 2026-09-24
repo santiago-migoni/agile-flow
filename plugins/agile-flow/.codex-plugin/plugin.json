@@ -1,6 +1,6 @@
 {
   "name": "agile-flow",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Manage small, verifiable software increments with durable local records.",
   "author": {
     "name": "agile-flow contributors"

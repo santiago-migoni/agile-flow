@@ -147,6 +147,13 @@ class ReleaseStore(DocumentStore):
         for release in state['releases']:
             if not re.fullmatch(VERSION,release['id']) or not release.get('objective'):raise Error('Release needs a valid version and objective.')
             if not set(release.get('item_ids',[])).issubset(products):raise Error('Release scope must reference BL records.')
+            if 'scope_items' in release:
+                rows=release['scope_items']
+                if not isinstance(rows,list) or any(not isinstance(r,dict) or any(not isinstance(r.get(k),str) or not r[k].strip() for k in ('item_id','contribution','rationale')) for r in rows):
+                    raise Error('Release scope_items require item_id, contribution and rationale.')
+                ids=[r['item_id'] for r in rows]
+                if len(ids)!=len(set(ids)) or set(ids)!=set(release.get('item_ids',[])):
+                    raise Error('Release contributions must cover each selected BL exactly once.')
             if release.get('status') not in {'draft','planned','released','canceled'}:raise Error('Invalid release status.')
         for it in state['iterations']:
             if not re.fullmatch(r'ITER-[0-9]{3,}',it['id']) or it.get('release_id') not in releases:raise Error('Iteration needs identity and a known release.')
@@ -267,7 +274,12 @@ class ReleaseStore(DocumentStore):
             if len(ids)!=len(set(ids)) or set(ids)!={r['id'] for r in state['product_backlog']}:raise Error('Reorder every BL exactly once.')
             for n,ident in enumerate(ids,1):engine.find(state['product_backlog'],ident,'product need')['order']=n
         elif op=='update-release':
-            data=request['release'];ident=data.get('id')
+            data=copy.deepcopy(request['release']);ident=data.get('id')
+            if 'scope_items' in data and 'item_ids' not in data:
+                rows=data['scope_items']
+                if not isinstance(rows,list) or any(not isinstance(r,dict) or not isinstance(r.get('item_id'),str) for r in rows):
+                    raise Error('Release scope_items require item_id, contribution and rationale.')
+                data['item_ids']=[r['item_id'] for r in rows]
             if not re.fullmatch(VERSION,ident or ''):raise Error('Release ID must be a version such as v0.1.0.')
             row=next((r for r in state['releases'] if r['id']==ident),None)
             if row is None:row={'id':ident,'status':'draft','changes':[]};state['releases'].append(row)

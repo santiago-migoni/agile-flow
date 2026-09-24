@@ -91,6 +91,12 @@
 | {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
 
 
+## Retained alternatives
+
+| ID | Alternative | Disposition | Applies to | Revisit when | Source |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{option}} | {{disposition}} | {{applicability}} | {{revisit_when}} | {{source}} |
+
 ## Sources
 
 - {{reference}}

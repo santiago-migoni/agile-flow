@@ -18,7 +18,13 @@
 | --- | --- | --- |
 | [{{BL_id}}](../../backlog/{{BL_id}}.md) | {{bounded_contribution}} | {{reason}} |
 
+**Linked needs:** {{item_ids}}
+
 **Excluded:** {{explicit_exclusions}}
+
+## Scope detail
+
+{{scope}}
 
 ## MVP definition
 
