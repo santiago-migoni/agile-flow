@@ -14,9 +14,13 @@ These instructions coordinate work when this project uses Agile Flow. They do no
 | Current intent | Skill | Reviewable result |
 | --- | --- | --- |
 | Understand the problem | discover | Users, current workflow, desired outcome and meaningful uncertainties. |
-| Define behavior or delimit a release | define | Agreed outcome, included capabilities, exclusions, success evidence and remaining scoped decisions. |
+| Define behavior and needs | define | Agreed outcome, included capabilities, exclusions, success evidence and remaining scoped decisions. |
 | Resolve experience or technical choices | design | Recommended solution, consequences, sourced choices and investigated feasibility. |
-| Organize delivery | plan | Bounded stories and iteration with dependencies and verification approach. |
+| Project versions | roadmap | Possible version outcomes and dependencies. |
+| Delimit or assess delivery | release | Bounded release, MVP when applicable, exit conditions and fulfillment. |
+| Organize delivery | sprint | Committed stories, goal, exclusions, verification and owner access. |
+| Capture discoveries | backlog | Prioritized needs without automatic sprint assignment. |
+| Improve collaboration | retrospective | Actual process learning and observable adjustments. |
 | Execute authorized scope | implement | Working result, relevant checks and honest limitations. |
 | Evaluate the delivered result | review | Actual user feedback and scoped acceptance or corrections. |
 | Inspect progress or change administrative state | status / close | Read-only situation, or the explicitly requested pause, closure or reopening. |
@@ -38,3 +42,7 @@ Authored Markdown is the functional authority. `summary.md` and `backlog/product
 - Verify readable meaning as well as record validity. A successful mutation or passing test is not user acceptance. Compare delivered behavior with the requested result.
 - Finish when the requested result is complete, the user pauses, or remaining authorized work genuinely depends on unavailable input or access. State the concrete dependency. Do not reopen settled choices or require another request for the same deliverable.
 - Use Git only under the existing agreement and include this file when explicitly selecting a coherent instruction change. Status remains read-only. Commits do not imply permission to push, publish or deploy.
+
+### Iterative change control
+
+Strategy and delivery continuously inform each other through the backlog. Record actual release and sprint scope agreements before execution; reuse existing permission. Resolve necessary technical details and current-criteria defects inside the sprint. Capture new capabilities for future prioritization; never automatically add them to this or the next sprint. Material changes require a sourced decision to interrupt and replan. Preserve original story identities, commitments and evidence. Keep current task progress separate from the agreed plan. Close a sprint after review and retrospective, explicitly identifying unfinished work. Release fulfillment, user acceptance and publication are separate facts. Updating strategy never silently changes active commitments.

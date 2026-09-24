@@ -9,9 +9,9 @@ Read [the workflow map](../../AGENTS.md), [collaboration protocol](../../referen
 
 Read [the product manager role](../../references/roles/product-manager.md). Use the problem and decisions already known. Explore the user journey: trigger, actor actions, information, expected result and recovery. Compare product alternatives with a recommendation, and record agreed behavior separately from pending proposals in product-design.md via update-product-design.
 
-Maintain BL needs with update-backlog and explain priority; avoid assigning an invented target release. Use update-roadmap or update-release only when version direction or concrete delivery/MVP scope is being discussed. The MVP is a usable outcome testing value, not a default first technical task.
+Maintain BL needs with update-backlog and explain priority; avoid assigning an invented target release. Route version direction to roadmap and concrete delivery/MVP scope to release under the current mandate. The MVP is a usable outcome testing value, not a default first technical task.
 
-An explicit user choice settles that scope; reconcile affected records and continue definition. Move to design when solution exploration is requested. Move to plan only under a delivery-planning mandate. Product clarification does not create stories, estimates or an iteration.
+An explicit user choice settles that scope; reconcile affected records and continue definition. Move to design when solution exploration is requested. Move to sprint only under an iteration-planning mandate. Product clarification does not create stories, estimates or an iteration.
 
 Separate product rules, optional journeys and illustrative examples. Capture concrete BL needs progressively. Apply the partial-correction procedure in the collaboration protocol; use targeted record operations and retain compatible agreements.
 

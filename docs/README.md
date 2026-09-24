@@ -27,3 +27,7 @@ The [collaboration validation](collaboration-flow-validation.md), [document-cent
 [Intermediate design examples](document-design-examples/README.md), [typed release-layout examples](release-layout-example/README.md) and [legacy clean Markdown examples](clean-markdown-example/README.md) remain available for comparison. Do not copy them over a live product or treat them as current templates.
 
 - [Project instructions and collaboration continuity](project-instructions-implementation.md): managed AGENTS.md setup, mandate continuity, preservation and validation evidence.
+
+## Strategic and operational cycle
+
+See [the iterative lifecycle implementation](iterative-lifecycle-implementation.md) for responsibility boundaries, runtime controls, explicit adoption and validation scenarios.

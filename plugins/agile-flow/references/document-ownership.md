@@ -5,8 +5,8 @@ All product records live in .agile-flow. Authored Markdown owns functional conte
 | Document | Principal content | Responsibility |
 | --- | --- | --- |
 | constitution.md | Purpose, users, objectives, boundaries and general agreements | Product manager |
-| product-design.md | Journeys, expected behavior and information; progressively screens, interactions, states, accessibility and recovery | Product manager defines behavior; product engineer refines the solution |
-| architecture.md | Constraints, alternatives, component/data/integration/operation design, technical decisions and consequences | Product engineer |
+| product-design.md | Needs, journeys, expected behavior and information; existing interface records remain readable until explicit reconciliation | Product manager defines behavior; product engineer refines the solution |
+| architecture.md | Constraints, alternatives, interface/screens/states/accessibility design, component/data/integration/operation design, technical decisions and consequences | Product engineer |
 | roadmap.md | Strategic version stages and intended outcomes | Product manager |
 | release/<version>/release-<version>.md | Concrete delivery scope, MVP hypothesis and learning, planned versus delivered outcome | Product manager with engineering input |
 | backlog/BL-*.md | Product needs and priority rationale, unassigned until a release is actually proposed or agreed | Product manager |

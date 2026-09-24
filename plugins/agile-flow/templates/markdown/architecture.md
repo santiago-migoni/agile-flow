@@ -26,6 +26,24 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | {{id}} | {{topic}} | {{option}} | {{benefits}} | {{costs}} | {{recommendation}} | {{status}} |
 
+## Screens and interactions
+
+| ID | Journey | Screen or interaction | Information | Actions | Knowledge |
+| --- | --- | --- | --- | --- | --- |
+| {{id}} | {{journey}} | {{screen}} | {{information}} | {{actions}} | {{status}} |
+
+## States and recovery
+
+| ID | Context | State | Expected behavior | Recovery | Knowledge | Agreement references |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{context}} | {{state}} | {{behavior}} | {{recovery}} | {{status}} | {{agreement_refs}} |
+
+## Accessibility
+
+| ID | Need | Expected behavior | Verification | Knowledge |
+| --- | --- | --- | --- | --- |
+| {{id}} | {{need}} | {{behavior}} | {{verification}} | {{status}} |
+
 ## Components and responsibilities
 
 | ID | Component | Responsibility | Interfaces | Boundary | Knowledge |

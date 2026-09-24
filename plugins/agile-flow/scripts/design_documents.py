@@ -6,7 +6,7 @@ COMMON = {'purpose', 'status', 'scope', 'exclusions', 'alternatives', 'decisions
           'open_questions', 'references', 'updated_at', 'changes', 'reconciliation'}
 FIELDS = {
     'product_design': COMMON | {'journeys', 'screens', 'states', 'accessibility', 'rules', 'examples'},
-    'architecture': COMMON | {'constraints', 'components', 'data', 'integrations', 'operations'},
+    'architecture': COMMON | {'constraints', 'components', 'data', 'integrations', 'operations', 'screens', 'states', 'accessibility'},
 }
 ROWS = {'alternatives', 'decisions', 'open_questions', 'journeys', 'screens',
         'states', 'accessibility', 'components', 'data', 'integrations', 'operations',

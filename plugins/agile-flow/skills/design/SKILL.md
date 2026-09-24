@@ -9,7 +9,7 @@ Read [the workflow map](../../AGENTS.md), [collaboration protocol](../../referen
 
 Read [the product engineer role](../../references/roles/product-engineer.md). Reuse agreed needs, journeys and constraints. If a missing product decision changes the solution, discuss it with define rather than silently choosing its answer.
 
-Refine screens, interactions, loading/empty/error states, accessibility and recovery through update-product-design. Compare architecture alternatives in update-architecture, including costs and operational consequences, then recommend. Research technical uncertainty; ask about consequential preferences rather than every implementation detail. Treat explicit user definitions as settled; decide delegated matters and identify the delegation source. Do not present several unrelated technology choices as a single mandatory package.
+Refine screens, interactions, loading/empty/error states, accessibility and recovery through update-architecture. Compare architecture alternatives in update-architecture, including costs and operational consequences, then recommend. Research technical uncertainty; ask about consequential preferences rather than every implementation detail. Treat explicit user definitions as settled; decide delegated matters and identify the delegation source. Do not present several unrelated technology choices as a single mandatory package.
 
 Keep proposed and decided rows distinct with sources. Both documents may exist without releases or iterations. Do not call plan-iteration merely because the user asked to define backend, frontend or infrastructure. Reference relevant design from a plan when delivery organization is requested or already authorized.
 

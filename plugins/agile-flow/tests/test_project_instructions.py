@@ -54,7 +54,7 @@ class ProjectInstructionsTests(unittest.TestCase):
         template = self.root / 'new-template.md'
         template.write_text('New collaboration instructions\n')
         preview, _, _ = instructions.preview(self.root, template)
-        with patch.object(instructions, 'TEMPLATE_VERSION', 2):
+        with patch.object(instructions, 'TEMPLATE_VERSION', instructions.TEMPLATE_VERSION + 1):
             preview, _, _ = instructions.preview(self.root, template)
             result = instructions.apply(self.root, dict(expected_source_fingerprint=preview['expected_source_fingerprint'], authorization_source='Upgrade instructions.'), template)
         self.assertEqual(result['status'], 'applied')

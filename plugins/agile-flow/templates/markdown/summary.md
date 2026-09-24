@@ -26,6 +26,12 @@
 | --- | --- | --- | --- | --- |
 | [{{version}}](release/{{version}}/release-{{version_without_v}}.md) | {{release_objective}} | [{{ITER_id}}](release/{{version}}/{{ITER_id}}/sprint-planning.md) | {{iteration_goal}} | {{administrative_status}} |
 
+## Release lifecycle
+
+| Release | Scope commitment | Effective fulfillment | Release record status |
+| --- | --- | --- | --- |
+| {{release}} | {{commitment}} | {{fulfillment}} | {{publication}} |
+
 ## Delivery status
 
 | Delivery | Development | Verification | User acceptance | Relevant limit |

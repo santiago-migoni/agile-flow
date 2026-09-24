@@ -69,3 +69,33 @@ Planning alone does not authorize implementation. Reuse existing permission only
 | Story | Kind | Criterion ID | Agreed requirement |
 | --- | --- | --- | --- |
 | {{US_id}} | {{acceptance_or_DoD}} | {{criterion_id}} | {{frozen_requirement}} |
+
+## Sprint commitment
+
+**Source:** {{commitment.source}} · **Recorded:** {{commitment.at}}
+
+## Owner review access
+
+{{review_access}}
+
+## Current task progress
+
+The implementation task table records the agreed plan. These dated observations track subsequent progress; they do not change that plan or establish acceptance.
+
+| Date | Task | Status | Evidence or explanation | Source |
+| --- | --- | --- | --- | --- |
+| {{at}} | {{task}} | {{status}} | {{evidence}} | {{source}} |
+
+## Findings and disposition
+
+| ID | Classification | Origin | Impact | Disposition | Backlog | Story | Source |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| {{id}} | {{classification}} | {{origin}} | {{impact}} | {{disposition}} | {{backlog_id}} | {{story_id}} | {{source}} |
+
+## Sprint conclusion
+
+**Result:** {{closure.result}} · **Source:** {{closure.source}} · **Date:** {{closure.at}}
+
+**Reason:** {{closure.reason}}
+
+**Outstanding work:** {{closure.outstanding_story_ids}}

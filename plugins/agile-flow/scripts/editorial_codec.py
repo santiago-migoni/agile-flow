@@ -135,6 +135,11 @@ FILTERS = {
 }
 
 TABLES = {
+ 'Release lifecycle': [('lifecycle_status','release','commitment','fulfillment','publication')],
+ 'Current task progress': [('task_progress','at','task','status','evidence','source')],
+ 'Findings and disposition': [('findings','id','classification','origin','impact','disposition','backlog_id','story_id','source')],
+ 'Fulfillment assessments': [('assessments','at','result','outcome','evidence','source','acceptance_source')],
+ 'Previous scope commitments': [('scope_history','at','impact','source')],
  'Product rules': [('rules','id','rule','scope','status','source','agreement_refs')],
  'Illustrative examples': [('examples','id','example','illustrates|interpretation','status','source')],
  'Reconciliation': [('reconciliation','id','document','reason','status','resolution','revisit_when','source')],

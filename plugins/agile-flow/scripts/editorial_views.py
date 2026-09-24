@@ -1,10 +1,10 @@
 """Generated editorial indexes. The domain engine owns effective delivery states."""
 try:
-    from . import editorial_codec as codec, legacy_records as engine
+    from . import editorial_codec as codec, legacy_records as engine, iterative_lifecycle as lifecycle
     from .release_store import iteration_path
     from . import agreement_references as agreements
 except ImportError:
-    import editorial_codec as codec, legacy_records as engine
+    import editorial_codec as codec, legacy_records as engine, iterative_lifecycle as lifecycle
     from release_store import iteration_path
     import agreement_references as agreements
 
@@ -34,6 +34,9 @@ def generate(store,state,available):
                             'acceptance':i['effective_acceptance'],'limit':i.get('limitations','Not recorded')} for i in observed['increments']],
              'pending':[{'item':b['id'],'impact':b['condition'],'resolution':b['resolution_requirement']} for b in state['blockers'] if b['state']=='open']+
                        [{'item':q,'impact':'Not recorded','resolution':'User clarification'} for q in project.get('open_questions',[])]}
+    if lifecycle.enabled(state):
+        summary['lifecycle_status'] = [{'release': r['id'], 'commitment': 'Agreed' if r.get('commitment') else 'Draft',
+            'fulfillment': lifecycle.effective_fulfillment(store,state,r,engine), 'publication': r['status']} for r in state['releases']]
     summary['deferred'] = []; summary['investigate'] = []
     summary['reconciliation'] = []
     user_question_count = len(project.get('open_questions', []))

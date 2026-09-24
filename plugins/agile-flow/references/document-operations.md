@@ -41,16 +41,16 @@ Roadmap versions describe strategic evolution and may identify an intended MVP m
 | Operation | Payload |
 | --- | --- |
 | initialize | project with name, purpose and known context; preserve original source quotations. No global quality_policy. |
-| update-project | project with changed purpose/vision/mission, users, stakeholders, objectives, scope, exclusions, constraints, agreements, confirmed_facts, assumptions, proposals, open_questions, references or next_step. |
+| update-project | project with changed purpose/vision/mission, users, stakeholders, objectives, scope, exclusions, constraints, costs, viability, agreements, confirmed_facts, assumptions, proposals, open_questions, references or next_step. |
 | update-product-design | document with purpose on creation; partial updates support status, scope, exclusions, journeys, screens, states, accessibility, alternatives, decisions, open_questions and references. |
-| update-architecture | document with purpose on creation; partial updates support status, scope, exclusions, constraints, components, data, integrations, operations, alternatives, decisions, open_questions and references. |
+| update-architecture | document with purpose on creation; partial updates support status, scope, exclusions, constraints, components, data, integrations, operations, screens, states, accessibility, alternatives, decisions, open_questions and references. |
 | update-backlog | item with purpose; optional existing BL id, value, users, outcome, scope, exclusions, success_indicators, dependencies (BL IDs), assumptions, open_questions, priority, order, provenance, references, target_release. |
 | reorder-backlog | item_ids containing every BL exactly once. |
 | retire-backlog / complete-backlog | item_id (BL), reason; records the actual decision without deleting its history. |
 | update-roadmap | document with direction, versions (rows with version such as v0.1.0, stage, intended outcome, capabilities, dependencies, status), milestones, assumptions, uncertainties, adaptation_criteria, release_references and changes as useful. No detailed mvp. |
 | update-release | release with version id, objective, optional users, value, item_ids (BL), scope, exclusions, mvp, dependencies, risks, open_questions, exit_conditions, delivered_outcome, learning, upgrade_notes and publication. New status defaults to draft. Published status requires delivered_outcome and publication references; publishing is never performed by this operation. |
-| plan-iteration | iteration with release_id, goal and scope; optional existing id, item_ids, exclusions, technical_plan, tasks, verification_plan, dependencies, risks, open_decisions, timeframe. A draft may begin without stories; update-story selects its new story in that draft. |
-| update-story | story with purpose, parent_id (BL), iteration_id and type for new work; existing US id for refinement. Include criteria, dod, scope, exclusions, value, priority/order, estimate/basis, dependencies (US), open_questions and provenance as useful. |
+| plan-iteration | iteration with release_id, goal and scope; optional existing id, item_ids, exclusions, review_access, technical_plan, tasks, verification_plan, dependencies, risks, open_decisions, timeframe. A draft may begin without stories; update-story selects its new story in that draft. |
+| update-story | story with purpose, parent_id (BL), iteration_id and type for new work; existing US id for refinement. Include criteria, dod, scope, exclusions, follows_up (original US in another iteration with the same BL), value, priority/order, estimate/basis, dependencies (US), open_questions and provenance as useful. |
 
 Story-specific fields follow the approved type: US uses story; NFR quality_attribute/applicability/verification_method; BUG reproduction/observed/expected/impact; TCH approach/components; SPK question/work_limit/findings/recommendation. Do not force technical or defect records into a fictional user-story sentence.
 
@@ -229,3 +229,27 @@ Keep technical knowledge (`status`) separate from delivery applicability (`dispo
 After a scoped approval, reconcile dependent journeys, recovery states, release contributions and pending inventories. Preserve any undecided part of a compound proposal explicitly; do not mark the whole row decided because one part was approved.
 
 Older editorial-v2 readers can reconstruct these fields through stored bindings. An older writer does not understand the new presentation or disposition-aware summary and can regress it on the next mutation. Upgrade the writer before continuing changes to an adopted project; compatibility of read-only inspection is not a claim of write compatibility. Source development does not install a new plugin version.
+
+## Iterative lifecycle operations
+
+See [the lifecycle contract](iterative-lifecycle.md). These operations use the same mutation envelope, stale-write guards and recoverable transaction journals as existing operations. `source` is an actual user agreement or observation reference, not an invented approval. Commitments never grant execution permission.
+
+| Operation | Required payload and effect |
+| --- | --- |
+| adopt-lifecycle | authorization_source; records iterative-v1 without changing prior approvals. New initialization includes this operation under its existing mandate. |
+| commit-release | release_id, source; requires scope_items and exit_conditions, records a commitment digest. |
+| revise-release | release_id, source, impact, fields; explicitly replaces selected objective/item_ids/scope_items/scope/exclusions/mvp/exit_conditions, preserving previous scope and agreement. Active sprint scope stays unchanged. |
+| commit-sprint | iteration_id, source; requires a committed release, selected typed stories with criteria/DoD, resolved questions and review_access. Tasks use unique id and story (or item_id). Allows one unclosed committed sprint. |
+| record-finding | iteration_id, classification (implementation-detail/defect/opportunity/material-change), origin, impact, disposition, source; opportunity requires backlog_id, other classes require selected story_id. Unresolved material findings block only dependent execution. |
+| resolve-finding | iteration_id, finding_id, source, resolution, disposition (within-scope/deferred); deferred requires backlog_id. Records a sourced treatment without altering scope. A scope change instead concludes the sprint as interrupted. |
+| track-task | iteration_id, task_id, status (planned/in_progress/blocked/done), evidence, source; appends an observation without changing agreed tasks or acceptance. |
+| conclude-sprint | iteration_id, result (completed/interrupted), reason, source, outstanding_story_ids sorted exactly as currently uncovered stories. Requires actual review and retrospective records. Completed requires current implemented, verified and accepted coverage; interrupted preserves unfinished work. |
+| assess-release | release_id, result (incomplete/completed), outcome, evidence, source. Completed also requires acceptance_source, exit_results in committed order (condition/result=passed/evidence), and contributions in scope_items order (item_id/contribution/result=delivered/evidence). All sprints must be concluded; accepted, verified linked follow-up stories can fulfill earlier unfinished work without changing old sprint history. |
+
+Use `python3 <plugin>/scripts/agile_flow.py --root <product> lifecycle --dry-run` for existing-project adoption. Review the report, then use `--request <request.json> lifecycle --apply` with expected_source_fingerprint and authorization_source. A changed checkout rejects the request. Adoption retains every existing document and makes no approval or content relocation inference. Its transaction journal preserves changed bytes; Git policy remains separate. Read-only status and plugin installation never adopt a project.
+
+After commitment, plan-iteration cannot refresh the sprint and update-story cannot change its agreed definition. A new opportunity is captured through update-backlog before record-finding; both are ordinary recoverable, idempotent operations with independent envelopes. Work remains unassigned until explicitly selected. To interrupt, record a review describing the actual situation and a retrospective observation, then conclude-sprint; no fabricated acceptance is needed.
+
+Release status= released still records actual publication and requires delivered_outcome/publication. In an adopted project it also requires completed fulfillment; assess-release alone never publishes. Scope commitments, source authenticity and contribution evidence require agent judgment in addition to deterministic validation.
+
+For adoption of an already prepared sprint, commit-sprint may supply review_access only when absent. Existing criteria/DoD must match historical delivery baselines; otherwise reconcile the discrepancy without rewriting accepted history. inspect reports effective_fulfillment separately from the historical fulfillment assessment: changed evidence requires reassessment.

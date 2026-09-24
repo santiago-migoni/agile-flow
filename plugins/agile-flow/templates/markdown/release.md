@@ -81,3 +81,21 @@
 | Artifact | Reference | Observed status |
 | --- | --- | --- |
 | {{commit_tag_release_or_deployment}} | {{actual_reference}} | {{observed_status}} |
+
+## Release commitment
+
+**Source:** {{commitment.source}} · **Recorded:** {{commitment.at}}
+
+## Fulfillment assessments
+
+**Fulfillment:** {{fulfillment}}
+
+| Date | Result | Outcome | Evidence | Source | Acceptance source |
+| --- | --- | --- | --- | --- | --- |
+| {{at}} | {{result}} | {{outcome}} | {{evidence}} | {{source}} | {{acceptance_source}} |
+
+## Previous scope commitments
+
+| Date | Impact | Source |
+| --- | --- | --- |
+| {{at}} | {{impact}} | {{source}} |

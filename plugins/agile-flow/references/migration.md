@@ -14,6 +14,7 @@ Identify the actual product records before selecting migration instructions. Plu
 | 0.9.0 | Schema 4, editorial-v2 with executive synthesis and agreement pointers | Selected highlights, grouped proposal inventories, identity columns and expandable history | Existing stored bindings remain readable. Use current operations for explicit editorial reconciliation; render refreshes generated indexes only. New pointers and synthesis fields require this writer. |
 | 0.10.0 | Schema 4, editorial-v2 unchanged; project instruction template version 1 | Optional managed block in project-root AGENTS.md | No record conversion from 0.9.0. Instruction setup/update is explicit and previewed; preserve repository rules and manual edits. Installing the plugin does not update projects. |
 | 0.11.0 | Schema 4, editorial-v2 unchanged; structured release contributions and alternative dispositions | Existing authored Markdown and portable bindings | No format migration from 0.10.0. Reconcile scope_items and dispositions through authorized record operations. Older writers can regress presentation and pending counts; use 0.11.0 for subsequent writes. |
+| 0.12.0 | Schema 4 / editorial-v2 with explicit iterative-v1 lifecycle; project instruction template version 2 | Sourced lifecycle adoption and scope commitments; findings, task observations and fulfillment assessments | Existing formats remain readable. Adopt with lifecycle --dry-run then --apply; update project instructions explicitly. Older writers must not manage adopted projects. |
 
 ## Current conversion procedure
 
@@ -33,3 +34,16 @@ These guides document older target layouts, not the default current workflow:
 - [Release-owned story layout](migration-release-layout.md): schema 1/2 → 3 and the release mapping semantics still needed by current conversion.
 
 Version checks inside a historical guide are intentional compatibility requirements. Do not remove them when renaming documentation. Persistent schema numbers, codec identifiers, operation names and product release directories are not renamed by a source-tree cleanup.
+
+## Iterative lifecycle adoption (0.12.0)
+
+The stored format remains schema 4 / editorial-v2. The explicit `iterative-v1` lifecycle agreement adds scope commitments, findings, progress and fulfillment; project instruction template version is 2. Older writers do not enforce this contract and must not write adopted projects.
+
+1. Inspect the real checkout and perform any required structural migration first.
+2. Run `lifecycle --dry-run`. Review missing release/sprint commitments, active work and retained legacy interface records.
+3. Apply with the reviewed fingerprint and actual adoption source. The normal transaction journal preserves changed bytes. No historical approval or acceptance is inferred.
+4. Reconcile only actual scope agreements through commit-release/commit-sprint; for existing prepared work, preserve original criteria and DoD and supply missing review_access. A mismatch requires explicit reconciliation, not a rewritten history.
+5. Preview/update project instructions separately under the adoption mandate. Preserve manual rules.
+6. Inspect rendered documents and status. No commit, installation, publication or live-product migration follows automatically from plugin source changes.
+
+Interface records already in product-design.md remain readable. New interface solution design belongs in architecture.md. Relocating old content is a reviewed editorial task; adoption does not copy, delete or reinterpret it.

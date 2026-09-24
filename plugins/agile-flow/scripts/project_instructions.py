@@ -14,7 +14,7 @@ TEMPLATE = Path(__file__).resolve().parents[1] / 'templates' / 'project-agents.m
 BEGIN = b'<!-- agile-flow:begin'
 END = b'<!-- agile-flow:end -->'
 BLOCK = re.compile(rb'<!-- agile-flow:begin version=(\d+) sha256=([0-9a-f]{64}) -->\n(.*?)<!-- agile-flow:end -->', re.S)
-TEMPLATE_VERSION = 1
+TEMPLATE_VERSION = 2
 
 
 def digest(value):

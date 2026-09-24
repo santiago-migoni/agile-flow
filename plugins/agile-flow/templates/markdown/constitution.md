@@ -77,3 +77,13 @@
 | Date | Change | Reason or source | Record details |
 | --- | --- | --- | --- |
 | {{date}} | {{meaningful_change}} | {{reason_or_source}} | {{records}} |
+
+## Lifecycle agreement
+
+**Model:** {{lifecycle.model}} · **Source:** {{lifecycle.source}} · **Adopted:** {{lifecycle.adopted_at}}
+
+## Costs and viability
+
+**Costs:** {{costs}}
+
+**Viability:** {{viability}}

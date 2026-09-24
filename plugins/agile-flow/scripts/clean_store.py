@@ -19,7 +19,12 @@ except ImportError:
     import design_documents as design
     import agreement_references as agreements
 
-TECHNICAL={'document_baseline','planning_baseline','reviewed_fingerprints','fingerprints'}
+try:
+    from . import iterative_lifecycle as lifecycle
+except ImportError:
+    import iterative_lifecycle as lifecycle
+
+TECHNICAL={'document_baseline','planning_baseline','reviewed_fingerprints','fingerprints','commitment_digest','story_digests'}
 
 class CleanStore(ReleaseStore):
     schema_version=4
@@ -76,6 +81,7 @@ class CleanStore(ReleaseStore):
                         values[n]=value[primary]
         if not getattr(self, "_reading_core", False): agreements.validate(state, Error)
         super().validate(checked)
+        lifecycle.validate(state, engine, Error)
         for kind in design.DOCUMENTS:
             if state.get(kind) is not None:
                 design.validate(kind, state[kind], Error)
@@ -207,6 +213,10 @@ class CleanStore(ReleaseStore):
 
     def inspect(self):
         result=super().inspect();result['git']=self.git.status()
+        domain=copy.deepcopy(result)
+        domain['product_backlog']=domain['backlog'];domain['backlog']=domain['stories']
+        for release in result['releases']:
+            release['effective_fulfillment']=lifecycle.effective_fulfillment(self,domain,release,engine)
         for kind, path in design.DOCUMENTS.items():
             if self.safe(path).exists():
                 result[kind] = self.unpack_document(path, self.safe(path).read_text())
@@ -228,6 +238,10 @@ class CleanStore(ReleaseStore):
         return super().transaction(request)
 
     def apply(self,state,request,files):
+        lifecycle.guard(state, request, engine, Error, self)
+        if request['operation'] in lifecycle.OPERATIONS:
+            lifecycle.apply(self, state, request, engine, Error, files)
+            return
         if request['operation'] in {'update-product-design', 'update-architecture'}:
             kind = request['operation'][7:].replace('-', '_')
             design.update(state, kind, request, engine.utc_now(), Error)

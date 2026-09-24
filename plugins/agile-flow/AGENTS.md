@@ -13,13 +13,17 @@ The same collaborator first helps decide what to build, then designs and deliver
 | Explore a problem or adopt a product | [discover](skills/discover/SKILL.md) | Product manager: shared understanding |
 | Define behavior, journeys, scope or priorities | [define](skills/define/SKILL.md) | Product manager: agreed needs and experience |
 | Discuss interface or technical solution | [design](skills/design/SKILL.md) | Product engineer, consultative: alternatives and sourced choices |
-| Organize a delivery | [plan](skills/plan/SKILL.md) | Product engineer: stories and reviewable iteration |
+| Project possible versions | [roadmap](skills/roadmap/SKILL.md) | Product manager: strategic direction |
+| Delimit or assess a release | [release](skills/release/SKILL.md) | Product manager with engineering input: bounded outcome |
+| Organize an iteration | [sprint](skills/sprint/SKILL.md) | Product engineer: committed sprint and review access |
+| Learn from the process | [retrospective](skills/retrospective/SKILL.md) | Both: observed adjustments |
+| Capture and prioritize discoveries | [backlog](skills/backlog/SKILL.md) | Both: needs without automatic scheduling |
 | Execute authorized work | [implement](skills/implement/SKILL.md) | Product engineer: usable result and evidence |
 | Evaluate delivery | [review](skills/review/SKILL.md) | Both: actual acceptance, corrections and learning |
 | Ask where work stands | [status](skills/status/SKILL.md) | Read-only situation and next action |
 | Pause, cancel, close or reopen | [close](skills/close/SKILL.md) | Requested administrative change |
 
-initialize routes to discover; backlog routes to define; advance routes by current intent to discover/define/design/plan/implement. Existing record operation names remain compatible.
+initialize routes to discover; plan routes to roadmap/release/sprint; advance routes by current intent and mandate. Read [the iterative lifecycle contract](references/iterative-lifecycle.md) for commitments, findings, closure and adoption. Strategy and operations continuously inform each other through the backlog. Existing record operation names remain compatible.
 
 ## Continue within the mandate
 
@@ -33,7 +37,7 @@ Reopen a settled decision only for contradiction, infeasibility or material new 
 
 The user should be able to identify the understood product, agreed scope, current result, unresolved decisions, and next action without reading internal JSON requests.
 
-- Follow [document ownership](references/document-ownership.md). product-design.md owns journeys and interaction design; architecture.md owns technical alternatives and decisions. Create them only with useful content, independently of releases or iterations. Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
+- Follow [document ownership](references/document-ownership.md). product-design.md owns needs, journeys and expected behavior; architecture.md owns the solution, including interface design, technical alternatives and decisions. Create them only with useful content, independently of releases or iterations. Present context through constitution.md, strategic version stages through roadmap.md and concrete delivery/MVP scope through release/<version>/release-<version>.md. BL documents own product needs; US documents inside an iteration own concrete typed work, criteria and DoD. Iteration planning is sprint-planning.md. Verification, review and retrospective appear when meaningful records exist.
 - Keep existing authored product documents in place and reference them. Do not create a competing editable copy.
 - Authored Markdown is the functional authority. Only `backlog/product-backlog.md` and `summary.md` are generated. Portable technical metadata lives in `.internal/registry.json`; local control lives in `.internal/local/`; preserve manual authored edits.
 - Temporary request files are transport only. They are not product documentation or a deliverable.

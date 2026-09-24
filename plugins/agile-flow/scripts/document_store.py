@@ -301,7 +301,7 @@ class DocumentStore:
                 state.update(iterations=[],roadmap=None,definition_of_done={'criteria':state['quality_policy']} if state.get('quality_policy') else None)
                 state['project'].pop('preparation',None)
                 state['project']={k:v for k,v in state['project'].items() if v not in ([], {})}
-                for key in ['background','vision','mission','objectives','agreements','scope','exclusions','stakeholders','success_factors']:
+                for key in ['background','vision','mission','objectives','agreements','scope','exclusions','stakeholders','success_factors','costs','viability']:
                     if key in request.get('project',{}): state['project'][key]=request['project'][key]
                 meta={'schema_version':2,'revision':0,'documents':{},'operations':{}}; files={}
             else:
@@ -325,7 +325,7 @@ class DocumentStore:
         op=request['operation']
         if op=='update-project':
             values=request.get('project',{})
-            allowed={'name','purpose','constraints','references','next_step','assumptions','open_questions','success_criteria','root','users','confirmed_facts','proposals','background','vision','mission','objectives','agreements','scope','exclusions','stakeholders','success_factors'}
+            allowed={'name','purpose','constraints','references','next_step','assumptions','open_questions','success_criteria','root','users','confirmed_facts','proposals','background','vision','mission','objectives','agreements','scope','exclusions','stakeholders','success_factors','costs','viability'}
             if not values or set(values)-allowed: raise Error('Unsupported project fields. Use scope/exclusions for boundaries; product-design and architecture have dedicated update operations.')
             if 'root' in values and values['root']!=str(self.root): raise Error('Project root must match the selected checkout.')
             state['project'].update(values)

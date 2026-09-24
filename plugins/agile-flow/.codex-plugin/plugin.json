@@ -1,7 +1,7 @@
 {
   "name": "agile-flow",
-  "version": "0.11.0",
-  "description": "Manage small, verifiable software increments with durable local records.",
+  "version": "0.12.0",
+  "description": "Connect product strategy and iterative delivery with scoped commitments, evidence and user review.",
   "author": {
     "name": "agile-flow contributors"
   },
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "agile-flow",
     "shortDescription": "Durable, adaptive development records",
-    "longDescription": "Guides small software increments while preserving verification, review, and decisions locally.",
+    "longDescription": "Consult on strategy, commit bounded releases and sprints, execute authorized work, and feed verified results and learning back into product decisions.",
     "developerName": "agile-flow contributors",
     "category": "Productivity",
     "capabilities": [

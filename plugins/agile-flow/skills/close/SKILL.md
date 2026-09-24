@@ -26,3 +26,5 @@ Explicit iteration transitions use target=iteration and iteration_id. Preserve u
 Use the schema-4 release/BL/US contract in the shared document operations reference. Old global DoD and direct iteration layouts require explicit migration. Preserve product context and authorization when decomposing a BL; a need is not itself an executable story.
 
 Read [clean Markdown and Git](../../references/clean-markdown-and-git.md) before writing or versioning records. Use the agreed commit policy at coherent outcomes, review explicit paths, and preserve unrelated changes. Status remains read-only. Never infer push, branch, tag or release permission from commit permission.
+
+For projects that adopted iterative-v1, iteration closure uses conclude-sprint under [the lifecycle contract](../../references/iterative-lifecycle.md), preserving actual review, learning and outstanding work. A concluded sprint stays historical; continuation creates linked follow-up work. Pause/resume and project/increment administrative controls retain their existing distinctions.

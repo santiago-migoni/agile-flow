@@ -34,8 +34,10 @@ Reopen a settled choice only for a contradiction, infeasibility or material new 
 | --- | --- | --- |
 | discover → define | The conversation moves from the problem to intended product behavior. | User, problem and desired outcome. |
 | define → design | The user wants to explore or resolve a solution, or the current mandate includes it. | A need or journey and relevant constraints. |
-| define/design → plan | The user requests delivery organization or has already delegated it. | Bounded outcome and viability decisions; explicit assumptions for a requested exploratory plan. |
-| plan → implement | Existing authorization covers execution. | Criteria, DoD and checks sufficient for the selected work; no blocking decision. |
+| strategy → roadmap/release | The mandate covers version projection or a concrete delivery. | Agreed direction; bounded scope and exit conditions for a release commitment. |
+| release → sprint | The mandate includes iteration organization. | Committed release scope; draft assumptions may remain explicit until sprint commitment. |
+| sprint → implement | Existing authorization covers execution. | Committed sprint, selected criteria, DoD, checks and owner access; no dependent material blocker. |
+| review → retrospective → sprint/release | A sprint result has been evaluated and its conclusion is authorized. | Actual learning, explicit outstanding work, and release fulfillment assessment. |
 | implement → review | A verifiable result is ready for evaluation. | Delivered scope, evidence and limitations. |
 | review → correction | Feedback requires a change within the delivery. | Affected criteria and applicable existing authorization. |
 | any → earlier role | Material new information changes a need or decision. | Explain affected scope without restarting unrelated work. |

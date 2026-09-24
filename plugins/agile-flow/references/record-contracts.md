@@ -13,3 +13,5 @@ Delivery preparation freezes selected story criteria, their DoD and source hashe
 The engine validates declared structure and observed bytes, not the authenticity of a quote or semantic truth of a non-behavioral change declaration. The agent must use actual sources and evidence. Release publication references record an observed publication; this local record program never publishes software.
 
 The registry now lives at .internal/registry.json with clean document schemas. Manifest and baseline references are portable; locks, transaction journals and backups live under ignored .internal/local/. Review [clean Markdown and Git](clean-markdown-and-git.md) for checkout reconciliation and authorized commits.
+
+Read [iterative lifecycle](iterative-lifecycle.md) for the additive iterative-v1 contract. Adoption and scope commitment are sourced operations, never inferred from old records. Commitment digests live in portable technical baselines; agreement sources remain authored Markdown. New writers validate unchanged scope. Older writers must not manage adopted projects. Release fulfillment is independent of publication.

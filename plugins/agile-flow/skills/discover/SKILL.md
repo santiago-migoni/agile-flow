@@ -18,3 +18,5 @@ Synthesize already supplied background, problem and desired outcomes into the co
 At a meaningful consolidation point, maintain the short executive synthesis and relevant highlights described in document ownership. Reference principal agreements when applying them elsewhere; do not copy their full wording into every document.
 
 For new-product initialization, include [project instruction setup](../../references/project-instructions.md) in the authorized workflow: preview, inspect the repository rules, and apply the managed template with the existing request as source. Existing projects require an adoption/update mandate; do not reinstall guidance on every discovery turn.
+
+For a newly initialized project, apply adopt-lifecycle with the initialization mandate as authorization_source before delivery planning. Existing projects use the explicit lifecycle preview/adoption procedure in [iterative lifecycle](../../references/iterative-lifecycle.md).

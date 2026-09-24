@@ -88,3 +88,7 @@ As {{actor}}, I want {{capability}}, so that {{benefit}}.
 | Date | Change | Reason or source | Record details |
 | --- | --- | --- | --- |
 | {{date}} | {{change}} | {{source}} | {{records}} |
+
+## Follow-up origin
+
+{{follows_up}}
